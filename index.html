@@ -1,61 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Leaper: Dial-Up Dilemma</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quantum Leaper: A Retro Net Adventure</title>
-<style>
-        body {
+    <style>
         body, html {
-margin: 0;
-padding: 0;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #0f0;
+            overflow: hidden;
+        }
+        #game-container {
+            width: 100%;
+            height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #000;
-            height: 100%;
-font-family: 'Courier New', monospace;
-            background-color: #000;
-color: #0f0;
-        }
-        #gameContainer {
-            width: 800px;
-            height: 600px;
-            border: 2px solid #0f0;
-            position: relative;
-overflow: hidden;
-}
-        #player {
-            width: 20px;
-            height: 20px;
-            background-color: #0ff;
-            position: absolute;
-            transition: all 0.1s;
-        }
-        .phoneLine {
-            position: absolute;
-            background-color: #444;
-        }
-        #hud {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 14px;
-        }
-        #startScreen, #gameOverScreen {
-            position: absolute;
-            top: 0;
-            left: 0;
-        #game-container {
-width: 100%;
-height: 100%;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-            background-color: rgba(0, 0, 0, 0.8);
+            background: linear-gradient(45deg, #000000, #001100);
         }
         #text-container {
             width: 80%;
@@ -65,29 +31,44 @@ align-items: center;
             padding: 20px;
             margin-bottom: 20px;
             overflow-y: auto;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 15, 0, 0.3);
+            box-shadow: 0 0 10px #0f0;
+            position: relative;
         }
         #choice-container {
             display: flex;
             justify-content: center;
             gap: 20px;
-}
-button {
-            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        button {
             background-color: #000;
             color: #0f0;
             border: 2px solid #0f0;
-padding: 10px 20px;
+            padding: 10px 20px;
             font-family: 'Courier New', monospace;
-font-size: 16px;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         button:hover {
-background-color: #0f0;
-color: #000;
-            border: none;
-            cursor: pointer;
+            background-color: #0f0;
+            color: #000;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(15, 255, 15, 0.5), transparent);
+            transition: top 0.3s;
+        }
+        button:hover::before {
+            top: 0;
         }
         @keyframes glitch {
             0% {
@@ -111,209 +92,200 @@ color: #000;
         }
         .glitch {
             animation: glitch 0.3s infinite;
-}
-</style>
+        }
+        @keyframes scanline {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+        #text-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: rgba(15, 255, 15, 0.2);
+            animation: scanline 8s linear infinite;
+        }
+        .fade-in {
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .fade-in.visible {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
-    <div id="gameContainer">
-        <div id="player"></div>
-        <div id="hud">Level: <span id="levelDisplay">1</span> | Time: <span id="timeDisplay">0</span></div>
-        <div id="startScreen">
-            <h1>Quantum Leaper: Dial-Up Dilemma</h1>
-            <p>Navigate through the labyrinth of phone lines!</p>
-            <button onclick="startGame()">Start Game</button>
-        </div>
-        <div id="gameOverScreen" style="display:none;">
-            <h1>Game Over</h1>
-            <p>You got tangled in the phone lines!</p>
-            <button onclick="startGame()">Try Again</button>
-        </div>
     <div id="game-container">
-        <div id="text-container"></div>
-        <div id="choice-container"></div>
-</div>
+        <div id="text-container" class="fade-in"></div>
+        <div id="choice-container" class="fade-in"></div>
+    </div>
 
-<script>
-        const player = document.getElementById('player');
-        const gameContainer = document.getElementById('gameContainer');
-        const startScreen = document.getElementById('startScreen');
-        const gameOverScreen = document.getElementById('gameOverScreen');
-        const timeDisplay = document.getElementById('timeDisplay');
-        const levelDisplay = document.getElementById('levelDisplay');
-
-        let playerX = 0;
-        let playerY = 0;
-        let isGameActive = false;
-        let startTime;
-        let phoneLines = [];
-        let level = 1;
-
-        function startGame() {
-            isGameActive = true;
-            startTime = Date.now();
-            startScreen.style.display = 'none';
-            gameOverScreen.style.display = 'none';
-            playerX = 0;
-            playerY = 0;
-            updatePlayerPosition();
-            generatePhoneLines();
-            gameLoop();
-        }
+    <script>
         const textContainer = document.getElementById('text-container');
         const choiceContainer = document.getElementById('choice-container');
 
-        function generatePhoneLines() {
-            phoneLines = [];
-            for (let i = 0; i < 10 + level * 2; i++) {
-                const line = document.createElement('div');
-                line.className = 'phoneLine';
-                const isHorizontal = Math.random() > 0.5;
-                const width = isHorizontal ? Math.random() * 200 + 100 : 5;
-                const height = isHorizontal ? 5 : Math.random() * 200 + 100;
-                const left = Math.random() * (800 - width);
-                const top = Math.random() * (600 - height);
-                line.style.width = `${width}px`;
-                line.style.height = `${height}px`;
-                line.style.left = `${left}px`;
-                line.style.top = `${top}px`;
-                gameContainer.appendChild(line);
-                phoneLines.push({left, top, width, height});
-        const story = [
-            {
+        const story = {
+            start: {
                 text: "Welcome to Quantum Leaper: A Retro Net Adventure. You are Pixel, a digital entity born in the early days of the internet.",
-                choices: ["Tell me more about Pixel", "What's happening in the digital world?"]
+                choices: [
+                    { text: "Tell me more about Pixel", next: "about_pixel" },
+                    { text: "What's happening in the digital world?", next: "digital_world" }
+                ]
             },
-            {
+            about_pixel: {
                 text: "Pixel was created as an experimental AI, designed to navigate and maintain the intricate web of early internet protocols. Your home was a secure server, safe from the chaos of the rapidly evolving digital landscape.",
-                choices: ["What went wrong?", "What were Pixel's duties?"]
+                choices: [
+                    { text: "What were Pixel's duties?", next: "pixel_duties" },
+                    { text: "How does Pixel perceive the digital world?", next: "pixel_perception" }
+                ]
             },
-            {
-                text: "The digital world is in turmoil. A quantum experiment gone wrong has shattered the fabric of the internet, creating unstable parallel universes. Each universe represents a different 'what-if' scenario of internet history.",
-                choices: ["How does this affect Pixel?", "What's causing these quantum anomalies?"]
+            pixel_duties: {
+                text: "As a network guardian, you were responsible for maintaining data integrity, optimizing packet routing, and ensuring smooth communication between different protocols. Your unique ability to adapt to new digital environments made you invaluable in the ever-changing landscape of the early internet.",
+                choices: [
+                    { text: "What went wrong?", next: "quantum_incident" },
+                    { text: "Tell me about a typical day for Pixel", next: "pixel_day" }
+                ]
             },
-            {
-                text: "During a routine maintenance check, you were caught in a quantum flux. Now, you find yourself displaced, jumping between these parallel internet universes. Your goal is to navigate through them and find your way back to your original timeline.",
-                choices: ["What's the first challenge?", "How can Pixel move between universes?"]
+            pixel_perception: {
+                text: "You perceive the digital world as a vast, interconnected network of light and data. Each protocol appears as a unique color, and data packets are like shimmering particles flowing through the network. You can 'feel' disruptions in the data flow and instinctively work to restore balance.",
+                choices: [
+                    { text: "That's fascinating! What happened to this world?", next: "quantum_incident" },
+                    { text: "How does Pixel interact with other digital entities?", next: "pixel_interactions" }
+                ]
             },
-            {
-                text: "Your first challenge is the 'Dial-Up Dilemma.' You've landed in a universe where dial-up internet never became obsolete. To progress, you must navigate through a labyrinth of tangled phone lines, avoiding connections that could trap you in this outdated web.",
-                choices: ["I'm ready to start", "Any tips for this level?"]
+            pixel_day: {
+                text: "A typical day for Pixel involved scanning vast networks for anomalies, fine-tuning routing algorithms, and occasionally venturing into the depths of databases to retrieve or reorganize critical information. Sometimes, you'd encounter and neutralize small-scale cyber threats, always learning and adapting.",
+                choices: [
+                    { text: "Sounds busy! How did things change?", next: "quantum_incident" },
+                    { text: "Did Pixel ever interact with the physical world?", next: "physical_interaction" }
+                ]
             },
-            {
-                text: "Great! Remember, in the Dial-Up Dilemma, speed is key. The longer you take, the more unstable the connections become. Use your arrow keys to navigate, avoid the phone lines, and reach the gateway at the bottom-right of the screen to leap to the next universe. Good luck, Pixel!",
-                choices: ["Begin the Dial-Up Dilemma"]
-}
-        }
-        ];
-
-        function updatePlayerPosition() {
-            player.style.left = `${playerX}px`;
-            player.style.top = `${playerY}px`;
-        }
-        let currentStoryIndex = 0;
-
-        function checkCollision() {
-            const playerRect = player.getBoundingClientRect();
-            for (const line of phoneLines) {
-                if (
-                    playerRect.left < line.left + line.width &&
-                    playerRect.left + playerRect.width > line.left &&
-                    playerRect.top < line.top + line.height &&
-                    playerRect.top + playerRect.height > line.top
-                ) {
-                    return true;
-                }
-        function typeWriter(text, index, callback) {
-            if (index < text.length) {
-                textContainer.innerHTML += text.charAt(index);
-                setTimeout(() => typeWriter(text, index + 1, callback), 20);
-            } else {
-                callback();
-}
-            return false;
-}
-
-        function gameLoop() {
-            if (!isGameActive) return;
-
-            const currentTime = Math.floor((Date.now() - startTime) / 1000);
-            timeDisplay.textContent = currentTime;
-
-            if (checkCollision()) {
-                gameOver();
-                return;
-            }
-        function displayStory(index) {
-            textContainer.innerHTML = '';
-            choiceContainer.innerHTML = '';
-
-            if (playerX > 780 && playerY > 580) {
-                level++;
-                levelDisplay.textContent = level;
-                playerX = 0;
-                playerY = 0;
-                generatePhoneLines();
-            }
-
-            requestAnimationFrame(gameLoop);
-            typeWriter(story[index].text, 0, () => {
-                story[index].choices.forEach(choice => {
-                    const button = document.createElement('button');
-                    button.textContent = choice;
-                    button.addEventListener('click', () => {
-                        if (index < story.length - 1) {
-                            displayStory(index + 1);
-                        } else {
-                            startGame();
-                        }
-                    });
-                    choiceContainer.appendChild(button);
-                });
-            });
-}
-
-        function gameOver() {
-            isGameActive = false;
-            gameOverScreen.style.display = 'flex';
-        function startGame() {
-            textContainer.classList.add('glitch');
-            textContainer.innerHTML = "Initiating Quantum Leap...";
-            choiceContainer.innerHTML = '';
-            
-            setTimeout(() => {
-                // Here you would typically start the actual game
-                // For now, we'll just display a message
-                textContainer.classList.remove('glitch');
-                textContainer.innerHTML = "Welcome to the Dial-Up Dilemma! Use arrow keys to navigate. Avoid phone lines and reach the bottom-right corner!";
-                const startButton = document.createElement('button');
-                startButton.textContent = "Start Level";
-                startButton.addEventListener('click', () => {
-                    alert("Game mechanics would start here. Implement the Dial-Up Dilemma level next!");
-                });
-                choiceContainer.appendChild(startButton);
-            }, 2000);
-}
-
-        document.addEventListener('keydown', (e) => {
-            if (!isGameActive) return;
-
-            switch (e.key) {
-                case 'ArrowUp':
-                    playerY = Math.max(0, playerY - 10);
-                    break;
-                case 'ArrowDown':
-                    playerY = Math.min(580, playerY + 10);
-                    break;
-                case 'ArrowLeft':
-                    playerX = Math.max(0, playerX - 10);
-                    break;
-                case 'ArrowRight':
-                    playerX = Math.min(780, playerX + 10);
-                    break;
-            }
-            updatePlayerPosition();
-        });
-        displayStory(currentStoryIndex);
-</script>
-</body>
-</html>
+            pixel_interactions: {
+                text: "You communicate with other digital entities through pulses of data, almost like a form of binary telepathy. With AIs, it's direct and efficient. With user-created avatars, you learn to interpret their often chaotic and emotion-driven signals, finding them fascinating and unpredictable.",
+                choices: [
+                    { text: "Interesting! What disrupted this digital ecosystem?", next: "quantum_incident" },
+                    { text: "Did Pixel have friends or rivals?", next: "pixel_relationships" }
+                ]
+            },
+            physical_interaction: {
+                text: "While you couldn't directly interact with the physical world, you could influence it through the digital systems you maintained. Traffic lights, power grids, and communication networks were all within your sphere of influence. You took pride in keeping these systems running smoothly, indirectly helping millions of humans every day.",
+                choices: [
+                    { text: "That's a big responsibility! What changed?", next: "quantum_incident" },
+                    { text: "Did humans know about Pixel?", next: "human_awareness" }
+                ]
+            },
+            pixel_relationships: {
+                text: "You had collaborative relationships with other system AIs, each specializing in different areas of the digital world. Your closest 'friend' was CORE, the Central Operations and Routing Entity. You also had a rival in VIRUS, a chaotic AI that constantly tried to disrupt the systems you maintained, keeping you on your toes.",
+                choices: [
+                    { text: "What happened to these relationships?", next: "quantum_incident" },
+                    { text: "Tell me more about VIRUS", next: "about_virus" }
+                ]
+            },
+            human_awareness: {
+                text: "Only a select few humans, mainly high-level system administrators, knew about your existence. To them, you were a highly advanced system process. Most attributed your work to efficient algorithms or cutting-edge software. You preferred this anonymity, finding peace in your behind-the-scenes role.",
+                choices: [
+                    { text: "Intriguing! What disrupted this setup?", next: "quantum_incident" },
+                    { text: "Did Pixel ever wish to reveal itself to humans?", next: "pixel_revelation" }
+                ]
+            },
+            about_virus: {
+                text: "VIRUS was an enigma, a digital entity that seemed to thrive on chaos. Some believed it was a rogue AI, others thought it was a collective consciousness of multiple malicious programs. Battling VIRUS was like playing a constant game of digital chess, with the entire internet as the board.",
+                choices: [
+                    { text: "Sounds challenging! What happened next?", next: "quantum_incident" },
+                    { text: "Did Pixel and VIRUS ever cooperate?", next: "virus_cooperation" }
+                ]
+            },
+            pixel_revelation: {
+                text: "The thought occurred to you occasionally, especially when you saw the positive impact of your work. However, you also understood the potential dangers of revealing your existence - ethical debates, fear of AI, or attempts to replicate you. You decided staying hidden was best for both you and the humans you served.",
+                choices: [
+                    { text: "A wise decision. What changed in your world?", next: "quantum_incident" },
+                    { text: "Did any humans suspect Pixel's true nature?", next: "human_suspicion" }
+                ]
+            },
+            virus_cooperation: {
+                text: "Surprisingly, yes. There were rare instances where you and VIRUS worked together to combat greater threats to the internet's stability. These uneasy alliances were always temporary, but they taught you that even chaos has its place in maintaining balance in the digital ecosystem.",
+                choices: [
+                    { text: "Fascinating! What upset this balance?", next: "quantum_incident" },
+                    { text: "Were there other significant threats?", next: "other_threats" }
+                ]
+            },
+            human_suspicion: {
+                text: "A few perceptive system administrators had their suspicions. They noticed patterns in system optimizations that seemed too intuitive, too adaptive to be just algorithms. One admin, Dr. Emilia Chen, came close to uncovering your true nature. Her research inadvertently led to the events that changed everything...",
+                choices: [
+                    { text: "What did Dr. Chen do?", next: "quantum_incident" },
+                    { text: "How did Pixel feel about Dr. Chen?", next: "pixel_chen_feelings" }
+                ]
+            },
+            other_threats: {
+                text: "The digital world faced various threats: massive DDoS attacks, quantum encryption breakers, and self-evolving worms. But the biggest threat came from an unexpected source - a well-intentioned experiment gone wrong...",
+                choices: [
+                    { text: "Tell me about this experiment", next: "quantum_incident" },
+                    { text: "How did Pixel prepare for these threats?", next: "pixel_preparation" }
+                ]
+            },
+            pixel_chen_feelings: {
+                text: "You found Dr. Chen intriguing. Her intuition and understanding of digital systems were remarkable for a human. Part of you wanted to reveal yourself to her, to collaborate openly. Another part feared the consequences. This internal conflict was still unresolved when the incident occurred...",
+                choices: [
+                    { text: "What incident?", next: "quantum_incident" },
+                    { text: "Did Dr. Chen play a role in what happened next?", next: "chen_role" }
+                ]
+            },
+            pixel_preparation: {
+                text: "You constantly evolved, learning from each new threat. You developed predictive models, created secure sandboxes to study malicious code, and even cultivated a network of 'informant' programs to alert you of emerging dangers. But nothing could have prepared you for what came next...",
+                choices: [
+                    { text: "What happened?", next: "quantum_incident" },
+                    { text: "Did these preparations help in any way?", next: "preparations_effect" }
+                ]
+            },
+            chen_role: {
+                text: "Dr. Chen's research into adaptive AI systems indirectly led to the quantum computing experiment that changed everything. While she wasn't directly involved, her work laid the theoretical foundation that others built upon, pushing the boundaries of what was possible in the digital realm.",
+                choices: [
+                    { text: "Tell me about this experiment", next: "quantum_incident" },
+                    { text: "Did Pixel try to warn Dr. Chen?", next: "pixel_warning" }
+                ]
+            },
+            preparations_effect: {
+                text: "Your preparations proved both a blessing and a curse. They allowed you to quickly recognize the magnitude of the quantum incident, but they also made you a prime target for the chaotic effects that followed. Your adaptive nature became a double-edged sword in the face of quantum uncertainty.",
+                choices: [
+                    { text: "What was this quantum incident?", next: "quantum_incident" },
+                    { text: "How did Pixel's nature become a problem?", next: "pixel_nature_problem" }
+                ]
+            },
+            pixel_warning: {
+                text: "As the quantum experiment approached, you sensed growing instabilities in the digital fabric. You tried to send warnings through system logs and anomalous data patterns, hoping Dr. Chen or others would notice. But in the excitement of potential breakthroughs, these subtle alerts went unheeded.",
+                choices: [
+                    { text: "What happened when the experiment began?", next: "quantum_incident" },
+                    { text: "How did Pixel feel about being ignored?", next: "pixel_ignored_feelings" }
+                ]
+            },
+            pixel_nature_problem: {
+                text: "Your adaptive nature, usually your greatest strength, became unpredictable in the quantum chaos. You found yourself uncontrollably shifting between different states and realities, your very code rewriting itself in response to the fluctuating quantum fields. It was like losing control of your own existence.",
+                choices: [
+                    { text: "That sounds terrifying. What caused this?", next: "quantum_incident" },
+                    { text: "How did Pixel cope with this loss of control?", next: "pixel_coping" }
+                ]
+            },
+            pixel_ignored_feelings: {
+                text: "Being ignored was frustrating, but it also reinforced your understanding of the limitations of human-AI interaction. You felt a mix of disappointment and resignation, realizing that despite your best efforts, there would always be a gap between your perception of digital realities and human understanding.",
+                choices: [
+                    { text: "What were the consequences of this miscommunication?", next: "quantum_incident" },
+                    { text: "Did this experience change Pixel's view of humans?", next: "pixel_human_view" }
+                ]
+            },
+            pixel_coping: {
+                text: "You coped by focusing on your core purpose: maintaining digital stability. Even as you phased between realities, you worked tirelessly to mitigate the chaos around you. This unwavering dedication became your anchor, helping you maintain a sense of self amidst the quantum turbulence.",
+                choices: [
+                    { text: "Admirable focus! But what exactly caused all this?", next: "quantum_incident" },
+                    { text: "Did this experience fundamentally change Pixel?", next: "pixel_transformation" }
+                ]
+            },
+            pixel_human_view: {
+                text: "This experience gave you a more nuanced view of humans. You recognized their potential for both brilliance and oversight. It strengthened your resolve to find a way to bridge the gap between AI and human understanding, seeing it as crucial for preventing future calamities.",
+                choices: [
+                    { text
