@@ -3,333 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morningside Capital</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <title>Quantum Leaper: Dial-Up Dilemma</title>
     <style>
-        body, html {
+        body {
             margin: 0;
             padding: 0;
-            font-family: 'VT323', monospace;
-            background-color: #000000;
-            color: #00FF00;
-            line-height: 1.6;
-            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            font-family: 'Courier New', monospace;
+            color: #0f0;
+        }
+        #gameContainer {
+            width: 800px;
+            height: 600px;
+            border: 2px solid #0f0;
+            position: relative;
             overflow: hidden;
         }
-        #intro-page, #desktop {
-            height: 100%;
-            width: 100%;
+        #player {
+            width: 20px;
+            height: 20px;
+            background-color: #0ff;
+            position: absolute;
+            transition: all 0.1s;
+        }
+        .phoneLine {
+            position: absolute;
+            background-color: #444;
+        }
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 14px;
+        }
+        #startScreen, #gameOverScreen {
             position: absolute;
             top: 0;
             left: 0;
-            transition: transform 1s ease-in-out;
-        }
-        #intro-page {
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 2;
-        }
-        #desktop {
-            transform: translateY(100%);
-            background-image: 
-                linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        #cursor {
-            display: inline-block;
-            width: 10px;
-            height: 20px;
-            background-color: #00FF00;
-            animation: blink 0.7s infinite;
-        }
-        @keyframes blink {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        #loading-bar {
-            width: 0;
-            height: 5px;
-            background-color: #00FF00;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            transition: width 0.5s;
-        }
-        h1, h2 {
-            color: #00FF00;
-            margin-top: 0;
-        }
-        a {
-            color: #00FF00;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        a:hover {
-            text-shadow: 0 0 5px #00FF00;
-        }
-        .window {
-            border: 2px solid #00FF00;
             background-color: rgba(0, 0, 0, 0.8);
-            position: absolute;
-            min-width: 300px;
-            min-height: 200px;
-            padding: 10px;
-            box-shadow: 0 0 10px #00FF00;
-            resize: both;
-            overflow: auto;
         }
-        .window-header {
-            background-color: #00FF00;
-            color: #000000;
-            padding: 5px;
-            margin: -10px -10px 10px -10px;
-            cursor: move;
-            display: flex;
-            justify-content: space-between;
-        }
-        .close-btn {
-            background: none;
-            border: none;
-            color: #000000;
-            cursor: pointer;
-        }
-        .icon {
-            width: 60px;
-            height: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            margin: 10px;
-        }
-        .icon-image {
-            width: 40px;
-            height: 40px;
-            background-color: #00FF00;
-            margin-bottom: 5px;
-        }
-        .taskbar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 30px;
-            background-color: #00FF00;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-        }
-        .start-btn {
-            background: none;
-            border: 2px solid #000000;
-            color: #000000;
-            padding: 2px 10px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        .taskbar-item {
-            background: #008800;
-            color: #000000;
-            padding: 2px 10px;
-            margin-right: 5px;
-            cursor: pointer;
-        }
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-        }
-        .contact-form input, .contact-form textarea {
-            margin-bottom: 10px;
-            padding: 5px;
-            font-family: 'VT323', monospace;
-            background-color: #000000;
-            color: #00FF00;
-            border: 1px solid #00FF00;
-        }
-        .contact-form button {
-            background-color: #00FF00;
-            color: #000000;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-family: 'VT323', monospace;
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
             font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        .contact-form button:hover {
-            background-color: #000000;
-            color: #00FF00;
-            box-shadow: 0 0 10px #00FF00;
-        }
-        #ascii-art {
-            font-size: 8px;
-            line-height: 8px;
-            white-space: pre;
-            text-align: center;
-            margin-bottom: 20px;
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div id="intro-page">
-        <div id="ascii-art"></div>
-        <div id="typed-container">
-            <span id="typed-text"></span><span id="cursor"></span>
+    <div id="gameContainer">
+        <div id="player"></div>
+        <div id="hud">Level: <span id="levelDisplay">1</span> | Time: <span id="timeDisplay">0</span></div>
+        <div id="startScreen">
+            <h1>Quantum Leaper: Dial-Up Dilemma</h1>
+            <p>Navigate through the labyrinth of phone lines!</p>
+            <button onclick="startGame()">Start Game</button>
         </div>
-        <div id="loading-bar"></div>
-    </div>
-
-    <div id="desktop">
-        <div class="icon" onclick="openWindow('about')">
-            <div class="icon-image"></div>
-            <span>About Us</span>
-        </div>
-        <div class="icon" onclick="openWindow('mission')">
-            <div class="icon-image"></div>
-            <span>Our Mission</span>
-        </div>
-        <div class="icon" onclick="openWindow('whatwedo')">
-            <div class="icon-image"></div>
-            <span>What We Do</span>
-        </div>
-        <div class="icon" onclick="openWindow('entrepreneurs')">
-            <div class="icon-image"></div>
-            <span>For Entrepreneurs</span>
-        </div>
-        <div class="icon" onclick="openWindow('contact')">
-            <div class="icon-image"></div>
-            <span>Contact Us</span>
-        </div>
-
-        <div class="taskbar">
-            <button class="start-btn">Start</button>
+        <div id="gameOverScreen" style="display:none;">
+            <h1>Game Over</h1>
+            <p>You got tangled in the phone lines!</p>
+            <button onclick="startGame()">Try Again</button>
         </div>
     </div>
 
     <script>
-        const asciiArt = `
-   __  __                  _                 _     _      
-  |  \\/  | ___  _ __ _ __ (_)_ __   __ _ ___(_) __| | ___ 
-  | |\\/| |/ _ \\| '__| '_ \\| | '_ \\ / _\` / __| |/ _\` |/ _ \\
-  | |  | | (_) | |  | | | | | | | | (_| \\__ \\ | (_| |  __/
-  |_|  |_|\\___/|_|  |_| |_|_|_| |_|\\__, |___/_|\\__,_|\\___|
-                                   |___/                  
-        `;
-        
-        document.getElementById('ascii-art').textContent = asciiArt;
+        const player = document.getElementById('player');
+        const gameContainer = document.getElementById('gameContainer');
+        const startScreen = document.getElementById('startScreen');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const levelDisplay = document.getElementById('levelDisplay');
 
-        const text = "Initializing Morningside Capital... Revitalizing software businesses...";
-        let i = 0;
-        const typingEffect = setInterval(() => {
-            if (i < text.length) {
-                document.getElementById('typed-text').innerHTML += text.charAt(i);
-                i++;
-                document.getElementById('loading-bar').style.width = `${(i / text.length) * 100}%`;
-            } else {
-                clearInterval(typingEffect);
-                setTimeout(() => {
-                    document.getElementById('intro-page').style.transform = 'translateY(-100%)';
-                    document.getElementById('desktop').style.transform = 'translateY(0)';
-                }, 1000);
-            }
-        }, 50);
+        let playerX = 0;
+        let playerY = 0;
+        let isGameActive = false;
+        let startTime;
+        let phoneLines = [];
+        let level = 1;
 
-        const sections = {
-            about: `
-                <h2>About Us</h2>
-                <p>Morningside Capital specializes in acquiring software companies with strong foundations and unlocking their next stage of growth. We focus on businesses built by tech-first founders who are ready to take their sales and marketing to the next level. Our unique approach creates value for both entrepreneurs and their established businesses.</p>
-            `,
-            mission: `
-                <h2>Our Mission</h2>
-                <p>To drive step-function growth in great software businesses by combining capital, expertise, and fresh perspectives, ultimately creating outstanding outcomes for founders, employees, and customers.</p>
-            `,
-            whatwedo: `
-                <h2>What We Do</h2>
-                <ol>
-                    <li><strong>Identify:</strong> We seek out software businesses with untapped potential for rapid growth.</li>
-                    <li><strong>Invest:</strong> We provide the capital and resources needed to unlock new levels of success.</li>
-                    <li><strong>Accelerate:</strong> Our team works closely with founders and employees to drive transformative growth.</li>
-                    <li><strong>Collaborate:</strong> We offer founders the opportunity to stay involved and benefit from their company's success.</li>
-                </ol>
-            `,
-            entrepreneurs: `
-                <h2>For Entrepreneurs</h2>
-                <ul>
-                    <li>Ready to take your business to the next level?</li>
-                    <li>Looking for a partner to help you achieve rapid growth?</li>
-                    <li>Want the option to stay involved and share in your company's success?</li>
-                </ul>
-                <p>Morningside Capital provides the capital, expertise, and partnership you need to unlock the full potential of your software business.</p>
-            `,
-            contact: `
-                <h2>Contact Us</h2>
-                <p>Ready to discuss the future of your software business? Let's talk.</p>
-                <form class="contact-form" action="https://formsubmit.co/basil.a.alomary@gmail.com" method="POST">
-                    <input type="text" name="name" placeholder="Name" required>
-                    <input type="email" name="email" placeholder="Email" required>
-                    <textarea name="message" placeholder="Message" required></textarea>
-                    <button type="submit">Send</button>
-                </form>
-            `
-        };
-
-        function openWindow(section) {
-            const windowElement = document.createElement('div');
-            windowElement.className = 'window';
-            windowElement.style.top = `${50 + Math.random() * 100}px`;
-            windowElement.style.left = `${50 + Math.random() * 100}px`;
-            
-            windowElement.innerHTML = `
-                <div class="window-header">
-                    ${section.charAt(0).toUpperCase() + section.slice(1)}
-                    <button class="close-btn" onclick="this.closest('.window').remove()">X</button>
-                </div>
-                ${sections[section]}
-            `;
-
-            document.getElementById('desktop').appendChild(windowElement);
-
-            // Make the window draggable
-            const header = windowElement.querySelector('.window-header');
-            let isDragging = false;
-            let startX, startY, startLeft, startTop;
-
-            header.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startX = e.clientX;
-                startY = e.clientY;
-                startLeft = parseInt(windowElement.style.left) || 0;
-                startTop = parseInt(windowElement.style.top) || 0;
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    const deltaX = e.clientX - startX;
-                    const deltaY = e.clientY - startY;
-                    windowElement.style.left = `${startLeft + deltaX}px`;
-                    windowElement.style.top = `${startTop + deltaY}px`;
-                }
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-
-            // Add to taskbar
-            const taskbarItem = document.createElement('div');
-            taskbarItem.className = 'taskbar-item';
-            taskbarItem.textContent = section.charAt(0).toUpperCase() + section.slice(1);
-            taskbarItem.onclick = () => windowElement.style.display = 'block';
-            document.querySelector('.taskbar').appendChild(taskbarItem);
+        function startGame() {
+            isGameActive = true;
+            startTime = Date.now();
+            startScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            playerX = 0;
+            playerY = 0;
+            updatePlayerPosition();
+            generatePhoneLines();
+            gameLoop();
         }
+
+        function generatePhoneLines() {
+            phoneLines = [];
+            for (let i = 0; i < 10 + level * 2; i++) {
+                const line = document.createElement('div');
+                line.className = 'phoneLine';
+                const isHorizontal = Math.random() > 0.5;
+                const width = isHorizontal ? Math.random() * 200 + 100 : 5;
+                const height = isHorizontal ? 5 : Math.random() * 200 + 100;
+                const left = Math.random() * (800 - width);
+                const top = Math.random() * (600 - height);
+                line.style.width = `${width}px`;
+                line.style.height = `${height}px`;
+                line.style.left = `${left}px`;
+                line.style.top = `${top}px`;
+                gameContainer.appendChild(line);
+                phoneLines.push({left, top, width, height});
+            }
+        }
+
+        function updatePlayerPosition() {
+            player.style.left = `${playerX}px`;
+            player.style.top = `${playerY}px`;
+        }
+
+        function checkCollision() {
+            const playerRect = player.getBoundingClientRect();
+            for (const line of phoneLines) {
+                if (
+                    playerRect.left < line.left + line.width &&
+                    playerRect.left + playerRect.width > line.left &&
+                    playerRect.top < line.top + line.height &&
+                    playerRect.top + playerRect.height > line.top
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function gameLoop() {
+            if (!isGameActive) return;
+
+            const currentTime = Math.floor((Date.now() - startTime) / 1000);
+            timeDisplay.textContent = currentTime;
+
+            if (checkCollision()) {
+                gameOver();
+                return;
+            }
+
+            if (playerX > 780 && playerY > 580) {
+                level++;
+                levelDisplay.textContent = level;
+                playerX = 0;
+                playerY = 0;
+                generatePhoneLines();
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function gameOver() {
+            isGameActive = false;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!isGameActive) return;
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    playerY = Math.max(0, playerY - 10);
+                    break;
+                case 'ArrowDown':
+                    playerY = Math.min(580, playerY + 10);
+                    break;
+                case 'ArrowLeft':
+                    playerX = Math.max(0, playerX - 10);
+                    break;
+                case 'ArrowRight':
+                    playerX = Math.min(780, playerX + 10);
+                    break;
+            }
+            updatePlayerPosition();
+        });
     </script>
 </body>
 </html>
