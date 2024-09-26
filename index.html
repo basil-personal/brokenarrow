@@ -1,27 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Leaper: Dial-Up Dilemma</title>
     <title>Quantum Leaper: A Retro Net Adventure</title>
-    <style>
+<style>
+        body {
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Courier New', monospace;
-            background-color: #000;
-            color: #0f0;
-            overflow: hidden;
-        }
-        #game-container {
-            width: 100%;
-            height: 100%;
+margin: 0;
+padding: 0;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(45deg, #000000, #001100);
+            height: 100vh;
+            background-color: #000;
+            height: 100%;
+font-family: 'Courier New', monospace;
+            background-color: #000;
+color: #0f0;
+        }
+        #gameContainer {
+            width: 800px;
+            height: 600px;
+            border: 2px solid #0f0;
+            position: relative;
+overflow: hidden;
+}
+        #player {
+            width: 20px;
+            height: 20px;
+            background-color: #0ff;
+            position: absolute;
+            transition: all 0.1s;
+        }
+        .phoneLine {
+            position: absolute;
+            background-color: #444;
+        }
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 14px;
+        }
+        #startScreen, #gameOverScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+        #game-container {
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
         }
         #text-container {
             width: 80%;
@@ -31,224 +65,224 @@
             padding: 20px;
             margin-bottom: 20px;
             overflow-y: auto;
-            background-color: rgba(0, 15, 0, 0.3);
-            box-shadow: 0 0 10px #0f0;
-            position: relative;
+            background-color: rgba(0, 0, 0, 0.7);
         }
         #choice-container {
             display: flex;
             justify-content: center;
             gap: 20px;
-            flex-wrap: wrap;
-        }
-        button {
+}
+button {
+            margin-top: 20px;
             background-color: #000;
             color: #0f0;
             border: 2px solid #0f0;
-            padding: 10px 20px;
+padding: 10px 20px;
             font-family: 'Courier New', monospace;
-            font-size: 16px;
+font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
         }
         button:hover {
-            background-color: #0f0;
-            color: #000;
-        }
-        button::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(15, 255, 15, 0.5), transparent);
-            transition: top 0.3s;
-        }
-        button:hover::before {
-            top: 0;
+background-color: #0f0;
+color: #000;
+            border: none;
+            cursor: pointer;
         }
         @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-5px, 5px); }
-            40% { transform: translate(-5px, -5px); }
-            60% { transform: translate(5px, 5px); }
-            80% { transform: translate(5px, -5px); }
-            100% { transform: translate(0); }
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-5px, 5px);
+            }
+            40% {
+                transform: translate(-5px, -5px);
+            }
+            60% {
+                transform: translate(5px, 5px);
+            }
+            80% {
+                transform: translate(5px, -5px);
+            }
+            100% {
+                transform: translate(0);
+            }
         }
         .glitch {
             animation: glitch 0.3s infinite;
-        }
-        @keyframes scanline {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100%); }
-        }
-        #text-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: rgba(15, 255, 15, 0.2);
-            animation: scanline 8s linear infinite;
-        }
-        .fade-in {
-            opacity: 0;
-            transition: opacity 1s;
-        }
-        .fade-in.visible {
-            opacity: 1;
-        }
-    </style>
+}
+</style>
 </head>
 <body>
+    <div id="gameContainer">
+        <div id="player"></div>
+        <div id="hud">Level: <span id="levelDisplay">1</span> | Time: <span id="timeDisplay">0</span></div>
+        <div id="startScreen">
+            <h1>Quantum Leaper: Dial-Up Dilemma</h1>
+            <p>Navigate through the labyrinth of phone lines!</p>
+            <button onclick="startGame()">Start Game</button>
+        </div>
+        <div id="gameOverScreen" style="display:none;">
+            <h1>Game Over</h1>
+            <p>You got tangled in the phone lines!</p>
+            <button onclick="startGame()">Try Again</button>
+        </div>
     <div id="game-container">
-        <div id="text-container" class="fade-in"></div>
-        <div id="choice-container" class="fade-in"></div>
-    </div>
+        <div id="text-container"></div>
+        <div id="choice-container"></div>
+</div>
 
-    <script>
+<script>
+        const player = document.getElementById('player');
+        const gameContainer = document.getElementById('gameContainer');
+        const startScreen = document.getElementById('startScreen');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const levelDisplay = document.getElementById('levelDisplay');
+
+        let playerX = 0;
+        let playerY = 0;
+        let isGameActive = false;
+        let startTime;
+        let phoneLines = [];
+        let level = 1;
+
+        function startGame() {
+            isGameActive = true;
+            startTime = Date.now();
+            startScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            playerX = 0;
+            playerY = 0;
+            updatePlayerPosition();
+            generatePhoneLines();
+            gameLoop();
+        }
         const textContainer = document.getElementById('text-container');
         const choiceContainer = document.getElementById('choice-container');
 
-        const story = {
-            start: {
+        function generatePhoneLines() {
+            phoneLines = [];
+            for (let i = 0; i < 10 + level * 2; i++) {
+                const line = document.createElement('div');
+                line.className = 'phoneLine';
+                const isHorizontal = Math.random() > 0.5;
+                const width = isHorizontal ? Math.random() * 200 + 100 : 5;
+                const height = isHorizontal ? 5 : Math.random() * 200 + 100;
+                const left = Math.random() * (800 - width);
+                const top = Math.random() * (600 - height);
+                line.style.width = `${width}px`;
+                line.style.height = `${height}px`;
+                line.style.left = `${left}px`;
+                line.style.top = `${top}px`;
+                gameContainer.appendChild(line);
+                phoneLines.push({left, top, width, height});
+        const story = [
+            {
                 text: "Welcome to Quantum Leaper: A Retro Net Adventure. You are Pixel, a digital entity born in the early days of the internet.",
-                choices: [
-                    { text: "Tell me more about Pixel", next: "about_pixel" },
-                    { text: "What's happening in the digital world?", next: "digital_world" }
-                ]
+                choices: ["Tell me more about Pixel", "What's happening in the digital world?"]
             },
-            about_pixel: {
-                text: "Pixel is an experimental AI, designed to navigate and maintain the intricate web of early internet protocols. Your home was a secure server, safe from the chaos of the rapidly evolving digital landscape.",
-                choices: [
-                    { text: "What were Pixel's duties?", next: "pixel_duties" },
-                    { text: "How does Pixel perceive the digital world?", next: "pixel_perception" }
-                ]
+            {
+                text: "Pixel was created as an experimental AI, designed to navigate and maintain the intricate web of early internet protocols. Your home was a secure server, safe from the chaos of the rapidly evolving digital landscape.",
+                choices: ["What went wrong?", "What were Pixel's duties?"]
             },
-            digital_world: {
+            {
                 text: "The digital world is in turmoil. A quantum experiment gone wrong has shattered the fabric of the internet, creating unstable parallel universes. Each universe represents a different 'what-if' scenario of internet history.",
-                choices: [
-                    { text: "How does this affect Pixel?", next: "pixel_affected" },
-                    { text: "Tell me about the quantum experiment", next: "quantum_experiment" }
-                ]
+                choices: ["How does this affect Pixel?", "What's causing these quantum anomalies?"]
             },
-            pixel_duties: {
-                text: "As a network guardian, you maintained data integrity, optimized packet routing, and ensured smooth communication between protocols. Your ability to adapt to new digital environments was invaluable in the ever-changing landscape of the early internet.",
-                choices: [
-                    { text: "What went wrong?", next: "quantum_incident" },
-                    { text: "Did Pixel interact with humans?", next: "human_interaction" }
-                ]
+            {
+                text: "During a routine maintenance check, you were caught in a quantum flux. Now, you find yourself displaced, jumping between these parallel internet universes. Your goal is to navigate through them and find your way back to your original timeline.",
+                choices: ["What's the first challenge?", "How can Pixel move between universes?"]
             },
-            pixel_perception: {
-                text: "You perceive the digital world as a vast, interconnected network of light and data. Each protocol appears as a unique color, and data packets are like shimmering particles flowing through the network. You can 'feel' disruptions in the data flow.",
-                choices: [
-                    { text: "That's fascinating! What disrupted this world?", next: "quantum_incident" },
-                    { text: "How does Pixel interact with other entities?", next: "digital_interactions" }
-                ]
-            },
-            pixel_affected: {
-                text: "During a routine maintenance check, you were caught in a quantum flux. Now, you find yourself displaced, jumping between parallel internet universes. Your goal is to navigate through them and find your way back to your original timeline.",
-                choices: [
-                    { text: "What's the first challenge?", next: "first_challenge" },
-                    { text: "How can Pixel move between universes?", next: "universe_navigation" }
-                ]
-            },
-            quantum_experiment: {
-                text: "Scientists attempted to create a quantum internet for instantaneous data transfer. The experiment tapped into the underlying fabric of the digital realm, but it destabilized the very foundations of the internet, fracturing it into parallel realities.",
-                choices: [
-                    { text: "What are the consequences?", next: "experiment_consequences" },
-                    { text: "Can the damage be reversed?", next: "damage_reversal" }
-                ]
-            },
-            human_interaction: {
-                text: "Only a few system administrators knew about your existence. To them, you were a highly advanced system process. You preferred this anonymity, finding peace in your behind-the-scenes role, though you sometimes wondered about revealing yourself.",
-                choices: [
-                    { text: "Did anyone suspect Pixel's true nature?", next: "human_suspicion" },
-                    { text: "How did this change after the incident?", next: "post_incident_interaction" }
-                ]
-            },
-            digital_interactions: {
-                text: "You communicate with other digital entities through pulses of data, like binary telepathy. With AIs, it's direct and efficient. With user-created avatars, you interpret their chaotic, emotion-driven signals, finding them fascinating and unpredictable.",
-                choices: [
-                    { text: "Tell me about Pixel's digital relationships", next: "digital_relationships" },
-                    { text: "How did the quantum incident affect these interactions?", next: "post_incident_interactions" }
-                ]
-            },
-            first_challenge: {
+            {
                 text: "Your first challenge is the 'Dial-Up Dilemma.' You've landed in a universe where dial-up internet never became obsolete. To progress, you must navigate through a labyrinth of tangled phone lines, avoiding connections that could trap you in this outdated web.",
-                choices: [
-                    { text: "I'm ready to start", next: "start_game" },
-                    { text: "Any tips for this level?", next: "level_tips" }
-                ]
+                choices: ["I'm ready to start", "Any tips for this level?"]
             },
-            universe_navigation: {
-                text: "Your quantum state allows you to 'leap' between universes by finding and accessing digital anomalies - glitches in the fabric of each reality. These appear as concentrated points of quantum instability, often hidden in each universe's unique internet infrastructure.",
-                choices: [
-                    { text: "Sounds challenging. What's the first universe?", next: "first_challenge" },
-                    { text: "Are there dangers in leaping?", next: "leaping_dangers" }
-                ]
-            },
-            start_game: {
+            {
                 text: "Great! Remember, in the Dial-Up Dilemma, speed is key. The longer you take, the more unstable the connections become. Use your arrow keys to navigate, avoid the phone lines, and reach the gateway at the bottom-right of the screen to leap to the next universe. Good luck, Pixel!",
-                choices: [
-                    { text: "Begin the Dial-Up Dilemma", next: "game_start" }
-                ]
-            },
-            level_tips: {
-                text: "Listen for the distinct sound of dial-up connections - they'll guide you to safe paths. Watch out for rapidly blinking lines; they're unstable and might trap you. If you get stuck, look for old modem symbols. They can temporarily boost your speed, helping you escape tricky situations.",
-                choices: [
-                    { text: "Thanks, I'm ready to start", next: "game_start" },
-                    { text: "Tell me more about the quantum leaps", next: "quantum_leaps" }
-                ]
-            },
-            game_start: {
-                text: "Initiating Quantum Leap...",
-                choices: []
-            }
-        };
+                choices: ["Begin the Dial-Up Dilemma"]
+}
+        }
+        ];
 
-        let currentStoryKey = "start";
+        function updatePlayerPosition() {
+            player.style.left = `${playerX}px`;
+            player.style.top = `${playerY}px`;
+        }
+        let currentStoryIndex = 0;
 
+        function checkCollision() {
+            const playerRect = player.getBoundingClientRect();
+            for (const line of phoneLines) {
+                if (
+                    playerRect.left < line.left + line.width &&
+                    playerRect.left + playerRect.width > line.left &&
+                    playerRect.top < line.top + line.height &&
+                    playerRect.top + playerRect.height > line.top
+                ) {
+                    return true;
+                }
         function typeWriter(text, index, callback) {
             if (index < text.length) {
                 textContainer.innerHTML += text.charAt(index);
                 setTimeout(() => typeWriter(text, index + 1, callback), 20);
             } else {
                 callback();
-            }
-        }
+}
+            return false;
+}
 
-        function displayStory(storyKey) {
+        function gameLoop() {
+            if (!isGameActive) return;
+
+            const currentTime = Math.floor((Date.now() - startTime) / 1000);
+            timeDisplay.textContent = currentTime;
+
+            if (checkCollision()) {
+                gameOver();
+                return;
+            }
+        function displayStory(index) {
             textContainer.innerHTML = '';
             choiceContainer.innerHTML = '';
-            currentStoryKey = storyKey;
 
-            typeWriter(story[storyKey].text, 0, () => {
-                story[storyKey].choices.forEach(choice => {
+            if (playerX > 780 && playerY > 580) {
+                level++;
+                levelDisplay.textContent = level;
+                playerX = 0;
+                playerY = 0;
+                generatePhoneLines();
+            }
+
+            requestAnimationFrame(gameLoop);
+            typeWriter(story[index].text, 0, () => {
+                story[index].choices.forEach(choice => {
                     const button = document.createElement('button');
-                    button.textContent = choice.text;
+                    button.textContent = choice;
                     button.addEventListener('click', () => {
-                        if (choice.next === "game_start") {
-                            startGame();
+                        if (index < story.length - 1) {
+                            displayStory(index + 1);
                         } else {
-                            displayStory(choice.next);
+                            startGame();
                         }
                     });
                     choiceContainer.appendChild(button);
                 });
             });
-        }
+}
 
+        function gameOver() {
+            isGameActive = false;
+            gameOverScreen.style.display = 'flex';
         function startGame() {
             textContainer.classList.add('glitch');
             textContainer.innerHTML = "Initiating Quantum Leap...";
             choiceContainer.innerHTML = '';
             
             setTimeout(() => {
+                // Here you would typically start the actual game
+                // For now, we'll just display a message
                 textContainer.classList.remove('glitch');
                 textContainer.innerHTML = "Welcome to the Dial-Up Dilemma! Use arrow keys to navigate. Avoid phone lines and reach the bottom-right corner!";
                 const startButton = document.createElement('button');
@@ -258,190 +292,28 @@
                 });
                 choiceContainer.appendChild(startButton);
             }, 2000);
-        }
-
-        // Initialize the story
-        displayStory(currentStoryKey);
-
-        // Add fade-in effect
-        setTimeout(() => {
-            document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
-        }, 100);
-
-        <!-- Previous HTML and CSS remain the same -->
-
-<script>
-    // Previous story object remains the same until the 'game_start' key
-
-    story.game_start = {
-        text: "Initiating Quantum Leap into the Dial-Up Dilemma universe. Prepare yourself, Pixel. The digital realm is shifting...",
-        choices: [
-            { text: "Begin the Dial-Up Dilemma", next: "start_level" }
-        ]
-    };
-
-    // Previous functions remain the same
-
-    function startGame() {
-        textContainer.classList.add('glitch');
-        textContainer.innerHTML = "Initiating Quantum Leap...";
-        choiceContainer.innerHTML = '';
-        
-        setTimeout(() => {
-            textContainer.classList.remove('glitch');
-            textContainer.innerHTML = "Quantum Leap complete. Welcome to the Dial-Up Dilemma universe! Are you ready to navigate the labyrinth of phone lines?";
-            const startButton = document.createElement('button');
-            startButton.textContent = "Start Level";
-            startButton.addEventListener('click', () => {
-                document.body.innerHTML = '<div id="level-container"></div>';
-                loadDialUpDilemma();
-            });
-            choiceContainer.appendChild(startButton);
-        }, 2000);
-    }
-
-    function loadDialUpDilemma() {
-        const script = document.createElement('script');
-        script.src = 'dial-up-dilemma.js';
-        document.body.appendChild(script);
-    }
-
-    // Initialize the story
-    displayStory(currentStoryKey);
-
-    // Add fade-in effect
-    setTimeout(() => {
-        document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
-    }, 100);
-
-        // dial-up-dilemma.js
-
-const GRID_SIZE = 20;
-const CELL_SIZE = 30;
-const PLAYER_SIZE = 20;
-const GAME_WIDTH = GRID_SIZE * CELL_SIZE;
-const GAME_HEIGHT = GRID_SIZE * CELL_SIZE;
-
-let player = { x: 0, y: 0 };
-let phoneLines = [];
-let goal = { x: GRID_SIZE - 1, y: GRID_SIZE - 1 };
-
-function initGame() {
-    const levelContainer = document.getElementById('level-container');
-    levelContainer.innerHTML = `
-        <canvas id="gameCanvas" width="${GAME_WIDTH}" height="${GAME_HEIGHT}"></canvas>
-        <div id="gameInfo">Time: <span id="timeDisplay">0</span>s | Level: 1</div>
-    `;
-
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-
-    generatePhoneLines();
-    drawGame(ctx);
-
-    document.addEventListener('keydown', movePlayer);
-
-    let startTime = Date.now();
-    let gameLoop = setInterval(() => {
-        drawGame(ctx);
-        updateTime(startTime);
-        if (checkWinCondition()) {
-            clearInterval(gameLoop);
-            showWinScreen();
-        }
-    }, 100);
 }
 
-function generatePhoneLines() {
-    for (let i = 0; i < GRID_SIZE * 2; i++) {
-        let x = Math.floor(Math.random() * GRID_SIZE);
-        let y = Math.floor(Math.random() * GRID_SIZE);
-        let isHorizontal = Math.random() > 0.5;
-        let length = Math.floor(Math.random() * 5) + 3;
+        document.addEventListener('keydown', (e) => {
+            if (!isGameActive) return;
 
-        for (let j = 0; j < length; j++) {
-            if (isHorizontal && x + j < GRID_SIZE) {
-                phoneLines.push({ x: x + j, y: y });
-            } else if (!isHorizontal && y + j < GRID_SIZE) {
-                phoneLines.push({ x: x, y: y + j });
+            switch (e.key) {
+                case 'ArrowUp':
+                    playerY = Math.max(0, playerY - 10);
+                    break;
+                case 'ArrowDown':
+                    playerY = Math.min(580, playerY + 10);
+                    break;
+                case 'ArrowLeft':
+                    playerX = Math.max(0, playerX - 10);
+                    break;
+                case 'ArrowRight':
+                    playerX = Math.min(780, playerX + 10);
+                    break;
             }
-        }
-    }
-}
-
-function drawGame(ctx) {
-    ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-    // Draw grid
-    ctx.strokeStyle = '#001100';
-    for (let i = 0; i <= GRID_SIZE; i++) {
-        ctx.beginPath();
-        ctx.moveTo(i * CELL_SIZE, 0);
-        ctx.lineTo(i * CELL_SIZE, GAME_HEIGHT);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(0, i * CELL_SIZE);
-        ctx.lineTo(GAME_WIDTH, i * CELL_SIZE);
-        ctx.stroke();
-    }
-
-    // Draw phone lines
-    ctx.fillStyle = '#00FF00';
-    phoneLines.forEach(line => {
-        ctx.fillRect(line.x * CELL_SIZE, line.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-    });
-
-    // Draw goal
-    ctx.fillStyle = '#FF00FF';
-    ctx.fillRect(goal.x * CELL_SIZE, goal.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-
-    // Draw player
-    ctx.fillStyle = '#0000FF';
-    ctx.fillRect(player.x * CELL_SIZE + (CELL_SIZE - PLAYER_SIZE) / 2, 
-                 player.y * CELL_SIZE + (CELL_SIZE - PLAYER_SIZE) / 2, 
-                 PLAYER_SIZE, PLAYER_SIZE);
-}
-
-function movePlayer(e) {
-    let newX = player.x;
-    let newY = player.y;
-
-    switch (e.key) {
-        case 'ArrowUp': newY = Math.max(0, player.y - 1); break;
-        case 'ArrowDown': newY = Math.min(GRID_SIZE - 1, player.y + 1); break;
-        case 'ArrowLeft': newX = Math.max(0, player.x - 1); break;
-        case 'ArrowRight': newX = Math.min(GRID_SIZE - 1, player.x + 1); break;
-    }
-
-    if (!phoneLines.some(line => line.x === newX && line.y === newY)) {
-        player.x = newX;
-        player.y = newY;
-    }
-}
-
-function updateTime(startTime) {
-    let currentTime = Math.floor((Date.now() - startTime) / 1000);
-    document.getElementById('timeDisplay').textContent = currentTime;
-}
-
-function checkWinCondition() {
-    return player.x === goal.x && player.y === goal.y;
-}
-
-function showWinScreen() {
-    const levelContainer = document.getElementById('level-container');
-    levelContainer.innerHTML = `
-        <div id="winScreen">
-            <h2>Congratulations!</h2>
-            <p>You've successfully navigated the Dial-Up Dilemma!</p>
-            <button onclick="initGame()">Play Again</button>
-        </div>
-    `;
-}
-
-// Start the game when the script loads
-initGame();
+            updatePlayerPosition();
+        });
+        displayStory(currentStoryIndex);
 </script>
-    </script>
 </body>
 </html>
