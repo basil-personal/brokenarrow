@@ -3,225 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gravity Architect: Design Beyond Newton</title>
+    <title>Basil Alomary - Tron Terminal</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #0ff;
             height: 100%;
-            font-family: 'Arial', sans-serif;
-            background-color: #0c0c1d;
-            color: #e0e0e0;
             overflow: hidden;
         }
-        #game-container {
-            width: 100%;
+        .terminal {
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #0c0c1d 0%, #1f1f3f 100%);
-        }
-        #text-container {
-            width: 80%;
-            max-width: 600px;
-            height: 300px;
-            border: 2px solid #4a4a8f;
             padding: 20px;
-            margin-bottom: 20px;
+            box-sizing: border-box;
             overflow-y: auto;
-            background-color: rgba(30, 30, 60, 0.7);
-            box-shadow: 0 0 20px rgba(74, 74, 143, 0.5);
             position: relative;
-            border-radius: 10px;
         }
-        #choice-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+        .grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -1;
         }
-        button {
-            background-color: #4a4a8f;
-            color: #e0e0e0;
-            border: none;
-            padding: 10px 20px;
-            font-family: 'Arial', sans-serif;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 5px;
+        h1, h2 {
+            color: #f0f;
+            text-shadow: 0 0 10px #f0f;
         }
-        button:hover {
-            background-color: #7a7ac0;
-            transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        a {
+            color: #0f0;
+            text-decoration: none;
+            text-shadow: 0 0 5px #0f0;
         }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        a:hover {
+            text-decoration: underline;
         }
-        .floating {
-            animation: float 3s ease-in-out infinite;
+        .blink {
+            animation: blink-animation 1s steps(5, start) infinite;
         }
-        .fade-in {
-            opacity: 0;
-            transition: opacity 1s;
+        @keyframes blink-animation {
+            to {
+                visibility: hidden;
+            }
         }
-        .fade-in.visible {
-            opacity: 1;
+        .section {
+            margin-bottom: 20px;
+            border: 1px solid #0ff;
+            padding: 10px;
+            box-shadow: 0 0 10px #0ff;
         }
     </style>
 </head>
 <body>
-    <div id="game-container">
-        <div id="text-container" class="fade-in floating"></div>
-        <div id="choice-container" class="fade-in"></div>
+    <div class="terminal">
+        <div class="grid"></div>
+        <h1>BASIL ALOMARY <span class="blink">_</span></h1>
+        
+        <div class="section">
+            <h2>&gt; CURRENT ROLE</h2>
+            <p>Head of Research at Stripes</p>
+            <p>Building the diligence and investment research team to enable investments in incredible software and consumer companies.</p>
+        </div>
+        
+        <div class="section">
+            <h2>&gt; EXPERIENCE</h2>
+            <p>* Consultant at Bain & Company (New York office)</p>
+            <p>* Head of Growth at Simon Data (Seed to Series C)</p>
+            <p>* Independent investor, consultant, and advisor to early-stage SaaS companies</p>
+        </div>
+        
+        <div class="section">
+            <h2>&gt; EDUCATION</h2>
+            <p>* Graduate of Columbia Business School</p>
+            <p>* Second Year Fellow and Glenn Hubbard Scholarship recipient</p>
+        </div>
+        
+        <div class="section">
+            <h2>&gt; ROLES DURING MBA</h2>
+            <p>* VC Fellow with General Catalyst</p>
+            <p>* MBA Associate at Primary Venture Partners</p>
+            <p>* Student Fellow at .406 Ventures</p>
+            <p>* Venture Partner at Contrary Capital</p>
+            <p>* InSITE Fellow</p>
+        </div>
+        
+        <div class="section">
+            <h2>&gt; WRITING</h2>
+            <p><a href="https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/">Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution</a></p>
+            <p><a href="https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241">OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology</a></p>
+            <p><a href="https://medium.com/@basil.a.alomary/nfts-like-all-art-are-all-about-narrative-bc0bb5edd81">NFTs, like all art, are all about narrative</a></p>
+            <p><a href="https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-stupid-questions-acd868cd4f04">"Where am I going to display my NFT?"... and other stupid questions</a></p>
+            <p><a href="https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6">The Future of InsurTech: Why serving policyholders has been the path to growth for so many...</a></p>
+        </div>
+        
+        <div class="section">
+            <h2>&gt; CONNECT</h2>
+            <p><a href="https://www.linkedin.com/in/basilalomary">👋 LinkedIn</a></p>
+            <p><a href="https://twitter.com/basilalomary">🐦 Twitter</a></p>
+        </div>
     </div>
 
     <script>
-        const textContainer = document.getElementById('text-container');
-        const choiceContainer = document.getElementById('choice-container');
-
-        const story = {
-            start: {
-                text: "Welcome to Gravity Architect, where the laws of physics bend to your will. You are Dr. Nova Flux, a brilliant physicist who has discovered a way to manipulate gravity fields. Your breakthrough could revolutionize construction, space travel, and life as we know it.",
-                choices: [
-                    { text: "Tell me more about Dr. Nova Flux", next: "about_nova" },
-                    { text: "What's this gravity manipulation technology?", next: "gravity_tech" }
-                ]
-            },
-            about_nova: {
-                text: "Dr. Nova Flux is a prodigy in theoretical physics, with a particular fascination for gravity. Growing up in a space station, Nova developed a unique perspective on gravitational fields and their potential applications. Your unconventional approach led to this groundbreaking discovery.",
-                choices: [
-                    { text: "What motivated Nova's research?", next: "nova_motivation" },
-                    { text: "How does the scientific community view Nova?", next: "scientific_view" }
-                ]
-            },
-            gravity_tech: {
-                text: "Your invention, the Gravity Modulation Engine (GME), allows for precise control over gravitational fields in localized areas. It can increase, decrease, or even reverse gravity within its range. This technology opens up possibilities for revolutionary architecture and engineering feats.",
-                choices: [
-                    { text: "What are the potential applications?", next: "gme_applications" },
-                    { text: "Are there any risks to using the GME?", next: "gme_risks" }
-                ]
-            },
-            nova_motivation: {
-                text: "Living in zero-G environments, Nova witnessed firsthand the challenges and limitations imposed by traditional gravitational constraints. This sparked a desire to free humanity from these bonds, enabling us to build and live in ways previously thought impossible.",
-                choices: [
-                    { text: "How did Nova make the breakthrough?", next: "nova_breakthrough" },
-                    { text: "What's the next step for Nova's research?", next: "research_next_steps" }
-                ]
-            },
-            scientific_view: {
-                text: "The scientific community is divided. Many hail Nova as a visionary, while others are skeptical of the GME's potential and concerned about its implications. Some fear it could be weaponized or cause unforeseen environmental effects.",
-                choices: [
-                    { text: "How does Nova handle the criticism?", next: "nova_response" },
-                    { text: "Are there supporters in the scientific community?", next: "scientific_supporters" }
-                ]
-            },
-            gme_applications: {
-                text: "The GME could revolutionize construction, allowing for impossible structures and floating cities. In space, it could enhance propulsion systems and create artificial gravity. Medically, it could assist in treating bone density issues or aid in physical therapy.",
-                choices: [
-                    { text: "How soon can we see real-world applications?", next: "real_world_timeline" },
-                    { text: "What's the most exciting potential use?", next: "exciting_use" }
-                ]
-            },
-            gme_risks: {
-                text: "The GME is not without risks. Improper use could lead to structural instabilities or even tear the fabric of space-time. There are also concerns about its impact on human physiology with prolonged exposure to altered gravitational fields.",
-                choices: [
-                    { text: "How is Nova addressing these risks?", next: "risk_mitigation" },
-                    { text: "Are there safeguards built into the GME?", next: "gme_safeguards" }
-                ]
-            },
-            nova_breakthrough: {
-                text: "The breakthrough came when Nova combined quantum field theory with a new understanding of dark energy. By harnessing the properties of exotic matter, Nova found a way to create 'gravity bubbles' that can be precisely controlled and shaped.",
-                choices: [
-                    { text: "That's fascinating! What's the next challenge?", next: "next_challenge" },
-                    { text: "How can I help with Nova's work?", next: "player_role" }
-                ]
-            },
-            player_role: {
-                text: "As Nova's newly appointed research assistant, your role is crucial. You'll be testing the GME in controlled environments, designing structures that defy conventional physics, and helping to refine the technology. Are you ready to reshape the world?",
-                choices: [
-                    { text: "I'm ready to start", next: "game_start" },
-                    { text: "What's our first project?", next: "first_project" }
-                ]
-            },
-            game_start: {
-                text: "Excellent! Let's begin with your first challenge as a Gravity Architect. You'll be designing a simple structure in a variable gravity environment. Remember, the laws of physics are your tools now. Good luck, and let's revolutionize architecture!",
-                choices: [
-                    { text: "Start the Gravity Architect challenge", next: "start_level" }
-                ]
-            }
-        };
-
-        let currentStoryKey = "start";
-
-        function typeWriter(text, index, callback) {
-            if (index < text.length) {
-                textContainer.innerHTML += text.charAt(index);
-                setTimeout(() => typeWriter(text, index + 1, callback), 20);
-            } else {
-                callback();
-            }
-        }
-
-        function displayStory(storyKey) {
-            textContainer.innerHTML = '';
-            choiceContainer.innerHTML = '';
-            currentStoryKey = storyKey;
-
-            typeWriter(story[storyKey].text, 0, () => {
-                story[storyKey].choices.forEach(choice => {
-                    const button = document.createElement('button');
-                    button.textContent = choice.text;
-                    button.addEventListener('click', () => {
-                        if (choice.next === "start_level") {
-                            startGame();
-                        } else {
-                            displayStory(choice.next);
-                        }
-                    });
-                    choiceContainer.appendChild(button);
-                });
-            });
-        }
-
-        function startGame() {
-            textContainer.classList.remove('floating');
-            textContainer.style.animation = 'none';
-            textContainer.innerHTML = "Initializing Gravity Modulation Engine...";
-            choiceContainer.innerHTML = '';
-            
-            setTimeout(() => {
-                textContainer.style.animation = '';
-                textContainer.classList.add('floating');
-                textContainer.innerHTML = "GME Online. Welcome to your first Gravity Architect challenge. Design a structure that can withstand multiple gravity orientations.";
-                const startButton = document.createElement('button');
-                startButton.textContent = "Begin Challenge";
-                startButton.addEventListener('click', () => {
-                    document.body.innerHTML = '<div id="game-level"></div>';
-                    loadGravityArchitect();
-                });
-                choiceContainer.appendChild(startButton);
-            }, 2000);
-        }
-
-        function loadGravityArchitect() {
-            const script = document.createElement('script');
-            script.src = 'gravity-architect-game.js';
-            document.body.appendChild(script);
-        }
-
-        // Initialize the story
-        displayStory(currentStoryKey);
-
-        // Add fade-in effect
-        setTimeout(() => {
-            document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
-        }, 100);
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminal = document.querySelector('.terminal');
+            terminal.innerHTML = '> Initializing Basil Alomary OS...\n';
+            let content = terminal.innerHTML;
+            terminal.innerHTML = '';
+            let i = 0;
+            const typeWriter = () => {
+                if (i < content.length) {
+                    terminal.innerHTML += content.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 10);
+                }
+            };
+            typeWriter();
+        });
     </script>
 </body>
 </html>
