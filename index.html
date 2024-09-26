@@ -16,29 +16,25 @@
             height: 100%;
             overflow: hidden;
         }
-        #terminal {
+        #intro-page, #main-page {
             height: 100%;
             width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 1s ease-in-out;
+        }
+        #intro-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+        #main-page {
+            transform: translateY(100%);
             overflow-y: auto;
             padding: 20px;
             box-sizing: border-box;
-        }
-        #terminal-input {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-        }
-        #terminal-input input {
-            background-color: transparent;
-            border: none;
-            color: #00FF00;
-            font-family: 'VT323', monospace;
-            font-size: 20px;
-            flex-grow: 1;
-            margin-left: 10px;
-        }
-        #terminal-input input:focus {
-            outline: none;
         }
         #cursor {
             display: inline-block;
@@ -52,17 +48,133 @@
             50% { opacity: 1; }
             100% { opacity: 0; }
         }
+        h1, h2 {
+            color: #00FF00;
+        }
+        a {
+            color: #00FF00;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            text-shadow: 0 0 5px #00FF00;
+        }
+        .section {
+            border: 1px solid #00FF00;
+            padding: 10px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .section:hover {
+            box-shadow: 0 0 10px #00FF00;
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-form input, .contact-form textarea {
+            margin-bottom: 10px;
+            padding: 5px;
+            font-family: 'VT323', monospace;
+            background-color: #000000;
+            color: #00FF00;
+            border: 1px solid #00FF00;
+        }
+        .contact-form button {
+            background-color: #00FF00;
+            color: #000000;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .contact-form button:hover {
+            background-color: #000000;
+            color: #00FF00;
+            box-shadow: 0 0 10px #00FF00;
+        }
+        #ascii-art {
+            font-size: 8px;
+            line-height: 8px;
+            white-space: pre;
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <div id="terminal">
-        <div id="ascii-art"></div>
-        <div id="terminal-output"></div>
-        <div id="terminal-input">
-            <span>></span>
-            <input type="text" id="command-input" autofocus>
-            <span id="cursor"></span>
+    <div id="intro-page">
+        <div id="terminal">
+            <div id="ascii-art"></div>
+            <span id="typed-text"></span><span id="cursor"></span>
         </div>
+    </div>
+
+    <div id="main-page">
+        <header>
+            <h1>Morningside Capital</h1>
+        </header>
+
+        <nav>
+            <a href="#home">Home</a> |
+            <a href="#about">About Us</a> |
+            <a href="#mission">Our Mission</a> |
+            <a href="#what-we-do">What We Do</a> |
+            <a href="#for-entrepreneurs">For Entrepreneurs</a> |
+            <a href="#contact">Contact Us</a>
+        </nav>
+
+        <div id="home" class="section">
+            <h2>Home</h2>
+            <p>Welcome to Morningside Capital, where we breathe new life into established software businesses.</p>
+        </div>
+
+        <div id="about" class="section">
+            <h2>About Us</h2>
+            <p>Morningside Capital specializes in acquiring and revitalizing software companies with strong foundations. We seek out businesses with loyal customer bases and low churn rates, even if their growth has plateaued. Our unique approach creates value for both entrepreneurs and their established businesses.</p>
+        </div>
+
+        <div id="mission" class="section">
+            <h2>Our Mission</h2>
+            <p>To provide a win-win solution for software entrepreneurs and their loyal customers by injecting capital, expertise, and fresh perspectives into great businesses.</p>
+        </div>
+
+        <div id="what-we-do" class="section">
+            <h2>What We Do</h2>
+            <ol>
+                <li><strong>Acquire:</strong> We purchase software businesses with solid customer bases and proven track records.</li>
+                <li><strong>Empower:</strong> We provide entrepreneurs with the capital they need to pursue their next ventures.</li>
+                <li><strong>Invest:</strong> We infuse acquired businesses with capital and expertise to drive their next phase of growth.</li>
+                <li><strong>Collaborate:</strong> We offer entrepreneurs the option to remain invested in their original businesses, fostering continued partnership.</li>
+            </ol>
+        </div>
+
+        <div id="for-entrepreneurs" class="section">
+            <h2>For Entrepreneurs</h2>
+            <ul>
+                <li>Ready for your next challenge?</li>
+                <li>Want to see your business thrive under new leadership?</li>
+                <li>Looking for capital to fuel your next big idea?</li>
+            </ul>
+            <p>Morningside Capital offers you the opportunity to secure your business's future while pursuing your entrepreneurial dreams.</p>
+        </div>
+
+        <div id="contact" class="section">
+            <h2>Contact Us</h2>
+            <p>Ready to discuss the future of your software business? Let's talk.</p>
+            <form class="contact-form" action="https://formsubmit.co/basil.a.alomary@gmail.com" method="POST">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <textarea name="message" placeholder="Message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+
+        <footer>
+            <p>© 2024 Morningside Capital. All rights reserved.</p>
+        </footer>
     </div>
 
     <script>
@@ -74,46 +186,23 @@
   |_|  |_|\\___/|_|  |_| |_|_|_| |_|\\__, |___/_|\\__,_|\\___|
                                    |___/                  
         `;
+        
         document.getElementById('ascii-art').textContent = asciiArt;
 
-        const terminalOutput = document.getElementById('terminal-output');
-        const commandInput = document.getElementById('command-input');
-
-        function executeCommand(command) {
-            const response = getResponse(command);
-            terminalOutput.innerHTML += `<p><span>></span> ${command}</p>`;
-            terminalOutput.innerHTML += `<p>${response}</p>`;
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-            commandInput.value = '';
-        }
-
-        function getResponse(command) {
-            const lowerCommand = command.toLowerCase();
-            if (lowerCommand.includes('about')) {
-                return "Morningside Capital is a trailblazing investment firm that specializes in acquiring and revitalizing established software businesses. We are the vanguard of a new era in the software industry, combining the stability of Constellation Software with the agility and innovation of Tiny Capital.";
-            } else if (lowerCommand.includes('mission')) {
-                return "Our mission is to be the premier destination for software entrepreneurs looking to take their businesses to the next level. We provide a unique opportunity for founders to secure their legacy, achieve liquidity, and pursue their next ventures, all while ensuring their customers and employees are in good hands.";
-            } else if (lowerCommand.includes('what') && lowerCommand.includes('do')) {
-                return "1. Acquire software businesses with strong fundamentals, loyal customer bases, and significant untapped potential.\n2. Invigorate our acquired businesses with capital, resources, and strategic guidance to drive their next phase of growth and innovation.\n3. Collaborate with entrepreneurs, offering them the opportunity to stay involved and invested in the business they built.\n4. Empower founders with the liquidity and resources they need to pursue their next endeavors, while ensuring their legacy remains intact.";
-            } else if (lowerCommand.includes('entrepreneurs')) {
-                return "As a software entrepreneur, you've poured your heart and soul into building your business. But what's next? Whether you're looking to take on new challenges, secure your financial future, or ensure your business continues to thrive, Morningside Capital is here to help.";
-            } else if (lowerCommand.includes('contact')) {
-                return "Ready to take the next step in your entrepreneurial journey? We're here to listen, learn, and explore how we can help. Send us an email at info@morningsidecapital.com to start the conversation.";
-            } else if (lowerCommand.includes('help')) {
-                return "Available commands:\n- about: Learn about Morningside Capital\n- mission: Discover our mission\n- what we do: Find out what we do\n- entrepreneurs: Information for entrepreneurs\n- contact: Get in touch with us\n- help: Display this help message\n- clear: Clear the terminal screen";
-            } else if (lowerCommand.includes('clear')) {
-                terminalOutput.innerHTML = '';
-                return '';
+        const text = "Welcome to Morningside Capital. Revitalizing software businesses...";
+        let i = 0;
+        const typingEffect = setInterval(() => {
+            if (i < text.length) {
+                document.getElementById('typed-text').innerHTML += text.charAt(i);
+                i++;
             } else {
-                return "Unknown command. Type 'help' for a list of available commands.";
+                clearInterval(typingEffect);
+                setTimeout(() => {
+                    document.getElementById('intro-page').style.transform = 'translateY(-100%)';
+                    document.getElementById('main-page').style.transform = 'translateY(0)';
+                }, 1000);
             }
-        }
-
-        commandInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                executeCommand(commandInput.value);
-            }
-        });
+        }, 50);
     </script>
 </body>
 </html>
