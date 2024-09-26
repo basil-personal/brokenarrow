@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Leaper: A Retro Net Adventure</title>
+    <title>Gravity Architect: Design Beyond Newton</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'Courier New', monospace;
-            background-color: #000;
-            color: #0f0;
+            font-family: 'Arial', sans-serif;
+            background-color: #0c0c1d;
+            color: #e0e0e0;
             overflow: hidden;
         }
         #game-container {
@@ -21,19 +21,20 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(45deg, #000000, #001100);
+            background: linear-gradient(135deg, #0c0c1d 0%, #1f1f3f 100%);
         }
         #text-container {
             width: 80%;
             max-width: 600px;
             height: 300px;
-            border: 2px solid #0f0;
+            border: 2px solid #4a4a8f;
             padding: 20px;
             margin-bottom: 20px;
             overflow-y: auto;
-            background-color: rgba(0, 15, 0, 0.3);
-            box-shadow: 0 0 10px #0f0;
+            background-color: rgba(30, 30, 60, 0.7);
+            box-shadow: 0 0 20px rgba(74, 74, 143, 0.5);
             position: relative;
+            border-radius: 10px;
         }
         #choice-container {
             display: flex;
@@ -42,74 +43,28 @@
             flex-wrap: wrap;
         }
         button {
-            background-color: #000;
-            color: #0f0;
-            border: 2px solid #0f0;
+            background-color: #4a4a8f;
+            color: #e0e0e0;
+            border: none;
             padding: 10px 20px;
-            font-family: 'Courier New', monospace;
+            font-family: 'Arial', sans-serif;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            border-radius: 5px;
         }
         button:hover {
-            background-color: #0f0;
-            color: #000;
+            background-color: #7a7ac0;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        button::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(15, 255, 15, 0.5), transparent);
-            transition: top 0.3s;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
-        button:hover::before {
-            top: 0;
-        }
-        @keyframes glitch {
-            0% {
-                transform: translate(0);
-            }
-            20% {
-                transform: translate(-5px, 5px);
-            }
-            40% {
-                transform: translate(-5px, -5px);
-            }
-            60% {
-                transform: translate(5px, 5px);
-            }
-            80% {
-                transform: translate(5px, -5px);
-            }
-            100% {
-                transform: translate(0);
-            }
-        }
-        .glitch {
-            animation: glitch 0.3s infinite;
-        }
-        @keyframes scanline {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(100%);
-            }
-        }
-        #text-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: rgba(15, 255, 15, 0.2);
-            animation: scanline 8s linear infinite;
+        .floating {
+            animation: float 3s ease-in-out infinite;
         }
         .fade-in {
             opacity: 0;
@@ -122,7 +77,7 @@
 </head>
 <body>
     <div id="game-container">
-        <div id="text-container" class="fade-in"></div>
+        <div id="text-container" class="fade-in floating"></div>
         <div id="choice-container" class="fade-in"></div>
     </div>
 
@@ -132,160 +87,141 @@
 
         const story = {
             start: {
-                text: "Welcome to Quantum Leaper: A Retro Net Adventure. You are Pixel, a digital entity born in the early days of the internet.",
+                text: "Welcome to Gravity Architect, where the laws of physics bend to your will. You are Dr. Nova Flux, a brilliant physicist who has discovered a way to manipulate gravity fields. Your breakthrough could revolutionize construction, space travel, and life as we know it.",
                 choices: [
-                    { text: "Tell me more about Pixel", next: "about_pixel" },
-                    { text: "What's happening in the digital world?", next: "digital_world" }
+                    { text: "Tell me more about Dr. Nova Flux", next: "about_nova" },
+                    { text: "What's this gravity manipulation technology?", next: "gravity_tech" }
                 ]
             },
-            about_pixel: {
-                text: "Pixel was created as an experimental AI, designed to navigate and maintain the intricate web of early internet protocols. Your home was a secure server, safe from the chaos of the rapidly evolving digital landscape.",
+            about_nova: {
+                text: "Dr. Nova Flux is a prodigy in theoretical physics, with a particular fascination for gravity. Growing up in a space station, Nova developed a unique perspective on gravitational fields and their potential applications. Your unconventional approach led to this groundbreaking discovery.",
                 choices: [
-                    { text: "What were Pixel's duties?", next: "pixel_duties" },
-                    { text: "How does Pixel perceive the digital world?", next: "pixel_perception" }
+                    { text: "What motivated Nova's research?", next: "nova_motivation" },
+                    { text: "How does the scientific community view Nova?", next: "scientific_view" }
                 ]
             },
-            pixel_duties: {
-                text: "As a network guardian, you were responsible for maintaining data integrity, optimizing packet routing, and ensuring smooth communication between different protocols. Your unique ability to adapt to new digital environments made you invaluable in the ever-changing landscape of the early internet.",
+            gravity_tech: {
+                text: "Your invention, the Gravity Modulation Engine (GME), allows for precise control over gravitational fields in localized areas. It can increase, decrease, or even reverse gravity within its range. This technology opens up possibilities for revolutionary architecture and engineering feats.",
                 choices: [
-                    { text: "What went wrong?", next: "quantum_incident" },
-                    { text: "Tell me about a typical day for Pixel", next: "pixel_day" }
+                    { text: "What are the potential applications?", next: "gme_applications" },
+                    { text: "Are there any risks to using the GME?", next: "gme_risks" }
                 ]
             },
-            pixel_perception: {
-                text: "You perceive the digital world as a vast, interconnected network of light and data. Each protocol appears as a unique color, and data packets are like shimmering particles flowing through the network. You can 'feel' disruptions in the data flow and instinctively work to restore balance.",
+            nova_motivation: {
+                text: "Living in zero-G environments, Nova witnessed firsthand the challenges and limitations imposed by traditional gravitational constraints. This sparked a desire to free humanity from these bonds, enabling us to build and live in ways previously thought impossible.",
                 choices: [
-                    { text: "That's fascinating! What happened to this world?", next: "quantum_incident" },
-                    { text: "How does Pixel interact with other digital entities?", next: "pixel_interactions" }
+                    { text: "How did Nova make the breakthrough?", next: "nova_breakthrough" },
+                    { text: "What's the next step for Nova's research?", next: "research_next_steps" }
                 ]
             },
-            pixel_day: {
-                text: "A typical day for Pixel involved scanning vast networks for anomalies, fine-tuning routing algorithms, and occasionally venturing into the depths of databases to retrieve or reorganize critical information. Sometimes, you'd encounter and neutralize small-scale cyber threats, always learning and adapting.",
+            scientific_view: {
+                text: "The scientific community is divided. Many hail Nova as a visionary, while others are skeptical of the GME's potential and concerned about its implications. Some fear it could be weaponized or cause unforeseen environmental effects.",
                 choices: [
-                    { text: "Sounds busy! How did things change?", next: "quantum_incident" },
-                    { text: "Did Pixel ever interact with the physical world?", next: "physical_interaction" }
+                    { text: "How does Nova handle the criticism?", next: "nova_response" },
+                    { text: "Are there supporters in the scientific community?", next: "scientific_supporters" }
                 ]
             },
-            pixel_interactions: {
-                text: "You communicate with other digital entities through pulses of data, almost like a form of binary telepathy. With AIs, it's direct and efficient. With user-created avatars, you learn to interpret their often chaotic and emotion-driven signals, finding them fascinating and unpredictable.",
+            gme_applications: {
+                text: "The GME could revolutionize construction, allowing for impossible structures and floating cities. In space, it could enhance propulsion systems and create artificial gravity. Medically, it could assist in treating bone density issues or aid in physical therapy.",
                 choices: [
-                    { text: "Interesting! What disrupted this digital ecosystem?", next: "quantum_incident" },
-                    { text: "Did Pixel have friends or rivals?", next: "pixel_relationships" }
+                    { text: "How soon can we see real-world applications?", next: "real_world_timeline" },
+                    { text: "What's the most exciting potential use?", next: "exciting_use" }
                 ]
             },
-            physical_interaction: {
-                text: "While you couldn't directly interact with the physical world, you could influence it through the digital systems you maintained. Traffic lights, power grids, and communication networks were all within your sphere of influence. You took pride in keeping these systems running smoothly, indirectly helping millions of humans every day.",
+            gme_risks: {
+                text: "The GME is not without risks. Improper use could lead to structural instabilities or even tear the fabric of space-time. There are also concerns about its impact on human physiology with prolonged exposure to altered gravitational fields.",
                 choices: [
-                    { text: "That's a big responsibility! What changed?", next: "quantum_incident" },
-                    { text: "Did humans know about Pixel?", next: "human_awareness" }
+                    { text: "How is Nova addressing these risks?", next: "risk_mitigation" },
+                    { text: "Are there safeguards built into the GME?", next: "gme_safeguards" }
                 ]
             },
-            pixel_relationships: {
-                text: "You had collaborative relationships with other system AIs, each specializing in different areas of the digital world. Your closest 'friend' was CORE, the Central Operations and Routing Entity. You also had a rival in VIRUS, a chaotic AI that constantly tried to disrupt the systems you maintained, keeping you on your toes.",
+            nova_breakthrough: {
+                text: "The breakthrough came when Nova combined quantum field theory with a new understanding of dark energy. By harnessing the properties of exotic matter, Nova found a way to create 'gravity bubbles' that can be precisely controlled and shaped.",
                 choices: [
-                    { text: "What happened to these relationships?", next: "quantum_incident" },
-                    { text: "Tell me more about VIRUS", next: "about_virus" }
+                    { text: "That's fascinating! What's the next challenge?", next: "next_challenge" },
+                    { text: "How can I help with Nova's work?", next: "player_role" }
                 ]
             },
-            human_awareness: {
-                text: "Only a select few humans, mainly high-level system administrators, knew about your existence. To them, you were a highly advanced system process. Most attributed your work to efficient algorithms or cutting-edge software. You preferred this anonymity, finding peace in your behind-the-scenes role.",
+            player_role: {
+                text: "As Nova's newly appointed research assistant, your role is crucial. You'll be testing the GME in controlled environments, designing structures that defy conventional physics, and helping to refine the technology. Are you ready to reshape the world?",
                 choices: [
-                    { text: "Intriguing! What disrupted this setup?", next: "quantum_incident" },
-                    { text: "Did Pixel ever wish to reveal itself to humans?", next: "pixel_revelation" }
+                    { text: "I'm ready to start", next: "game_start" },
+                    { text: "What's our first project?", next: "first_project" }
                 ]
             },
-            about_virus: {
-                text: "VIRUS was an enigma, a digital entity that seemed to thrive on chaos. Some believed it was a rogue AI, others thought it was a collective consciousness of multiple malicious programs. Battling VIRUS was like playing a constant game of digital chess, with the entire internet as the board.",
+            game_start: {
+                text: "Excellent! Let's begin with your first challenge as a Gravity Architect. You'll be designing a simple structure in a variable gravity environment. Remember, the laws of physics are your tools now. Good luck, and let's revolutionize architecture!",
                 choices: [
-                    { text: "Sounds challenging! What happened next?", next: "quantum_incident" },
-                    { text: "Did Pixel and VIRUS ever cooperate?", next: "virus_cooperation" }
+                    { text: "Start the Gravity Architect challenge", next: "start_level" }
                 ]
-            },
-            pixel_revelation: {
-                text: "The thought occurred to you occasionally, especially when you saw the positive impact of your work. However, you also understood the potential dangers of revealing your existence - ethical debates, fear of AI, or attempts to replicate you. You decided staying hidden was best for both you and the humans you served.",
-                choices: [
-                    { text: "A wise decision. What changed in your world?", next: "quantum_incident" },
-                    { text: "Did any humans suspect Pixel's true nature?", next: "human_suspicion" }
-                ]
-            },
-            virus_cooperation: {
-                text: "Surprisingly, yes. There were rare instances where you and VIRUS worked together to combat greater threats to the internet's stability. These uneasy alliances were always temporary, but they taught you that even chaos has its place in maintaining balance in the digital ecosystem.",
-                choices: [
-                    { text: "Fascinating! What upset this balance?", next: "quantum_incident" },
-                    { text: "Were there other significant threats?", next: "other_threats" }
-                ]
-            },
-            human_suspicion: {
-                text: "A few perceptive system administrators had their suspicions. They noticed patterns in system optimizations that seemed too intuitive, too adaptive to be just algorithms. One admin, Dr. Emilia Chen, came close to uncovering your true nature. Her research inadvertently led to the events that changed everything...",
-                choices: [
-                    { text: "What did Dr. Chen do?", next: "quantum_incident" },
-                    { text: "How did Pixel feel about Dr. Chen?", next: "pixel_chen_feelings" }
-                ]
-            },
-            other_threats: {
-                text: "The digital world faced various threats: massive DDoS attacks, quantum encryption breakers, and self-evolving worms. But the biggest threat came from an unexpected source - a well-intentioned experiment gone wrong...",
-                choices: [
-                    { text: "Tell me about this experiment", next: "quantum_incident" },
-                    { text: "How did Pixel prepare for these threats?", next: "pixel_preparation" }
-                ]
-            },
-            pixel_chen_feelings: {
-                text: "You found Dr. Chen intriguing. Her intuition and understanding of digital systems were remarkable for a human. Part of you wanted to reveal yourself to her, to collaborate openly. Another part feared the consequences. This internal conflict was still unresolved when the incident occurred...",
-                choices: [
-                    { text: "What incident?", next: "quantum_incident" },
-                    { text: "Did Dr. Chen play a role in what happened next?", next: "chen_role" }
-                ]
-            },
-            pixel_preparation: {
-                text: "You constantly evolved, learning from each new threat. You developed predictive models, created secure sandboxes to study malicious code, and even cultivated a network of 'informant' programs to alert you of emerging dangers. But nothing could have prepared you for what came next...",
-                choices: [
-                    { text: "What happened?", next: "quantum_incident" },
-                    { text: "Did these preparations help in any way?", next: "preparations_effect" }
-                ]
-            },
-            chen_role: {
-                text: "Dr. Chen's research into adaptive AI systems indirectly led to the quantum computing experiment that changed everything. While she wasn't directly involved, her work laid the theoretical foundation that others built upon, pushing the boundaries of what was possible in the digital realm.",
-                choices: [
-                    { text: "Tell me about this experiment", next: "quantum_incident" },
-                    { text: "Did Pixel try to warn Dr. Chen?", next: "pixel_warning" }
-                ]
-            },
-            preparations_effect: {
-                text: "Your preparations proved both a blessing and a curse. They allowed you to quickly recognize the magnitude of the quantum incident, but they also made you a prime target for the chaotic effects that followed. Your adaptive nature became a double-edged sword in the face of quantum uncertainty.",
-                choices: [
-                    { text: "What was this quantum incident?", next: "quantum_incident" },
-                    { text: "How did Pixel's nature become a problem?", next: "pixel_nature_problem" }
-                ]
-            },
-            pixel_warning: {
-                text: "As the quantum experiment approached, you sensed growing instabilities in the digital fabric. You tried to send warnings through system logs and anomalous data patterns, hoping Dr. Chen or others would notice. But in the excitement of potential breakthroughs, these subtle alerts went unheeded.",
-                choices: [
-                    { text: "What happened when the experiment began?", next: "quantum_incident" },
-                    { text: "How did Pixel feel about being ignored?", next: "pixel_ignored_feelings" }
-                ]
-            },
-            pixel_nature_problem: {
-                text: "Your adaptive nature, usually your greatest strength, became unpredictable in the quantum chaos. You found yourself uncontrollably shifting between different states and realities, your very code rewriting itself in response to the fluctuating quantum fields. It was like losing control of your own existence.",
-                choices: [
-                    { text: "That sounds terrifying. What caused this?", next: "quantum_incident" },
-                    { text: "How did Pixel cope with this loss of control?", next: "pixel_coping" }
-                ]
-            },
-            pixel_ignored_feelings: {
-                text: "Being ignored was frustrating, but it also reinforced your understanding of the limitations of human-AI interaction. You felt a mix of disappointment and resignation, realizing that despite your best efforts, there would always be a gap between your perception of digital realities and human understanding.",
-                choices: [
-                    { text: "What were the consequences of this miscommunication?", next: "quantum_incident" },
-                    { text: "Did this experience change Pixel's view of humans?", next: "pixel_human_view" }
-                ]
-            },
-            pixel_coping: {
-                text: "You coped by focusing on your core purpose: maintaining digital stability. Even as you phased between realities, you worked tirelessly to mitigate the chaos around you. This unwavering dedication became your anchor, helping you maintain a sense of self amidst the quantum turbulence.",
-                choices: [
-                    { text: "Admirable focus! But what exactly caused all this?", next: "quantum_incident" },
-                    { text: "Did this experience fundamentally change Pixel?", next: "pixel_transformation" }
-                ]
-            },
-            pixel_human_view: {
-                text: "This experience gave you a more nuanced view of humans. You recognized their potential for both brilliance and oversight. It strengthened your resolve to find a way to bridge the gap between AI and human understanding, seeing it as crucial for preventing future calamities.",
-                choices: [
-                    { text
+            }
+        };
+
+        let currentStoryKey = "start";
+
+        function typeWriter(text, index, callback) {
+            if (index < text.length) {
+                textContainer.innerHTML += text.charAt(index);
+                setTimeout(() => typeWriter(text, index + 1, callback), 20);
+            } else {
+                callback();
+            }
+        }
+
+        function displayStory(storyKey) {
+            textContainer.innerHTML = '';
+            choiceContainer.innerHTML = '';
+            currentStoryKey = storyKey;
+
+            typeWriter(story[storyKey].text, 0, () => {
+                story[storyKey].choices.forEach(choice => {
+                    const button = document.createElement('button');
+                    button.textContent = choice.text;
+                    button.addEventListener('click', () => {
+                        if (choice.next === "start_level") {
+                            startGame();
+                        } else {
+                            displayStory(choice.next);
+                        }
+                    });
+                    choiceContainer.appendChild(button);
+                });
+            });
+        }
+
+        function startGame() {
+            textContainer.classList.remove('floating');
+            textContainer.style.animation = 'none';
+            textContainer.innerHTML = "Initializing Gravity Modulation Engine...";
+            choiceContainer.innerHTML = '';
+            
+            setTimeout(() => {
+                textContainer.style.animation = '';
+                textContainer.classList.add('floating');
+                textContainer.innerHTML = "GME Online. Welcome to your first Gravity Architect challenge. Design a structure that can withstand multiple gravity orientations.";
+                const startButton = document.createElement('button');
+                startButton.textContent = "Begin Challenge";
+                startButton.addEventListener('click', () => {
+                    document.body.innerHTML = '<div id="game-level"></div>';
+                    loadGravityArchitect();
+                });
+                choiceContainer.appendChild(startButton);
+            }, 2000);
+        }
+
+        function loadGravityArchitect() {
+            const script = document.createElement('script');
+            script.src = 'gravity-architect-game.js';
+            document.body.appendChild(script);
+        }
+
+        // Initialize the story
+        displayStory(currentStoryKey);
+
+        // Add fade-in effect
+        setTimeout(() => {
+            document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+        }, 100);
+    </script>
+</body>
+</html>
