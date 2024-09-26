@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basil Alomary - Tron Terminal</title>
+    <title>Basil Alomary - Cyberpunk Terminal</title>
     <style>
+        :root {
+            --primary-color: #00ff00;
+            --bg-color: #000000;
+        }
         body, html {
             margin: 0;
             padding: 0;
             font-family: 'Courier New', monospace;
-            background-color: #000;
-            color: #0ff;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
             height: 100%;
             overflow: hidden;
         }
@@ -28,20 +32,24 @@
             right: 0;
             bottom: 0;
             background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+                linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             z-index: -1;
             pointer-events: none;
+            animation: gridPulse 5s infinite;
+        }
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
         }
         h1, h2 {
-            color: #f0f;
-            text-shadow: 0 0 10px #f0f;
+            text-shadow: 0 0 10px var(--primary-color);
         }
         a {
-            color: #0f0;
+            color: var(--primary-color);
             text-decoration: none;
-            text-shadow: 0 0 5px #0f0;
+            text-shadow: 0 0 5px var(--primary-color);
         }
         a:hover {
             text-decoration: underline;
@@ -56,26 +64,71 @@
         }
         .section {
             margin-bottom: 20px;
-            border: 1px solid #0ff;
+            border: 1px solid var(--primary-color);
             padding: 10px;
-            box-shadow: 0 0 10px #0ff;
+            box-shadow: 0 0 10px var(--primary-color);
+            animation: glow 2s infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 5px var(--primary-color);
+            }
+            to {
+                box-shadow: 0 0 20px var(--primary-color);
+            }
         }
         #command-input {
             background: transparent;
             border: none;
-            color: #0ff;
+            color: var(--primary-color);
             font-family: 'Courier New', monospace;
             font-size: 16px;
-            width: 100%;
+            width: calc(100% - 20px);
             outline: none;
         }
         .hidden {
             display: none;
         }
+        #matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .glitch {
+            animation: glitch 1s linear infinite;
+        }
+        @keyframes glitch {
+            2%, 64% {
+                transform: translate(2px,0) skew(0deg);
+            }
+            4%, 60% {
+                transform: translate(-2px,0) skew(0deg);
+            }
+            62% {
+                transform: translate(0,0) skew(5deg); 
+            }
+        }
+        #video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.1;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
     <div class="grid"></div>
+    <canvas id="matrix-rain"></canvas>
+    <video id="video-overlay" autoplay loop muted>
+        <source src="https://cdnjs.cloudflare.com/ajax/libs/Tunis/1.5.0/video/glitch-overlay.mp4" type="video/mp4">
+    </video>
     <div class="terminal" id="terminal">
         <div id="output"></div>
         <div>
@@ -90,7 +143,7 @@
         const commandInput = document.getElementById('command-input');
         
         const content = `
-        <h1>BASIL ALOMARY</h1>
+        <h1 class="glitch">BASIL ALOMARY</h1>
         
         <div class="section">
             <h2>&gt; CURRENT ROLE</h2>
@@ -157,7 +210,10 @@
                     - help: Show this help message
                     - clear: Clear the terminal
                     - about: Show information about Basil Alomary
-                    - contact: Show contact information`;
+                    - contact: Show contact information
+                    - matrix: Toggle Matrix rain effect
+                    - glitch: Apply glitch effect to text
+                    - hack: Simulate a hacking sequence`;
                 case 'clear':
                     output.innerHTML = '';
                     return '';
@@ -167,6 +223,14 @@
                     return `<p>Connect with Basil Alomary:</p>
                     <p><a href="https://www.linkedin.com/in/basilalomary">👋 LinkedIn</a></p>
                     <p><a href="https://twitter.com/basilalomary">🐦 Twitter</a></p>`;
+                case 'matrix':
+                    toggleMatrixRain();
+                    return 'Matrix rain effect toggled.';
+                case 'glitch':
+                    applyGlitchEffect();
+                    return 'Glitch effect applied to text.';
+                case 'hack':
+                    return simulateHacking();
                 default:
                     return `Command not recognized. Type 'help' for a list of commands.`;
             }
@@ -182,6 +246,83 @@
                 terminal.scrollTop = terminal.scrollHeight;
             }
         });
+
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix-rain');
+        const ctx = canvas.getContext('2d');
+        let matrixRainEnabled = false;
+
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%';
+        const fontSize = 10;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function drawMatrixRain() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        function toggleMatrixRain() {
+            matrixRainEnabled = !matrixRainEnabled;
+            if (matrixRainEnabled) {
+                matrixRainInterval = setInterval(drawMatrixRain, 33);
+            } else {
+                clearInterval(matrixRainInterval);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // Glitch effect
+        function applyGlitchEffect() {
+            const elements = document.querySelectorAll('h1, h2, p');
+            elements.forEach(el => {
+                el.classList.add('glitch');
+                setTimeout(() => el.classList.remove('glitch'), 3000);
+            });
+        }
+
+        // Hacking simulation
+        function simulateHacking() {
+            const steps = [
+                "Initializing hack sequence...",
+                "Bypassing firewall...",
+                "Cracking encryption...",
+                "Accessing mainframe...",
+                "Downloading classified data...",
+                "Covering tracks...",
+                "Hack complete!"
+            ];
+            
+            let output = "";
+            steps.forEach((step, index) => {
+                output += `<p style="animation: fadeIn 0.5s ${index * 0.5}s forwards; opacity: 0;">$ ${step}</p>`;
+            });
+            
+            return `<div style="font-family: monospace; color: #00ff00;">${output}</div>
+                    <style>
+                        @keyframes fadeIn {
+                            to { opacity: 1; }
+                        }
+                    </style>`;
+        }
 
         // Initial typewriter effect
         typeWriter('> Initializing Basil Alomary OS...', output, function() {
