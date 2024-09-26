@@ -16,7 +16,7 @@
             height: 100%;
             overflow: hidden;
         }
-        #intro-page, #main-page {
+        #intro-page, #desktop {
             height: 100%;
             width: 100%;
             position: absolute;
@@ -31,11 +31,15 @@
             align-items: center;
             z-index: 2;
         }
-        #main-page {
+        #desktop {
             transform: translateY(100%);
-            overflow-y: auto;
+            background-image: 
+                linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
             padding: 20px;
             box-sizing: border-box;
+            overflow: hidden;
         }
         #cursor {
             display: inline-block;
@@ -60,6 +64,7 @@
         }
         h1, h2 {
             color: #00FF00;
+            margin-top: 0;
         }
         a {
             color: #00FF00;
@@ -69,30 +74,73 @@
         a:hover {
             text-shadow: 0 0 5px #00FF00;
         }
-        .section {
-            border: 1px solid #00FF00;
-            padding: 10px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .section:hover {
-            box-shadow: 0 0 10px #00FF00;
-        }
-        .section::before {
-            content: '';
+        .window {
+            border: 2px solid #00FF00;
+            background-color: rgba(0, 0, 0, 0.8);
             position: absolute;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent, rgba(0, 255, 0, 0.1), transparent);
-            animation: scan 2s linear infinite;
+            min-width: 300px;
+            min-height: 200px;
+            padding: 10px;
+            box-shadow: 0 0 10px #00FF00;
+            resize: both;
+            overflow: auto;
         }
-        @keyframes scan {
-            0% { top: -100%; }
-            100% { top: 100%; }
+        .window-header {
+            background-color: #00FF00;
+            color: #000000;
+            padding: 5px;
+            margin: -10px -10px 10px -10px;
+            cursor: move;
+            display: flex;
+            justify-content: space-between;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: #000000;
+            cursor: pointer;
+        }
+        .icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .icon-image {
+            width: 40px;
+            height: 40px;
+            background-color: #00FF00;
+            margin-bottom: 5px;
+        }
+        .taskbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background-color: #00FF00;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+        .start-btn {
+            background: none;
+            border: 2px solid #000000;
+            color: #000000;
+            padding: 2px 10px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .taskbar-item {
+            background: #008800;
+            color: #000000;
+            padding: 2px 10px;
+            margin-right: 5px;
+            cursor: pointer;
         }
         .contact-form {
             display: flex;
@@ -128,66 +176,6 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        #terminal {
-            border: 1px solid #00FF00;
-            padding: 10px;
-            margin-top: 20px;
-        }
-        #terminal-input {
-            background: none;
-            border: none;
-            color: #00FF00;
-            font-family: 'VT323', monospace;
-            font-size: 16px;
-            width: 100%;
-            outline: none;
-        }
-        .glitch {
-            position: relative;
-        }
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .glitch::before {
-            left: 2px;
-            text-shadow: -2px 0 #ff00ff;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
-        }
-        .glitch::after {
-            left: -2px;
-            text-shadow: -2px 0 #00ffff;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
-        }
-        @keyframes glitch-anim {
-            0% { clip: rect(42px, 9999px, 44px, 0); }
-            5% { clip: rect(12px, 9999px, 59px, 0); }
-            10% { clip: rect(48px, 9999px, 29px, 0); }
-            15% { clip: rect(42px, 9999px, 73px, 0); }
-            20% { clip: rect(63px, 9999px, 27px, 0); }
-            25% { clip: rect(34px, 9999px, 55px, 0); }
-            30% { clip: rect(86px, 9999px, 73px, 0); }
-            35% { clip: rect(20px, 9999px, 20px, 0); }
-            40% { clip: rect(26px, 9999px, 60px, 0); }
-            45% { clip: rect(25px, 9999px, 66px, 0); }
-            50% { clip: rect(57px, 9999px, 98px, 0); }
-            55% { clip: rect(5px, 9999px, 46px, 0); }
-            60% { clip: rect(82px, 9999px, 31px, 0); }
-            65% { clip: rect(54px, 9999px, 27px, 0); }
-            70% { clip: rect(28px, 9999px, 99px, 0); }
-            75% { clip: rect(45px, 9999px, 69px, 0); }
-            80% { clip: rect(23px, 9999px, 85px, 0); }
-            85% { clip: rect(54px, 9999px, 84px, 0); }
-            90% { clip: rect(45px, 9999px, 47px, 0); }
-            95% { clip: rect(37px, 9999px, 20px, 0); }
-            100% { clip: rect(4px, 9999px, 91px, 0); }
-        }
     </style>
 </head>
 <body>
@@ -199,23 +187,31 @@
         <div id="loading-bar"></div>
     </div>
 
-    <div id="main-page">
-        <header>
-            <h1 class="glitch" data-text="Morningside Capital">Morningside Capital</h1>
-        </header>
-
-        <div id="terminal">
-            <p>Enter a command (type 'help' for options):</p>
-            <input type="text" id="terminal-input" autofocus>
+    <div id="desktop">
+        <div class="icon" onclick="openWindow('about')">
+            <div class="icon-image"></div>
+            <span>About Us</span>
+        </div>
+        <div class="icon" onclick="openWindow('mission')">
+            <div class="icon-image"></div>
+            <span>Our Mission</span>
+        </div>
+        <div class="icon" onclick="openWindow('whatwedo')">
+            <div class="icon-image"></div>
+            <span>What We Do</span>
+        </div>
+        <div class="icon" onclick="openWindow('entrepreneurs')">
+            <div class="icon-image"></div>
+            <span>For Entrepreneurs</span>
+        </div>
+        <div class="icon" onclick="openWindow('contact')">
+            <div class="icon-image"></div>
+            <span>Contact Us</span>
         </div>
 
-        <div id="content">
-            <!-- Content sections will be dynamically loaded here -->
+        <div class="taskbar">
+            <button class="start-btn">Start</button>
         </div>
-
-        <footer>
-            <p>© 2024 Morningside Capital. All rights reserved.</p>
-        </footer>
     </div>
 
     <script>
@@ -241,7 +237,7 @@
                 clearInterval(typingEffect);
                 setTimeout(() => {
                     document.getElementById('intro-page').style.transform = 'translateY(-100%)';
-                    document.getElementById('main-page').style.transform = 'translateY(0)';
+                    document.getElementById('desktop').style.transform = 'translateY(0)';
                 }, 1000);
             }
         }, 50);
@@ -285,31 +281,55 @@
             `
         };
 
-        document.getElementById('terminal-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const command = this.value.toLowerCase().trim();
-                let response = '';
+        function openWindow(section) {
+            const windowElement = document.createElement('div');
+            windowElement.className = 'window';
+            windowElement.style.top = `${50 + Math.random() * 100}px`;
+            windowElement.style.left = `${50 + Math.random() * 100}px`;
+            
+            windowElement.innerHTML = `
+                <div class="window-header">
+                    ${section.charAt(0).toUpperCase() + section.slice(1)}
+                    <button class="close-btn" onclick="this.closest('.window').remove()">X</button>
+                </div>
+                ${sections[section]}
+            `;
 
-                if (sections[command]) {
-                    document.getElementById('content').innerHTML = `<div class="section">${sections[command]}</div>`;
-                    response = `Displaying ${command} information...`;
-                } else if (command === 'help') {
-                    response = 'Available commands: about, mission, whatwedo, entrepreneurs, contact';
-                } else {
-                    response = 'Command not recognized. Type "help" for options.';
+            document.getElementById('desktop').appendChild(windowElement);
+
+            // Make the window draggable
+            const header = windowElement.querySelector('.window-header');
+            let isDragging = false;
+            let startX, startY, startLeft, startTop;
+
+            header.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startLeft = parseInt(windowElement.style.left) || 0;
+                startTop = parseInt(windowElement.style.top) || 0;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const deltaX = e.clientX - startX;
+                    const deltaY = e.clientY - startY;
+                    windowElement.style.left = `${startLeft + deltaX}px`;
+                    windowElement.style.top = `${startTop + deltaY}px`;
                 }
+            });
 
-                const outputElement = document.createElement('p');
-                outputElement.textContent = `> ${command}`;
-                this.parentNode.insertBefore(outputElement, this);
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
 
-                const responseElement = document.createElement('p');
-                responseElement.textContent = response;
-                this.parentNode.insertBefore(responseElement, this);
-
-                this.value = '';
-            }
-        });
+            // Add to taskbar
+            const taskbarItem = document.createElement('div');
+            taskbarItem.className = 'taskbar-item';
+            taskbarItem.textContent = section.charAt(0).toUpperCase() + section.slice(1);
+            taskbarItem.onclick = () => windowElement.style.display = 'block';
+            document.querySelector('.taskbar').appendChild(taskbarItem);
+        }
     </script>
 </body>
 </html>
