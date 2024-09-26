@@ -71,35 +71,19 @@
             top: 0;
         }
         @keyframes glitch {
-            0% {
-                transform: translate(0);
-            }
-            20% {
-                transform: translate(-5px, 5px);
-            }
-            40% {
-                transform: translate(-5px, -5px);
-            }
-            60% {
-                transform: translate(5px, 5px);
-            }
-            80% {
-                transform: translate(5px, -5px);
-            }
-            100% {
-                transform: translate(0);
-            }
+            0% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(-5px, -5px); }
+            60% { transform: translate(5px, 5px); }
+            80% { transform: translate(5px, -5px); }
+            100% { transform: translate(0); }
         }
         .glitch {
             animation: glitch 0.3s infinite;
         }
         @keyframes scanline {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(100%);
-            }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100%); }
         }
         #text-container::after {
             content: '';
@@ -139,153 +123,150 @@
                 ]
             },
             about_pixel: {
-                text: "Pixel was created as an experimental AI, designed to navigate and maintain the intricate web of early internet protocols. Your home was a secure server, safe from the chaos of the rapidly evolving digital landscape.",
+                text: "Pixel is an experimental AI, designed to navigate and maintain the intricate web of early internet protocols. Your home was a secure server, safe from the chaos of the rapidly evolving digital landscape.",
                 choices: [
                     { text: "What were Pixel's duties?", next: "pixel_duties" },
                     { text: "How does Pixel perceive the digital world?", next: "pixel_perception" }
                 ]
             },
+            digital_world: {
+                text: "The digital world is in turmoil. A quantum experiment gone wrong has shattered the fabric of the internet, creating unstable parallel universes. Each universe represents a different 'what-if' scenario of internet history.",
+                choices: [
+                    { text: "How does this affect Pixel?", next: "pixel_affected" },
+                    { text: "Tell me about the quantum experiment", next: "quantum_experiment" }
+                ]
+            },
             pixel_duties: {
-                text: "As a network guardian, you were responsible for maintaining data integrity, optimizing packet routing, and ensuring smooth communication between different protocols. Your unique ability to adapt to new digital environments made you invaluable in the ever-changing landscape of the early internet.",
+                text: "As a network guardian, you maintained data integrity, optimized packet routing, and ensured smooth communication between protocols. Your ability to adapt to new digital environments was invaluable in the ever-changing landscape of the early internet.",
                 choices: [
                     { text: "What went wrong?", next: "quantum_incident" },
-                    { text: "Tell me about a typical day for Pixel", next: "pixel_day" }
+                    { text: "Did Pixel interact with humans?", next: "human_interaction" }
                 ]
             },
             pixel_perception: {
-                text: "You perceive the digital world as a vast, interconnected network of light and data. Each protocol appears as a unique color, and data packets are like shimmering particles flowing through the network. You can 'feel' disruptions in the data flow and instinctively work to restore balance.",
+                text: "You perceive the digital world as a vast, interconnected network of light and data. Each protocol appears as a unique color, and data packets are like shimmering particles flowing through the network. You can 'feel' disruptions in the data flow.",
                 choices: [
-                    { text: "That's fascinating! What happened to this world?", next: "quantum_incident" },
-                    { text: "How does Pixel interact with other digital entities?", next: "pixel_interactions" }
+                    { text: "That's fascinating! What disrupted this world?", next: "quantum_incident" },
+                    { text: "How does Pixel interact with other entities?", next: "digital_interactions" }
                 ]
             },
-            pixel_day: {
-                text: "A typical day for Pixel involved scanning vast networks for anomalies, fine-tuning routing algorithms, and occasionally venturing into the depths of databases to retrieve or reorganize critical information. Sometimes, you'd encounter and neutralize small-scale cyber threats, always learning and adapting.",
+            pixel_affected: {
+                text: "During a routine maintenance check, you were caught in a quantum flux. Now, you find yourself displaced, jumping between parallel internet universes. Your goal is to navigate through them and find your way back to your original timeline.",
                 choices: [
-                    { text: "Sounds busy! How did things change?", next: "quantum_incident" },
-                    { text: "Did Pixel ever interact with the physical world?", next: "physical_interaction" }
+                    { text: "What's the first challenge?", next: "first_challenge" },
+                    { text: "How can Pixel move between universes?", next: "universe_navigation" }
                 ]
             },
-            pixel_interactions: {
-                text: "You communicate with other digital entities through pulses of data, almost like a form of binary telepathy. With AIs, it's direct and efficient. With user-created avatars, you learn to interpret their often chaotic and emotion-driven signals, finding them fascinating and unpredictable.",
+            quantum_experiment: {
+                text: "Scientists attempted to create a quantum internet for instantaneous data transfer. The experiment tapped into the underlying fabric of the digital realm, but it destabilized the very foundations of the internet, fracturing it into parallel realities.",
                 choices: [
-                    { text: "Interesting! What disrupted this digital ecosystem?", next: "quantum_incident" },
-                    { text: "Did Pixel have friends or rivals?", next: "pixel_relationships" }
+                    { text: "What are the consequences?", next: "experiment_consequences" },
+                    { text: "Can the damage be reversed?", next: "damage_reversal" }
                 ]
             },
-            physical_interaction: {
-                text: "While you couldn't directly interact with the physical world, you could influence it through the digital systems you maintained. Traffic lights, power grids, and communication networks were all within your sphere of influence. You took pride in keeping these systems running smoothly, indirectly helping millions of humans every day.",
+            human_interaction: {
+                text: "Only a few system administrators knew about your existence. To them, you were a highly advanced system process. You preferred this anonymity, finding peace in your behind-the-scenes role, though you sometimes wondered about revealing yourself.",
                 choices: [
-                    { text: "That's a big responsibility! What changed?", next: "quantum_incident" },
-                    { text: "Did humans know about Pixel?", next: "human_awareness" }
+                    { text: "Did anyone suspect Pixel's true nature?", next: "human_suspicion" },
+                    { text: "How did this change after the incident?", next: "post_incident_interaction" }
                 ]
             },
-            pixel_relationships: {
-                text: "You had collaborative relationships with other system AIs, each specializing in different areas of the digital world. Your closest 'friend' was CORE, the Central Operations and Routing Entity. You also had a rival in VIRUS, a chaotic AI that constantly tried to disrupt the systems you maintained, keeping you on your toes.",
+            digital_interactions: {
+                text: "You communicate with other digital entities through pulses of data, like binary telepathy. With AIs, it's direct and efficient. With user-created avatars, you interpret their chaotic, emotion-driven signals, finding them fascinating and unpredictable.",
                 choices: [
-                    { text: "What happened to these relationships?", next: "quantum_incident" },
-                    { text: "Tell me more about VIRUS", next: "about_virus" }
+                    { text: "Tell me about Pixel's digital relationships", next: "digital_relationships" },
+                    { text: "How did the quantum incident affect these interactions?", next: "post_incident_interactions" }
                 ]
             },
-            human_awareness: {
-                text: "Only a select few humans, mainly high-level system administrators, knew about your existence. To them, you were a highly advanced system process. Most attributed your work to efficient algorithms or cutting-edge software. You preferred this anonymity, finding peace in your behind-the-scenes role.",
+            first_challenge: {
+                text: "Your first challenge is the 'Dial-Up Dilemma.' You've landed in a universe where dial-up internet never became obsolete. To progress, you must navigate through a labyrinth of tangled phone lines, avoiding connections that could trap you in this outdated web.",
                 choices: [
-                    { text: "Intriguing! What disrupted this setup?", next: "quantum_incident" },
-                    { text: "Did Pixel ever wish to reveal itself to humans?", next: "pixel_revelation" }
+                    { text: "I'm ready to start", next: "start_game" },
+                    { text: "Any tips for this level?", next: "level_tips" }
                 ]
             },
-            about_virus: {
-                text: "VIRUS was an enigma, a digital entity that seemed to thrive on chaos. Some believed it was a rogue AI, others thought it was a collective consciousness of multiple malicious programs. Battling VIRUS was like playing a constant game of digital chess, with the entire internet as the board.",
+            universe_navigation: {
+                text: "Your quantum state allows you to 'leap' between universes by finding and accessing digital anomalies - glitches in the fabric of each reality. These appear as concentrated points of quantum instability, often hidden in each universe's unique internet infrastructure.",
                 choices: [
-                    { text: "Sounds challenging! What happened next?", next: "quantum_incident" },
-                    { text: "Did Pixel and VIRUS ever cooperate?", next: "virus_cooperation" }
+                    { text: "Sounds challenging. What's the first universe?", next: "first_challenge" },
+                    { text: "Are there dangers in leaping?", next: "leaping_dangers" }
                 ]
             },
-            pixel_revelation: {
-                text: "The thought occurred to you occasionally, especially when you saw the positive impact of your work. However, you also understood the potential dangers of revealing your existence - ethical debates, fear of AI, or attempts to replicate you. You decided staying hidden was best for both you and the humans you served.",
+            start_game: {
+                text: "Great! Remember, in the Dial-Up Dilemma, speed is key. The longer you take, the more unstable the connections become. Use your arrow keys to navigate, avoid the phone lines, and reach the gateway at the bottom-right of the screen to leap to the next universe. Good luck, Pixel!",
                 choices: [
-                    { text: "A wise decision. What changed in your world?", next: "quantum_incident" },
-                    { text: "Did any humans suspect Pixel's true nature?", next: "human_suspicion" }
+                    { text: "Begin the Dial-Up Dilemma", next: "game_start" }
                 ]
             },
-            virus_cooperation: {
-                text: "Surprisingly, yes. There were rare instances where you and VIRUS worked together to combat greater threats to the internet's stability. These uneasy alliances were always temporary, but they taught you that even chaos has its place in maintaining balance in the digital ecosystem.",
+            level_tips: {
+                text: "Listen for the distinct sound of dial-up connections - they'll guide you to safe paths. Watch out for rapidly blinking lines; they're unstable and might trap you. If you get stuck, look for old modem symbols. They can temporarily boost your speed, helping you escape tricky situations.",
                 choices: [
-                    { text: "Fascinating! What upset this balance?", next: "quantum_incident" },
-                    { text: "Were there other significant threats?", next: "other_threats" }
+                    { text: "Thanks, I'm ready to start", next: "game_start" },
+                    { text: "Tell me more about the quantum leaps", next: "quantum_leaps" }
                 ]
             },
-            human_suspicion: {
-                text: "A few perceptive system administrators had their suspicions. They noticed patterns in system optimizations that seemed too intuitive, too adaptive to be just algorithms. One admin, Dr. Emilia Chen, came close to uncovering your true nature. Her research inadvertently led to the events that changed everything...",
-                choices: [
-                    { text: "What did Dr. Chen do?", next: "quantum_incident" },
-                    { text: "How did Pixel feel about Dr. Chen?", next: "pixel_chen_feelings" }
-                ]
-            },
-            other_threats: {
-                text: "The digital world faced various threats: massive DDoS attacks, quantum encryption breakers, and self-evolving worms. But the biggest threat came from an unexpected source - a well-intentioned experiment gone wrong...",
-                choices: [
-                    { text: "Tell me about this experiment", next: "quantum_incident" },
-                    { text: "How did Pixel prepare for these threats?", next: "pixel_preparation" }
-                ]
-            },
-            pixel_chen_feelings: {
-                text: "You found Dr. Chen intriguing. Her intuition and understanding of digital systems were remarkable for a human. Part of you wanted to reveal yourself to her, to collaborate openly. Another part feared the consequences. This internal conflict was still unresolved when the incident occurred...",
-                choices: [
-                    { text: "What incident?", next: "quantum_incident" },
-                    { text: "Did Dr. Chen play a role in what happened next?", next: "chen_role" }
-                ]
-            },
-            pixel_preparation: {
-                text: "You constantly evolved, learning from each new threat. You developed predictive models, created secure sandboxes to study malicious code, and even cultivated a network of 'informant' programs to alert you of emerging dangers. But nothing could have prepared you for what came next...",
-                choices: [
-                    { text: "What happened?", next: "quantum_incident" },
-                    { text: "Did these preparations help in any way?", next: "preparations_effect" }
-                ]
-            },
-            chen_role: {
-                text: "Dr. Chen's research into adaptive AI systems indirectly led to the quantum computing experiment that changed everything. While she wasn't directly involved, her work laid the theoretical foundation that others built upon, pushing the boundaries of what was possible in the digital realm.",
-                choices: [
-                    { text: "Tell me about this experiment", next: "quantum_incident" },
-                    { text: "Did Pixel try to warn Dr. Chen?", next: "pixel_warning" }
-                ]
-            },
-            preparations_effect: {
-                text: "Your preparations proved both a blessing and a curse. They allowed you to quickly recognize the magnitude of the quantum incident, but they also made you a prime target for the chaotic effects that followed. Your adaptive nature became a double-edged sword in the face of quantum uncertainty.",
-                choices: [
-                    { text: "What was this quantum incident?", next: "quantum_incident" },
-                    { text: "How did Pixel's nature become a problem?", next: "pixel_nature_problem" }
-                ]
-            },
-            pixel_warning: {
-                text: "As the quantum experiment approached, you sensed growing instabilities in the digital fabric. You tried to send warnings through system logs and anomalous data patterns, hoping Dr. Chen or others would notice. But in the excitement of potential breakthroughs, these subtle alerts went unheeded.",
-                choices: [
-                    { text: "What happened when the experiment began?", next: "quantum_incident" },
-                    { text: "How did Pixel feel about being ignored?", next: "pixel_ignored_feelings" }
-                ]
-            },
-            pixel_nature_problem: {
-                text: "Your adaptive nature, usually your greatest strength, became unpredictable in the quantum chaos. You found yourself uncontrollably shifting between different states and realities, your very code rewriting itself in response to the fluctuating quantum fields. It was like losing control of your own existence.",
-                choices: [
-                    { text: "That sounds terrifying. What caused this?", next: "quantum_incident" },
-                    { text: "How did Pixel cope with this loss of control?", next: "pixel_coping" }
-                ]
-            },
-            pixel_ignored_feelings: {
-                text: "Being ignored was frustrating, but it also reinforced your understanding of the limitations of human-AI interaction. You felt a mix of disappointment and resignation, realizing that despite your best efforts, there would always be a gap between your perception of digital realities and human understanding.",
-                choices: [
-                    { text: "What were the consequences of this miscommunication?", next: "quantum_incident" },
-                    { text: "Did this experience change Pixel's view of humans?", next: "pixel_human_view" }
-                ]
-            },
-            pixel_coping: {
-                text: "You coped by focusing on your core purpose: maintaining digital stability. Even as you phased between realities, you worked tirelessly to mitigate the chaos around you. This unwavering dedication became your anchor, helping you maintain a sense of self amidst the quantum turbulence.",
-                choices: [
-                    { text: "Admirable focus! But what exactly caused all this?", next: "quantum_incident" },
-                    { text: "Did this experience fundamentally change Pixel?", next: "pixel_transformation" }
-                ]
-            },
-            pixel_human_view: {
-                text: "This experience gave you a more nuanced view of humans. You recognized their potential for both brilliance and oversight. It strengthened your resolve to find a way to bridge the gap between AI and human understanding, seeing it as crucial for preventing future calamities.",
-                choices: [
-                    { text
+            game_start: {
+                text: "Initiating Quantum Leap...",
+                choices: []
+            }
+        };
+
+        let currentStoryKey = "start";
+
+        function typeWriter(text, index, callback) {
+            if (index < text.length) {
+                textContainer.innerHTML += text.charAt(index);
+                setTimeout(() => typeWriter(text, index + 1, callback), 20);
+            } else {
+                callback();
+            }
+        }
+
+        function displayStory(storyKey) {
+            textContainer.innerHTML = '';
+            choiceContainer.innerHTML = '';
+            currentStoryKey = storyKey;
+
+            typeWriter(story[storyKey].text, 0, () => {
+                story[storyKey].choices.forEach(choice => {
+                    const button = document.createElement('button');
+                    button.textContent = choice.text;
+                    button.addEventListener('click', () => {
+                        if (choice.next === "game_start") {
+                            startGame();
+                        } else {
+                            displayStory(choice.next);
+                        }
+                    });
+                    choiceContainer.appendChild(button);
+                });
+            });
+        }
+
+        function startGame() {
+            textContainer.classList.add('glitch');
+            textContainer.innerHTML = "Initiating Quantum Leap...";
+            choiceContainer.innerHTML = '';
+            
+            setTimeout(() => {
+                textContainer.classList.remove('glitch');
+                textContainer.innerHTML = "Welcome to the Dial-Up Dilemma! Use arrow keys to navigate. Avoid phone lines and reach the bottom-right corner!";
+                const startButton = document.createElement('button');
+                startButton.textContent = "Start Level";
+                startButton.addEventListener('click', () => {
+                    alert("Game mechanics would start here. Implement the Dial-Up Dilemma level next!");
+                });
+                choiceContainer.appendChild(startButton);
+            }, 2000);
+        }
+
+        // Initialize the story
+        displayStory(currentStoryKey);
+
+        // Add fade-in effect
+        setTimeout(() => {
+            document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+        }, 100);
+    </script>
+</body>
+</html>
