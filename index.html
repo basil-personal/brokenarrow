@@ -22,7 +22,7 @@
             position: relative;
         }
         .grid {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
@@ -32,6 +32,7 @@
                 linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             z-index: -1;
+            pointer-events: none;
         }
         h1, h2 {
             color: #f0f;
@@ -59,12 +60,37 @@
             padding: 10px;
             box-shadow: 0 0 10px #0ff;
         }
+        #command-input {
+            background: transparent;
+            border: none;
+            color: #0ff;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="terminal">
-        <div class="grid"></div>
-        <h1>BASIL ALOMARY <span class="blink">_</span></h1>
+    <div class="grid"></div>
+    <div class="terminal" id="terminal">
+        <div id="output"></div>
+        <div>
+            <span class="blink">_</span>
+            <input type="text" id="command-input" autofocus>
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const output = document.getElementById('output');
+        const commandInput = document.getElementById('command-input');
+        
+        const content = `
+        <h1>BASIL ALOMARY</h1>
         
         <div class="section">
             <h2>&gt; CURRENT ROLE</h2>
@@ -106,25 +132,60 @@
         <div class="section">
             <h2>&gt; CONNECT</h2>
             <p><a href="https://www.linkedin.com/in/basilalomary">👋 LinkedIn</a></p>
-            <p><a href="https://twitter.com/basil_alomary">🐦 Twitter</a></p>
+            <p><a href="https://twitter.com/basilalomary">🐦 Twitter</a></p>
         </div>
-    </div>
+        `;
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const terminal = document.querySelector('.terminal');
-            terminal.innerHTML = '> Initializing Basil Alomary OS...\n';
-            let content = terminal.innerHTML;
-            terminal.innerHTML = '';
+        function typeWriter(text, element, callback) {
             let i = 0;
-            const typeWriter = () => {
-                if (i < content.length) {
-                    terminal.innerHTML += content.charAt(i);
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
                     i++;
-                    setTimeout(typeWriter, 10);
+                    setTimeout(type, 10);
+                } else if (callback) {
+                    callback();
                 }
-            };
-            typeWriter();
+            }
+            type();
+        }
+
+        function executeCommand(command) {
+            switch(command.toLowerCase()) {
+                case 'help':
+                    return `Available commands:
+                    - help: Show this help message
+                    - clear: Clear the terminal
+                    - about: Show information about Basil Alomary
+                    - contact: Show contact information`;
+                case 'clear':
+                    output.innerHTML = '';
+                    return '';
+                case 'about':
+                    return content;
+                case 'contact':
+                    return `<p>Connect with Basil Alomary:</p>
+                    <p><a href="https://www.linkedin.com/in/basilalomary">👋 LinkedIn</a></p>
+                    <p><a href="https://twitter.com/basilalomary">🐦 Twitter</a></p>`;
+                default:
+                    return `Command not recognized. Type 'help' for a list of commands.`;
+            }
+        }
+
+        commandInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const command = this.value;
+                output.innerHTML += `<p>> ${command}</p>`;
+                const result = executeCommand(command);
+                output.innerHTML += result;
+                this.value = '';
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        });
+
+        // Initial typewriter effect
+        typeWriter('> Initializing Basil Alomary OS...', output, function() {
+            output.innerHTML += '<br>> System ready. Type \'help\' for available commands.<br><br>';
         });
     </script>
 </body>
