@@ -6,105 +6,50 @@
     <title>Morningside Capital</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'VT323', monospace;
-            background-color: #000000;
-            color: #00FF00;
-            line-height: 1.6;
-            height: 100%;
-            overflow: hidden;
-        }
-        #intro-page, #main-page {
-            height: 100%;
-            width: 100%;
-            position: absolute;
+        /* CSS styles remain the same */
+        
+        #loading-screen {
+            position: fixed;
             top: 0;
             left: 0;
-            transition: transform 1s ease-in-out;
-        }
-        #intro-page {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 2;
+            transition: opacity 1s ease-in-out;
         }
-        #main-page {
-            transform: translateY(100%);
-            overflow-y: auto;
-            padding: 20px;
-            box-sizing: border-box;
+        
+        #loading-text {
+            font-size: 24px;
+            letter-spacing: 10px;
+            text-transform: uppercase;
         }
-        #cursor {
+        
+        #loading-cursor {
             display: inline-block;
-            width: 10px;
-            height: 20px;
+            width: 20px;
+            height: 30px;
             background-color: #00FF00;
-            animation: blink 0.7s infinite;
+            animation: load-blink 1s infinite;
         }
-        @keyframes blink {
+        
+        @keyframes load-blink {
             0% { opacity: 0; }
             50% { opacity: 1; }
             100% { opacity: 0; }
         }
-        h1, h2 {
-            color: #00FF00;
-        }
-        a {
-            color: #00FF00;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        a:hover {
-            text-shadow: 0 0 5px #00FF00;
-        }
-        .section {
-            border: 1px solid #00FF00;
-            padding: 10px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-        .section:hover {
-            box-shadow: 0 0 10px #00FF00;
-        }
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-        }
-        .contact-form input, .contact-form textarea {
-            margin-bottom: 10px;
-            padding: 5px;
-            font-family: 'VT323', monospace;
-            background-color: #000000;
-            color: #00FF00;
-            border: 1px solid #00FF00;
-        }
-        .contact-form button {
-            background-color: #00FF00;
-            color: #000000;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-family: 'VT323', monospace;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        .contact-form button:hover {
-            background-color: #000000;
-            color: #00FF00;
-            box-shadow: 0 0 10px #00FF00;
-        }
-        #ascii-art {
-            font-size: 8px;
-            line-height: 8px;
-            white-space: pre;
-            text-align: center;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
+    <div id="loading-screen">
+        <div>
+            <span id="loading-text"></span><span id="loading-cursor"></span>
+        </div>
+    </div>
+
     <div id="intro-page">
         <div id="terminal">
             <div id="ascii-art"></div>
@@ -115,6 +60,7 @@
     <div id="main-page">
         <header>
             <h1>Morningside Capital</h1>
+            <p>The Next Generation Constellation Software and Tiny Capital</p>
         </header>
 
         <nav>
@@ -128,42 +74,47 @@
 
         <div id="home" class="section">
             <h2>Home</h2>
-            <p>Welcome to Morningside Capital, where we breathe new life into established software businesses.</p>
+            <p>Morningside Capital is a trailblazing investment firm that specializes in acquiring and revitalizing established software businesses. We are the vanguard of a new era in the software industry, combining the stability of Constellation Software with the agility and innovation of Tiny Capital.</p>
         </div>
 
         <div id="about" class="section">
             <h2>About Us</h2>
-            <p>Morningside Capital specializes in acquiring and revitalizing software companies with strong foundations. We seek out businesses with loyal customer bases and low churn rates, even if their growth has plateaued. Our unique approach creates value for both entrepreneurs and their established businesses.</p>
+            <p>At Morningside Capital, we have a unique approach to investing in software companies. We seek out businesses with strong foundations, loyal customer bases, and low churn rates, even if their growth has plateaued. Our team of experienced software industry veterans brings a wealth of knowledge and expertise to each acquisition, allowing us to inject new life into these companies and unlock their full potential.</p>
+            <p>We believe in creating value for all stakeholders - entrepreneurs, customers, and employees. By providing the capital, resources, and strategic guidance needed to revitalize these businesses, we aim to create a win-win situation for everyone involved.</p>
         </div>
 
         <div id="mission" class="section">
             <h2>Our Mission</h2>
-            <p>To provide a win-win solution for software entrepreneurs and their loyal customers by injecting capital, expertise, and fresh perspectives into great businesses.</p>
+            <p>Our mission is to be the premier destination for software entrepreneurs looking to take their businesses to the next level. We provide a unique opportunity for founders to secure their legacy, achieve liquidity, and pursue their next ventures, all while ensuring their customers and employees are in good hands.</p>
+            <p>We are committed to building a portfolio of exceptional software businesses that deliver lasting value to all stakeholders. By combining the stability and long-term focus of Constellation Software with the agility and innovation of Tiny Capital, we aim to create a new paradigm in the software industry.</p>
         </div>
 
         <div id="what-we-do" class="section">
             <h2>What We Do</h2>
             <ol>
-                <li><strong>Acquire:</strong> We purchase software businesses with solid customer bases and proven track records.</li>
-                <li><strong>Empower:</strong> We provide entrepreneurs with the capital they need to pursue their next ventures.</li>
-                <li><strong>Invest:</strong> We infuse acquired businesses with capital and expertise to drive their next phase of growth.</li>
-                <li><strong>Collaborate:</strong> We offer entrepreneurs the option to remain invested in their original businesses, fostering continued partnership.</li>
+                <li><strong>Acquire:</strong> We acquire software businesses with strong fundamentals, loyal customer bases, and significant untapped potential.</li>
+                <li><strong>Invigorate:</strong> We infuse our acquired businesses with capital, resources, and strategic guidance to drive their next phase of growth and innovation.</li>
+                <li><strong>Collaborate:</strong> We work closely with entrepreneurs, offering them the opportunity to stay involved and invested in the business they built.</li> 
+                <li><strong>Empower:</strong> We provide founders with the liquidity and resources they need to pursue their next endeavors, while ensuring their legacy remains intact.</li>
             </ol>
+            <p>Our approach is rooted in a deep understanding of the software industry and a commitment to long-term value creation. We believe that by partnering with exceptional entrepreneurs and businesses, we can build a portfolio of industry-leading companies that stand the test of time.</p>
         </div>
 
         <div id="for-entrepreneurs" class="section">
             <h2>For Entrepreneurs</h2>
+            <p>As a software entrepreneur, you've poured your heart and soul into building your business. But what's next? Whether you're looking to take on new challenges, secure your financial future, or ensure your business continues to thrive, Morningside Capital is here to help.</p>
             <ul>
-                <li>Ready for your next challenge?</li>
-                <li>Want to see your business thrive under new leadership?</li>
-                <li>Looking for capital to fuel your next big idea?</li>
+                <li>Achieve liquidity and diversify your personal wealth</li>
+                <li>Gain a partner with deep software industry expertise</li>
+                <li>Secure your legacy and ensure your business continues to grow</li>
+                <li>Pursue your next big idea with the resources and support you need</li>
             </ul>
-            <p>Morningside Capital offers you the opportunity to secure your business's future while pursuing your entrepreneurial dreams.</p>
+            <p>At Morningside Capital, we understand the unique challenges and opportunities facing software entrepreneurs. That's why we've built a platform specifically designed to help you achieve your goals, while ensuring your business and customers are in good hands.</p>
         </div>
 
         <div id="contact" class="section">
             <h2>Contact Us</h2>
-            <p>Ready to discuss the future of your software business? Let's talk.</p>
+            <p>Ready to take the next step in your entrepreneurial journey? We're here to listen, learn, and explore how we can help. Contact us today to start the conversation.</p>
             <form class="contact-form" action="https://formsubmit.co/basil.a.alomary@gmail.com" method="POST">
                 <input type="text" name="name" placeholder="Name" required>
                 <input type="email" name="email" placeholder="Email" required>
@@ -189,20 +140,37 @@
         
         document.getElementById('ascii-art').textContent = asciiArt;
 
-        const text = "Welcome to Morningside Capital. Revitalizing software businesses...";
-        let i = 0;
-        const typingEffect = setInterval(() => {
-            if (i < text.length) {
-                document.getElementById('typed-text').innerHTML += text.charAt(i);
-                i++;
+        const introText = "Welcome to Morningside Capital. Revitalizing software businesses...";
+        let introIndex = 0;
+        const introTypingEffect = setInterval(() => {
+            if (introIndex < introText.length) {
+                document.getElementById('typed-text').innerHTML += introText.charAt(introIndex);
+                introIndex++;
             } else {
-                clearInterval(typingEffect);
+                clearInterval(introTypingEffect);
                 setTimeout(() => {
                     document.getElementById('intro-page').style.transform = 'translateY(-100%)';
                     document.getElementById('main-page').style.transform = 'translateY(0)';
                 }, 1000);
             }
         }, 50);
+        
+        const loadingText = "Loading...";
+        let loadingIndex = 0;
+        const loadingTypingEffect = setInterval(() => {
+            if (loadingIndex < loadingText.length) {
+                document.getElementById('loading-text').innerHTML += loadingText.charAt(loadingIndex);
+                loadingIndex++;
+            } else {
+                clearInterval(loadingTypingEffect);
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.display = 'none';
+                    }, 1000);
+                }, 1000);
+            }
+        }, 200);
     </script>
 </body>
 </html>
