@@ -267,6 +267,53 @@
         setTimeout(() => {
             document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
         }, 100);
+
+        <!-- Previous HTML and CSS remain the same -->
+
+<script>
+    // Previous story object remains the same until the 'game_start' key
+
+    story.game_start = {
+        text: "Initiating Quantum Leap into the Dial-Up Dilemma universe. Prepare yourself, Pixel. The digital realm is shifting...",
+        choices: [
+            { text: "Begin the Dial-Up Dilemma", next: "start_level" }
+        ]
+    };
+
+    // Previous functions remain the same
+
+    function startGame() {
+        textContainer.classList.add('glitch');
+        textContainer.innerHTML = "Initiating Quantum Leap...";
+        choiceContainer.innerHTML = '';
+        
+        setTimeout(() => {
+            textContainer.classList.remove('glitch');
+            textContainer.innerHTML = "Quantum Leap complete. Welcome to the Dial-Up Dilemma universe! Are you ready to navigate the labyrinth of phone lines?";
+            const startButton = document.createElement('button');
+            startButton.textContent = "Start Level";
+            startButton.addEventListener('click', () => {
+                document.body.innerHTML = '<div id="level-container"></div>';
+                loadDialUpDilemma();
+            });
+            choiceContainer.appendChild(startButton);
+        }, 2000);
+    }
+
+    function loadDialUpDilemma() {
+        const script = document.createElement('script');
+        script.src = 'dial-up-dilemma.js';
+        document.body.appendChild(script);
+    }
+
+    // Initialize the story
+    displayStory(currentStoryKey);
+
+    // Add fade-in effect
+    setTimeout(() => {
+        document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    }, 100);
+</script>
     </script>
 </body>
 </html>
