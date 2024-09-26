@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,26 +9,33 @@
         body {
             font-family: 'VT323', monospace;
             line-height: 1.6;
-            color: #00FF00;
+            color: #FFFFFF;
             background-color: #000000;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            cursor: none;
         }
         h1, h2 {
-            color: #00FFFF;
+            color: #FFFFFF;
         }
         a {
-            color: #FF00FF;
+            color: #FFFFFF;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
         a:hover {
             text-decoration: underline;
+            text-shadow: 0 0 5px #FFFFFF;
         }
         .section {
-            border: 1px solid #00FF00;
+            border: 1px solid #FFFFFF;
             padding: 10px;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .section:hover {
+            box-shadow: 0 0 10px #FFFFFF;
         }
         .contact-form {
             display: flex;
@@ -39,25 +46,49 @@
             padding: 5px;
             font-family: 'VT323', monospace;
             background-color: #000000;
-            color: #00FF00;
-            border: 1px solid #00FF00;
+            color: #FFFFFF;
+            border: 1px solid #FFFFFF;
         }
         .contact-form button {
-            background-color: #00FF00;
+            background-color: #FFFFFF;
             color: #000000;
             border: none;
             padding: 10px;
             cursor: pointer;
             font-family: 'VT323', monospace;
             font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .contact-form button:hover {
+            background-color: #000000;
+            color: #FFFFFF;
+            box-shadow: 0 0 10px #FFFFFF;
+        }
+        #cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            pointer-events: none;
+            mix-blend-mode: difference;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+        body {
+            animation: flicker 0.1s infinite;
         }
     </style>
 </head>
 <body>
+    <div id="cursor"></div>
+
     <header>
         <h1>Morningside Capital</h1>
     </header>
-
 
     <nav>
         <a href="#home">Home</a> |
@@ -65,28 +96,23 @@
         <a href="#mission">Our Mission</a> |
         <a href="#what-we-do">What We Do</a> |
         <a href="#for-entrepreneurs">For Entrepreneurs</a> |
-        <a href="#approach">Our Approach</a> |
         <a href="#contact">Contact Us</a>
     </nav>
-
 
     <div id="home" class="section">
         <h2>Home</h2>
         <p>Welcome to Morningside Capital, where we breathe new life into established software businesses.</p>
     </div>
 
-
     <div id="about" class="section">
         <h2>About Us</h2>
         <p>Morningside Capital specializes in acquiring and revitalizing software companies with strong foundations. We seek out businesses with loyal customer bases and low churn rates, even if their growth has plateaued. Our unique approach creates value for both entrepreneurs and their established businesses.</p>
     </div>
 
-
     <div id="mission" class="section">
         <h2>Our Mission</h2>
         <p>To provide a win-win solution for software entrepreneurs and their loyal customers by injecting capital, expertise, and fresh perspectives into great businesses.</p>
     </div>
-
 
     <div id="what-we-do" class="section">
         <h2>What We Do</h2>
@@ -98,7 +124,6 @@
         </ol>
     </div>
 
-
     <div id="for-entrepreneurs" class="section">
         <h2>For Entrepreneurs</h2>
         <ul>
@@ -109,32 +134,34 @@
         <p>Morningside Capital offers you the opportunity to secure your business's future while pursuing your entrepreneurial dreams.</p>
     </div>
 
-
-    <div id="approach" class="section">
-        <h2>Our Approach</h2>
-        <ol>
-            <li><strong>Identify:</strong> We seek out software businesses with loyal customers and low churn rates.</li>
-            <li><strong>Evaluate:</strong> Our team assesses the potential for growth and value creation.</li>
-            <li><strong>Acquire:</strong> We purchase businesses at fair market value, ensuring a win for all parties.</li>
-            <li><strong>Grow:</strong> We leverage our expertise and capital to take these businesses to new heights.</li>
-        </ol>
-    </div>
-
-
     <div id="contact" class="section">
         <h2>Contact Us</h2>
         <p>Ready to discuss the future of your software business? Let's talk.</p>
-        <form class="contact-form">
-            <input type="text" placeholder="Name" required>
-            <input type="email" placeholder="Email" required>
-            <textarea placeholder="Message" required></textarea>
+        <form class="contact-form" action="https://formsubmit.co/basil.a.alomary@gmail.com" method="POST">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <textarea name="message" placeholder="Message" required></textarea>
             <button type="submit">Send</button>
         </form>
     </div>
 
-
     <footer>
         <p>© 2024 Morningside Capital. All rights reserved.</p>
     </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+
+        document.addEventListener('mousemove', e => {
+            cursor.setAttribute("style", "top: "+(e.pageY - 5)+"px; left: "+(e.pageX - 5)+"px;")
+        })
+
+        document.addEventListener('click', () => {
+            cursor.style.transform = "scale(0.7)";
+            setTimeout(() => {
+                cursor.style.transform = "scale(1)";
+            }, 100);
+        })
+    </script>
 </body>
 </html>
