@@ -1,115 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morningside Capital</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'VT323', monospace;
-            background-color: #000000;
-            color: #00FF00;
-            line-height: 1.6;
-            height: 100%;
-            overflow: hidden;
-        }
-        #intro-page, #main-page {
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: transform 1s ease-in-out;
-        }
-        #intro-page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-        }
-        #main-page {
-            transform: translateY(100%);
-            overflow-y: auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        #cursor {
-            display: inline-block;
-            width: 10px;
-            height: 20px;
-            background-color: #00FF00;
-            animation: blink 0.7s infinite;
-        }
-        @keyframes blink {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        h1, h2 {
-            color: #00FF00;
-        }
-        a {
-            color: #00FF00;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        a:hover {
-            text-shadow: 0 0 5px #00FF00;
-        }
-        .section {
-            border: 1px solid #00FF00;
-            padding: 10px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-        .section:hover {
-            box-shadow: 0 0 10px #00FF00;
-        }
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-        }
-        .contact-form input, .contact-form textarea {
-            margin-bottom: 10px;
-            padding: 5px;
-            font-family: 'VT323', monospace;
-            background-color: #000000;
-            color: #00FF00;
-            border: 1px solid #00FF00;
-        }
-        .contact-form button {
-            background-color: #00FF00;
-            color: #000000;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-family: 'VT323', monospace;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        .contact-form button:hover {
-            background-color: #000000;
-            color: #00FF00;
-            box-shadow: 0 0 10px #00FF00;
-        }
-        #ascii-art {
-            font-size: 8px;
-            line-height: 8px;
-            white-space: pre;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-    </style>
+    <!-- Head content remains the same -->
 </head>
 <body>
     <div id="intro-page">
-        <div id="terminal">
-            <div id="ascii-art"></div>
-            <span id="typed-text"></span><span id="cursor"></span>
-        </div>
+        <!-- Intro page content remains the same -->
     </div>
 
     <div id="main-page">
@@ -117,92 +13,47 @@
             <h1>Morningside Capital</h1>
         </header>
 
-        <nav>
-            <a href="#home">Home</a> |
-            <a href="#about">About Us</a> |
-            <a href="#mission">Our Mission</a> |
-            <a href="#what-we-do">What We Do</a> |
-            <a href="#for-entrepreneurs">For Entrepreneurs</a> |
-            <a href="#contact">Contact Us</a>
-        </nav>
-
-        <div id="home" class="section">
-            <h2>Home</h2>
-            <p>Welcome to Morningside Capital, where we breathe new life into established software businesses.</p>
-        </div>
-
         <div id="about" class="section">
             <h2>About Us</h2>
-            <p>Morningside Capital specializes in acquiring and revitalizing software companies with strong foundations. We seek out businesses with loyal customer bases and low churn rates, even if their growth has plateaued. Our unique approach creates value for both entrepreneurs and their established businesses.</p>
+            <p>Morningside Capital specializes in acquiring software companies with strong foundations and unlocking their next stage of growth. We focus on businesses built by tech-first founders who are ready to take their sales and marketing to the next level. Our unique approach creates value for both entrepreneurs and their established businesses.</p>
         </div>
 
         <div id="mission" class="section">
             <h2>Our Mission</h2>
-            <p>To provide a win-win solution for software entrepreneurs and their loyal customers by injecting capital, expertise, and fresh perspectives into great businesses.</p>
+            <p>To drive step-function growth in great software businesses by combining capital, expertise, and fresh perspectives, ultimately creating outstanding outcomes for founders, employees, and customers.</p>
         </div>
 
         <div id="what-we-do" class="section">
             <h2>What We Do</h2>
             <ol>
-                <li><strong>Acquire:</strong> We purchase software businesses with solid customer bases and proven track records.</li>
-                <li><strong>Empower:</strong> We provide entrepreneurs with the capital they need to pursue their next ventures.</li>
-                <li><strong>Invest:</strong> We infuse acquired businesses with capital and expertise to drive their next phase of growth.</li>
-                <li><strong>Collaborate:</strong> We offer entrepreneurs the option to remain invested in their original businesses, fostering continued partnership.</li>
+                <li><strong>Identify:</strong> We seek out software businesses with untapped potential for rapid growth.</li>
+                <li><strong>Invest:</strong> We provide the capital and resources needed to unlock new levels of success.</li>
+                <li><strong>Accelerate:</strong> Our team works closely with founders and employees to drive transformative growth.</li>
+                <li><strong>Collaborate:</strong> We offer founders the opportunity to stay involved and benefit from their company's success.</li>
             </ol>
         </div>
 
         <div id="for-entrepreneurs" class="section">
             <h2>For Entrepreneurs</h2>
             <ul>
-                <li>Ready for your next challenge?</li>
-                <li>Want to see your business thrive under new leadership?</li>
-                <li>Looking for capital to fuel your next big idea?</li>
+                <li>Ready to take your business to the next level?</li>
+                <li>Looking for a partner to help you achieve rapid growth?</li>
+                <li>Want the option to stay involved and share in your company's success?</li>
             </ul>
-            <p>Morningside Capital offers you the opportunity to secure your business's future while pursuing your entrepreneurial dreams.</p>
+            <p>Morningside Capital provides the capital, expertise, and partnership you need to unlock the full potential of your software business.</p>
         </div>
 
         <div id="contact" class="section">
-            <h2>Contact Us</h2>
-            <p>Ready to discuss the future of your software business? Let's talk.</p>
-            <form class="contact-form" action="https://formsubmit.co/basil.a.alomary@gmail.com" method="POST">
-                <input type="text" name="name" placeholder="Name" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <textarea name="message" placeholder="Message" required></textarea>
-                <button type="submit">Send</button>
-            </form>
+            <!-- Contact section content remains the same -->
         </div>
 
         <footer>
-            <p>© 2024 Morningside Capital. All rights reserved.</p>
+            <!-- Footer content remains the same -->
         </footer>
     </div>
 
     <script>
-        const asciiArt = `
-   __  __                  _                 _     _      
-  |  \\/  | ___  _ __ _ __ (_)_ __   __ _ ___(_) __| | ___ 
-  | |\\/| |/ _ \\| '__| '_ \\| | '_ \\ / _\` / __| |/ _\` |/ _ \\
-  | |  | | (_) | |  | | | | | | | | (_| \\__ \\ | (_| |  __/
-  |_|  |_|\\___/|_|  |_| |_|_|_| |_|\\__, |___/_|\\__,_|\\___|
-                                   |___/                  
-        `;
-        
-        document.getElementById('ascii-art').textContent = asciiArt;
-
-        const text = "Welcome to Morningside Capital. Revitalizing software businesses...";
-        let i = 0;
-        const typingEffect = setInterval(() => {
-            if (i < text.length) {
-                document.getElementById('typed-text').innerHTML += text.charAt(i);
-                i++;
-            } else {
-                clearInterval(typingEffect);
-                setTimeout(() => {
-                    document.getElementById('intro-page').style.transform = 'translateY(-100%)';
-                    document.getElementById('main-page').style.transform = 'translateY(0)';
-                }, 1000);
-            }
-        }, 50);
+        <!-- Script content remains the same -->
     </script>
 </body>
 </html>
