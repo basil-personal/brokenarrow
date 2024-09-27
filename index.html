@@ -14,7 +14,41 @@
             color: #0f0;
             overflow: hidden;
         }
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #loading-content {
+            text-align: center;
+        }
+        #loading-progress {
+            width: 0;
+            height: 2px;
+            background-color: #0ff;
+            transition: width 0.5s ease-out;
+        }
+        .tron-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, #0ff 1px, transparent 1px),
+                linear-gradient(to bottom, #0ff 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.2;
+        }
         #terminal {
+            display: none;
             height: 100%;
             padding: 20px;
             box-sizing: border-box;
@@ -39,13 +73,6 @@
             0% { opacity: 0; }
             50% { opacity: 1; }
             100% { opacity: 0; }
-        }
-        .loading {
-            display: inline-block;
-            width: 20px;
-        }
-        .hidden {
-            display: none;
         }
         a {
             color: #0ff;
@@ -73,6 +100,13 @@
     </style>
 </head>
 <body>
+    <div id="loading-screen">
+        <div class="tron-grid"></div>
+        <div id="loading-content">
+            <h1 style="color: #0ff;">Initializing System</h1>
+            <div id="loading-progress"></div>
+        </div>
+    </div>
     <div id="terminal"></div>
     <div id="input-line">
         <span id="prompt">&gt;</span>
@@ -82,36 +116,45 @@
     <script>
         const terminal = document.getElementById('terminal');
         const userInput = document.getElementById('user-input');
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingProgress = document.getElementById('loading-progress');
+
         const asciiArt = `
- ____            _ _    _    _                                
-|  _ \\          (_) |  / \\  | | ___  _ __ ___   __ _ _ __ _   _ 
-| |_) | __ _ ___ _| | / _ \\ | |/ _ \\| '_ \` _ \\ / _\` | '__| | | |
-|  _ < / _\` / __| | |/ ___ \\| | (_) | | | | | | (_| | |  | |_| |
-|_| \\_\\\\__,_\\___| |_/_/   \\_\\_|\\___/|_| |_| |_|\\__,_|_|   \\__, |
-                                                         |___/ 
+ ____            _ _     _    _                               
+| __ )  __ _ ___(_) |   / \\  | | ___  _ __ ___   __ _ _ __ _   _ 
+|  _ \\ / _\` / __| | |  / _ \\ | |/ _ \\| '_ \` _ \\ / _\` | '__| | | |
+| |_) | (_| \\__ \\ | | / ___ \\| | (_) | | | | | | (_| | |  | |_| |
+|____/ \\__,_|___/_|_|/_/   \\_\\_|\\___/|_| |_| |_|\\__,_|_|   \\__, |
+                                                           |___/ 
         `;
 
         const content = {
-            help: 'Available commands: about, experience, education, writing, contact, clear',
             about: "I'm the Head of Research at Stripes (http://www.stripes.co), building the diligence and investment research team to enable us to make investments in incredible software and consumer companies.",
-            experience: `- Current: Head of Research at Stripes (http://www.stripes.co)
-- Previous: Consultant at Bain & Company (http://www.bain.com)
-- Previous: Head of Growth at Simon Data (http://simondata.com)
-- Independent investor, consultant, and advisor to early-stage SaaS companies`,
-            education: `- Graduate of Columbia Business School (https://www8.gsb.columbia.edu/programs/mba)
-- Glenn Hubbard Scholarship Recipient
-- VC Fellow with General Catalyst (http://www.generalcatalyst.com)
-- MBA Associate at Primary Venture Partners (http://primary.vc)
-- Student Fellow at .406 Ventures (http://406ventures.com)
-- Venture Partner at Contrary Capital (http://www.contrarycap.com)
-- InSITE Fellow (http://insitefellows.org)`,
+            experience: `Current: Head of Research at Stripes (http://www.stripes.co)
+Previous: Consultant at Bain & Company (http://www.bain.com)
+Previous: Head of Growth at Simon Data (http://simondata.com)
+Independent investor, consultant, and advisor to early-stage SaaS companies`,
+            education: `Graduate of Columbia Business School (https://www8.gsb.columbia.edu/programs/mba)
+Glenn Hubbard Scholarship Recipient
+VC Fellow with General Catalyst (http://www.generalcatalyst.com)
+MBA Associate at Primary Venture Partners (http://primary.vc)
+Student Fellow at .406 Ventures (http://406ventures.com)
+Venture Partner at Contrary Capital (http://www.contrarycap.com)
+InSITE Fellow (http://insitefellows.org)`,
             writing: `1. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/" target="_blank">Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution</a>
 2. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241" target="_blank">OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology</a>
 3. <a href="https://wire.insiderfinance.io/nfts-like-all-art-are-all-about-narrative-bc0bb5edd81" target="_blank">NFTs, like all art, are all about narrative</a>
 4. <a href="https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-stupid-questions-acd868cd4f04" target="_blank">"Where am I going to display my NFT?"... and other stupid questions</a>
 5. <a href="https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6" target="_blank">The Future of InsurTech: Why serving policyholders has been the path to growth for so many...</a>`,
-            contact: `- LinkedIn: <a href="https://www.linkedin.com/in/basilalomary" target="_blank">https://www.linkedin.com/in/basilalomary</a>
-- Twitter: <a href="https://twitter.com/basilalomary" target="_blank">https://twitter.com/basilalomary</a>`
+            contact: `LinkedIn: <a href="https://www.linkedin.com/in/basilalomary" target="_blank">https://www.linkedin.com/in/basilalomary</a>
+Twitter: <a href="https://twitter.com/basilalomary" target="_blank">https://twitter.com/basilalomary</a>`,
+            help: `Available commands:
+about - Learn about Basil Alomary
+experience - View professional experience
+education - See educational background
+writing - Read published articles
+contact - Get contact information
+clear - Clear the terminal screen`
         };
 
         function typeWriter(text, element, index = 0) {
@@ -123,38 +166,7 @@
             }
         }
 
-        function createLoadingAnimation() {
-            const loading = document.createElement('div');
-            loading.className = 'loading';
-            loading.innerHTML = '|';
-            
-            const frames = ['|', '/', '-', '\\'];
-            let frameIndex = 0;
-
-            const intervalId = setInterval(() => {
-                loading.innerHTML = frames[frameIndex];
-                frameIndex = (frameIndex + 1) % frames.length;
-            }, 100);
-
-            return { element: loading, intervalId };
-        }
-
         async function displayResponse(command) {
-            const commandElement = document.createElement('div');
-            commandElement.className = 'command';
-            terminal.appendChild(commandElement);
-            await new Promise(resolve => typeWriter(`> ${command}`, commandElement, 0, resolve));
-
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            const { element: loadingElement, intervalId } = createLoadingAnimation();
-            terminal.appendChild(loadingElement);
-
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            clearInterval(intervalId);
-            loadingElement.remove();
-
             const responseElement = document.createElement('div');
             responseElement.className = 'response';
             terminal.appendChild(responseElement);
@@ -165,29 +177,59 @@
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        async function init() {
+        async function handleCommand(command) {
+            const commandElement = document.createElement('div');
+            commandElement.className = 'command';
+            commandElement.textContent = `> ${command}`;
+            terminal.appendChild(commandElement);
+
+            if (command.toLowerCase() === 'clear') {
+                terminal.innerHTML = '';
+                await displayAsciiArt();
+            } else {
+                await displayResponse(command);
+            }
+        }
+
+        async function displayAsciiArt() {
             const asciiElement = document.createElement('pre');
             asciiElement.className = 'ascii-art';
             terminal.appendChild(asciiElement);
             await new Promise(resolve => typeWriter(asciiArt, asciiElement, 0, resolve));
+        }
 
-            await displayResponse('help');
+        function simulateLoading() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                        terminal.style.display = 'block';
+                        init();
+                    }, 500);
+                }
+                loadingProgress.style.width = `${progress}%`;
+            }, 200);
+        }
+
+        async function init() {
+            await displayAsciiArt();
+            await handleCommand('help');
+            userInput.focus();
         }
 
         userInput.addEventListener('keypress', async function(e) {
             if (e.key === 'Enter') {
                 const command = this.value.trim();
                 this.value = '';
-                if (command.toLowerCase() === 'clear') {
-                    terminal.innerHTML = '';
-                    await init();
-                } else {
-                    await displayResponse(command);
-                }
+                await handleCommand(command);
             }
         });
 
-        init();
+        simulateLoading();
     </script>
 </body>
 </html>
