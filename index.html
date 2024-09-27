@@ -11,8 +11,8 @@
             padding: 0;
             height: 100%;
             font-family: 'IBM Plex Mono', monospace;
-            background-color: #000;
-            color: #0ff;
+            background-color: #008080;
+            color: #fff;
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -89,29 +89,56 @@
             0% { transform: rotateX(0deg) rotateY(0deg); }
             100% { transform: rotateX(360deg) rotateY(360deg); }
         }
-        #terminal-container {
+        #terminal-window {
             width: 80%;
             height: 80%;
-            max-width: 1000px;
+            max-width: 800px;
             max-height: 600px;
             display: none;
             background-color: #000;
-            border: 2px solid #0ff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #0ff;
+            border: 1px solid #0ff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
             overflow: hidden;
+            position: absolute;
+            resize: both;
         }
+        #window-header {
+            background-color: #0ff;
+            color: #000;
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+        #window-title {
+            font-weight: bold;
+        }
+        #window-controls {
+            display: flex;
+        }
+        .window-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        #minimize { background-color: #ffbd44; }
+        #maximize { background-color: #00ca4e; }
+        #close { background-color: #ff605c; }
         #terminal {
-            height: calc(100% - 30px);
-            padding: 20px;
+            height: calc(100% - 55px);
+            padding: 10px;
             box-sizing: border-box;
             overflow-y: auto;
         }
         .command {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         .response {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             white-space: pre-wrap;
         }
         .blink {
@@ -123,7 +150,7 @@
             100% { opacity: 0; }
         }
         a {
-            color: #fff;
+            color: #0ff;
             text-decoration: underline;
         }
         a:hover {
@@ -132,8 +159,8 @@
         #input-line {
             display: flex;
             align-items: center;
-            padding: 5px 20px;
-            background-color: #001;
+            padding: 5px 10px;
+            background-color: #000;
         }
         #prompt {
             margin-right: 5px;
@@ -143,7 +170,7 @@
             border: none;
             color: #0ff;
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 16px;
+            font-size: 14px;
             outline: none;
             width: 100%;
         }
@@ -166,21 +193,33 @@
             <div id="loading-progress"></div>
         </div>
     </div>
-    <div id="terminal-container">
+    <div id="terminal-window">
+        <div id="window-header">
+            <div id="window-title">Basil Alomary - Terminal</div>
+            <div id="window-controls">
+                <div class="window-button" id="minimize"></div>
+                <div class="window-button" id="maximize"></div>
+                <div class="window-button" id="close"></div>
+            </div>
+        </div>
         <div id="terminal"></div>
         <div id="input-line">
-            <span id="prompt">$</span>
+            <span id="prompt">C:\Users\Basil&gt;</span>
             <input type="text" id="user-input" autofocus>
         </div>
     </div>
 
     <script>
         const terminal = document.getElementById('terminal');
-        const terminalContainer = document.getElementById('terminal-container');
+        const terminalWindow = document.getElementById('terminal-window');
         const userInput = document.getElementById('user-input');
         const loadingScreen = document.getElementById('loading-screen');
         const loadingProgress = document.getElementById('loading-progress');
         const cube = document.getElementById('cube');
+        const windowHeader = document.getElementById('window-header');
+        const minimizeBtn = document.getElementById('minimize');
+        const maximizeBtn = document.getElementById('maximize');
+        const closeBtn = document.getElementById('close');
 
         const content = {
             about: "Basil Alomary is the Head of Research at Stripes (http://www.stripes.co), building the diligence and investment research team to enable investments in incredible software and consumer companies.",
@@ -248,7 +287,7 @@ help`
         async function handleCommand(command) {
             const commandElement = document.createElement('div');
             commandElement.className = 'command';
-            commandElement.textContent = `$ ${command}`;
+            commandElement.textContent = `C:\\Users\\Basil> ${command}`;
             terminal.appendChild(commandElement);
 
             if (command.toLowerCase() === 'clear') {
@@ -285,7 +324,7 @@ help`
 
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                terminalContainer.style.display = 'block';
+                terminalWindow.style.display = 'block';
                 init();
             }, 1500);
         }
@@ -293,7 +332,10 @@ help`
         function displayIntro() {
             const introElement = document.createElement('div');
             introElement.className = 'response';
-            introElement.innerHTML = `Welcome to Basil Alomary's terminal.
+            introElement.innerHTML = `Microsoft Windows [Version 10.0.19042.928]
+(c) 2020 Microsoft Corporation. All rights reserved.
+
+Welcome to Basil Alomary's terminal.
 Type 'help' for a list of available commands.`;
             terminal.appendChild(introElement);
         }
@@ -311,7 +353,79 @@ Type 'help' for a list of available commands.`;
             }
         });
 
-        simulateLoading();
-    </script>
+        // Make the window draggable
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        windowHeader.addEventListener("mousedown", dragStart);
+        document.addEventListener("mousemove", drag);
+        document.addEventListener("mouseup", dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === windowHeader) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, terminalWindow);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+    }
+
+    function dragEnd(e) {
+        initialX = currentX;
+        initialY = currentY;
+
+        isDragging = false;
+    }
+
+    // Window control buttons functionality
+    minimizeBtn.addEventListener('click', () => {
+        terminalWindow.style.display = 'none';
+    });
+
+    maximizeBtn.addEventListener('click', () => {
+        if (terminalWindow.style.width === '100%') {
+            terminalWindow.style.width = '80%';
+            terminalWindow.style.height = '80%';
+            terminalWindow.style.top = '10%';
+            terminalWindow.style.left = '10%';
+        } else {
+            terminalWindow.style.width = '100%';
+            terminalWindow.style.height = '100%';
+            terminalWindow.style.top = '0';
+            terminalWindow.style.left = '0';
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        terminalWindow.style.display = 'none';
+        // You might want to add some functionality here to allow reopening the terminal
+    });
+
+    simulateLoading();
+</script>
 </body>
 </html>
+
+            
