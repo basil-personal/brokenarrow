@@ -47,13 +47,41 @@
         .hidden {
             display: none;
         }
+        a {
+            color: #0ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #input-line {
+            display: flex;
+            align-items: center;
+        }
+        #prompt {
+            margin-right: 5px;
+        }
+        #user-input {
+            background: transparent;
+            border: none;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <div id="terminal"></div>
+    <div id="input-line">
+        <span id="prompt">&gt;</span>
+        <input type="text" id="user-input" autofocus>
+    </div>
 
     <script>
         const terminal = document.getElementById('terminal');
+        const userInput = document.getElementById('user-input');
         const asciiArt = `
  ____            _ _    _    _                                
 |  _ \\          (_) |  / \\  | | ___  _ __ ___   __ _ _ __ _   _ 
@@ -63,15 +91,28 @@
                                                          |___/ 
         `;
 
-        const content = [
-            { command: 'whoami', response: 'Basil Alomary' },
-            { command: 'cat current_role.txt', response: 'Head of Research at Stripes (http://www.stripes.co)' },
-            { command: 'ls previous_experience/', response: '- Bain_&_Company.txt\n- Simon_Data.txt\n- Independent_Investor.txt' },
-            { command: 'cat education.txt', response: 'Graduate of Columbia Business School\nGlenn Hubbard Scholarship Recipient' },
-            { command: 'ls fellowships/', response: 'VC_Fellow.txt  MBA_Associate.txt  Student_Fellow.txt  Venture_Partner.txt  InSITE_Fellow.txt' },
-            { command: 'cat writing/articles.txt', response: '1. Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution\n2. OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology\n3. NFTs, like all art, are all about narrative\n4. "Where am I going to display my NFT?"... and other stupid questions\n5. The Future of InsurTech: Why serving policyholders has been the path to growth for so many...' },
-            { command: 'echo $CONTACT_INFO', response: 'LinkedIn: https://www.linkedin.com/in/basilalomary\nTwitter: https://twitter.com/basilalomary' },
-        ];
+        const content = {
+            help: 'Available commands: about, experience, education, writing, contact, clear',
+            about: "I'm the Head of Research at Stripes (http://www.stripes.co), building the diligence and investment research team to enable us to make investments in incredible software and consumer companies.",
+            experience: `- Current: Head of Research at Stripes (http://www.stripes.co)
+- Previous: Consultant at Bain & Company (http://www.bain.com)
+- Previous: Head of Growth at Simon Data (http://simondata.com)
+- Independent investor, consultant, and advisor to early-stage SaaS companies`,
+            education: `- Graduate of Columbia Business School (https://www8.gsb.columbia.edu/programs/mba)
+- Glenn Hubbard Scholarship Recipient
+- VC Fellow with General Catalyst (http://www.generalcatalyst.com)
+- MBA Associate at Primary Venture Partners (http://primary.vc)
+- Student Fellow at .406 Ventures (http://406ventures.com)
+- Venture Partner at Contrary Capital (http://www.contrarycap.com)
+- InSITE Fellow (http://insitefellows.org)`,
+            writing: `1. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/" target="_blank">Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution</a>
+2. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241" target="_blank">OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology</a>
+3. <a href="https://wire.insiderfinance.io/nfts-like-all-art-are-all-about-narrative-bc0bb5edd81" target="_blank">NFTs, like all art, are all about narrative</a>
+4. <a href="https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-stupid-questions-acd868cd4f04" target="_blank">"Where am I going to display my NFT?"... and other stupid questions</a>
+5. <a href="https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6" target="_blank">The Future of InsurTech: Why serving policyholders has been the path to growth for so many...</a>`,
+            contact: `- LinkedIn: <a href="https://www.linkedin.com/in/basilalomary" target="_blank">https://www.linkedin.com/in/basilalomary</a>
+- Twitter: <a href="https://twitter.com/basilalomary" target="_blank">https://twitter.com/basilalomary</a>`
+        };
 
         function typeWriter(text, element, index = 0) {
             if (index < text.length) {
@@ -98,38 +139,55 @@
             return { element: loading, intervalId };
         }
 
-        async function displayContent() {
+        async function displayResponse(command) {
+            const commandElement = document.createElement('div');
+            commandElement.className = 'command';
+            terminal.appendChild(commandElement);
+            await new Promise(resolve => typeWriter(`> ${command}`, commandElement, 0, resolve));
+
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const { element: loadingElement, intervalId } = createLoadingAnimation();
+            terminal.appendChild(loadingElement);
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            clearInterval(intervalId);
+            loadingElement.remove();
+
+            const responseElement = document.createElement('div');
+            responseElement.className = 'response';
+            terminal.appendChild(responseElement);
+            
+            const response = content[command.toLowerCase()] || "Command not recognized. Type 'help' for a list of available commands.";
+            responseElement.innerHTML = response;
+
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        async function init() {
             const asciiElement = document.createElement('pre');
             asciiElement.className = 'ascii-art';
             terminal.appendChild(asciiElement);
             await new Promise(resolve => typeWriter(asciiArt, asciiElement, 0, resolve));
 
-            for (const item of content) {
-                const commandElement = document.createElement('div');
-                commandElement.className = 'command';
-                terminal.appendChild(commandElement);
-                await new Promise(resolve => typeWriter(`> ${item.command}`, commandElement, 0, resolve));
-
-                await new Promise(resolve => setTimeout(resolve, 500));
-
-                const { element: loadingElement, intervalId } = createLoadingAnimation();
-                terminal.appendChild(loadingElement);
-
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                clearInterval(intervalId);
-                loadingElement.remove();
-
-                const responseElement = document.createElement('div');
-                responseElement.className = 'response';
-                terminal.appendChild(responseElement);
-                await new Promise(resolve => typeWriter(item.response, responseElement, 0, resolve));
-
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
+            await displayResponse('help');
         }
 
-        displayContent();
+        userInput.addEventListener('keypress', async function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value.trim();
+                this.value = '';
+                if (command.toLowerCase() === 'clear') {
+                    terminal.innerHTML = '';
+                    await init();
+                } else {
+                    await displayResponse(command);
+                }
+            }
+        });
+
+        init();
     </script>
 </body>
 </html>
