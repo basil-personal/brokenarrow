@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basil Alomary - Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'Courier New', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             background-color: #000;
             color: #0ff;
             overflow: hidden;
@@ -95,7 +96,7 @@
             background: transparent;
             border: none;
             color: #0ff;
-            font-family: 'Courier New', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 16px;
             outline: none;
             width: 100%;
@@ -106,7 +107,7 @@
     <div id="loading-screen">
         <div class="tron-grid"></div>
         <div id="loading-content">
-            <h1 style="color: #0ff; font-family: 'Courier New', monospace;">Initializing System</h1>
+            <h1 style="color: #0ff; font-family: 'IBM Plex Mono', monospace;">Initializing System</h1>
             <div id="loading-progress"></div>
         </div>
     </div>
@@ -144,13 +145,13 @@ InSITE Fellow (http://insitefellows.org)`,
 Twitter: <a href="https://twitter.com/basilalomary" target="_blank">https://twitter.com/basilalomary</a>`,
             help: `Available commands:
 
-about     - Learn about Basil Alomary
-experience - View professional experience
-education  - See educational background
-writing    - Read published articles
-contact    - Get contact information
-clear      - Clear the terminal screen
-help       - Display this help message`
+about
+experience
+education
+writing
+contact
+clear
+help`
         };
 
         async function displayResponse(command) {
