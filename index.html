@@ -30,15 +30,28 @@
         #loading-content {
             text-align: center;
         }
-        #loading-content h1 {
-            font-size: 24px;
+        #loading-text {
+            font-size: 14px;
             margin-bottom: 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #0ff;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #0ff; }
         }
         #loading-progress {
             width: 0;
             height: 2px;
             background-color: #0ff;
             transition: width 0.5s ease-out;
+            box-shadow: 0 0 10px #0ff, 0 0 5px #0ff;
         }
         .tron-grid {
             position: absolute;
@@ -77,6 +90,7 @@
         }
         .response {
             margin-bottom: 20px;
+            white-space: pre-wrap;
         }
         .blink {
             animation: blink 1s infinite;
@@ -88,10 +102,10 @@
         }
         a {
             color: #fff;
-            text-decoration: none;
+            text-decoration: underline;
         }
         a:hover {
-            text-decoration: underline;
+            text-decoration: none;
         }
         #input-line {
             display: flex;
@@ -115,7 +129,7 @@
     <div id="loading-screen">
         <div class="tron-grid"></div>
         <div id="loading-content">
-            <h1>Initializing System</h1>
+            <div id="loading-text">Initializing System</div>
             <div id="loading-progress"></div>
         </div>
     </div>
@@ -134,22 +148,36 @@
         const content = {
             about: "Basil Alomary is the Head of Research at Stripes (http://www.stripes.co), building the diligence and investment research team to enable investments in incredible software and consumer companies.",
             experience: `Current: Head of Research at Stripes (http://www.stripes.co)
+
 Previous: Consultant at Bain & Company (http://www.bain.com)
+
 Previous: Head of Growth at Simon Data (http://simondata.com)
+
 Independent investor, consultant, and advisor to early-stage SaaS companies`,
             education: `Graduate of Columbia Business School (https://www8.gsb.columbia.edu/programs/mba)
+
 Glenn Hubbard Scholarship Recipient
+
 VC Fellow with General Catalyst (http://www.generalcatalyst.com)
+
 MBA Associate at Primary Venture Partners (http://primary.vc)
+
 Student Fellow at .406 Ventures (http://406ventures.com)
+
 Venture Partner at Contrary Capital (http://www.contrarycap.com)
+
 InSITE Fellow (http://insitefellows.org)`,
             writing: `1. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/" target="_blank">Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution</a>
+
 2. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241" target="_blank">OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology</a>
+
 3. <a href="https://wire.insiderfinance.io/nfts-like-all-art-are-all-about-narrative-bc0bb5edd81" target="_blank">NFTs, like all art, are all about narrative</a>
+
 4. <a href="https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-stupid-questions-acd868cd4f04" target="_blank">"Where am I going to display my NFT?"... and other stupid questions</a>
+
 5. <a href="https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6" target="_blank">The Future of InsurTech: Why serving policyholders has been the path to growth for so many...</a>`,
             contact: `LinkedIn: <a href="https://www.linkedin.com/in/basilalomary" target="_blank">https://www.linkedin.com/in/basilalomary</a>
+
 Twitter: <a href="https://twitter.com/basilalomary" target="_blank">https://twitter.com/basilalomary</a>`,
             help: `Available commands:
 
