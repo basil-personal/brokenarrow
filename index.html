@@ -11,7 +11,7 @@
             height: 100%;
             font-family: 'Courier New', monospace;
             background-color: #000;
-            color: #0f0;
+            color: #0ff;
             overflow: hidden;
         }
         #loading-screen {
@@ -44,8 +44,17 @@
             background-image: 
                 linear-gradient(to right, #0ff 1px, transparent 1px),
                 linear-gradient(to bottom, #0ff 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-size: 50px 50px;
             opacity: 0.2;
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove {
+            0% {
+                transform: perspective(500px) rotateX(60deg) translateY(0);
+            }
+            100% {
+                transform: perspective(500px) rotateX(60deg) translateY(50px);
+            }
         }
         #terminal {
             display: none;
@@ -53,12 +62,6 @@
             padding: 20px;
             box-sizing: border-box;
             overflow-y: auto;
-        }
-        .ascii-art {
-            white-space: pre;
-            font-size: 12px;
-            line-height: 1;
-            margin-bottom: 20px;
         }
         .command {
             margin-bottom: 10px;
@@ -75,7 +78,7 @@
             100% { opacity: 0; }
         }
         a {
-            color: #0ff;
+            color: #fff;
             text-decoration: none;
         }
         a:hover {
@@ -91,7 +94,7 @@
         #user-input {
             background: transparent;
             border: none;
-            color: #0f0;
+            color: #0ff;
             font-family: 'Courier New', monospace;
             font-size: 16px;
             outline: none;
@@ -103,7 +106,7 @@
     <div id="loading-screen">
         <div class="tron-grid"></div>
         <div id="loading-content">
-            <h1 style="color: #0ff;">Initializing System</h1>
+            <h1 style="color: #0ff; font-family: 'Courier New', monospace;">Initializing System</h1>
             <div id="loading-progress"></div>
         </div>
     </div>
@@ -118,15 +121,6 @@
         const userInput = document.getElementById('user-input');
         const loadingScreen = document.getElementById('loading-screen');
         const loadingProgress = document.getElementById('loading-progress');
-
-        const asciiArt = `
- ____            _ _     _    _                               
-| __ )  __ _ ___(_) |   / \\  | | ___  _ __ ___   __ _ _ __ _   _ 
-|  _ \\ / _\` / __| | |  / _ \\ | |/ _ \\| '_ \` _ \\ / _\` | '__| | | |
-| |_) | (_| \\__ \\ | | / ___ \\| | (_) | | | | | | (_| | |  | |_| |
-|____/ \\__,_|___/_|_|/_/   \\_\\_|\\___/|_| |_| |_|\\__,_|_|   \\__, |
-                                                           |___/ 
-        `;
 
         const content = {
             about: "I'm the Head of Research at Stripes (http://www.stripes.co), building the diligence and investment research team to enable us to make investments in incredible software and consumer companies.",
@@ -149,22 +143,15 @@ InSITE Fellow (http://insitefellows.org)`,
             contact: `LinkedIn: <a href="https://www.linkedin.com/in/basilalomary" target="_blank">https://www.linkedin.com/in/basilalomary</a>
 Twitter: <a href="https://twitter.com/basilalomary" target="_blank">https://twitter.com/basilalomary</a>`,
             help: `Available commands:
-about - Learn about Basil Alomary
-experience - View professional experience
-education - See educational background
-writing - Read published articles
-contact - Get contact information
-clear - Clear the terminal screen`
-        };
 
-        function typeWriter(text, element, index = 0) {
-            if (index < text.length) {
-                element.innerHTML += text.charAt(index);
-                setTimeout(() => typeWriter(text, element, index + 1), 20);
-            } else {
-                element.innerHTML += '<span class="blink">_</span>';
-            }
-        }
+about     - Learn about Basil Alomary
+experience - View professional experience
+education  - See educational background
+writing    - Read published articles
+contact    - Get contact information
+clear      - Clear the terminal screen
+help       - Display this help message`
+        };
 
         async function displayResponse(command) {
             const responseElement = document.createElement('div');
@@ -185,17 +172,9 @@ clear - Clear the terminal screen`
 
             if (command.toLowerCase() === 'clear') {
                 terminal.innerHTML = '';
-                await displayAsciiArt();
             } else {
                 await displayResponse(command);
             }
-        }
-
-        async function displayAsciiArt() {
-            const asciiElement = document.createElement('pre');
-            asciiElement.className = 'ascii-art';
-            terminal.appendChild(asciiElement);
-            await new Promise(resolve => typeWriter(asciiArt, asciiElement, 0, resolve));
         }
 
         function simulateLoading() {
@@ -216,7 +195,6 @@ clear - Clear the terminal screen`
         }
 
         async function init() {
-            await displayAsciiArt();
             await handleCommand('help');
             userInput.focus();
         }
