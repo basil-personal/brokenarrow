@@ -14,6 +14,9 @@
             background-color: #000;
             color: #0ff;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         #loading-screen {
             position: fixed;
@@ -72,11 +75,9 @@
             width: 200px;
             height: 200px;
             border: 2px solid #0ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
             background-color: rgba(0, 255, 255, 0.1);
+            opacity: 0.7;
+            transition: all 1s;
         }
         #front { transform: translateZ(100px); }
         #back { transform: rotateY(180deg) translateZ(100px); }
@@ -88,16 +89,23 @@
             0% { transform: rotateX(0deg) rotateY(0deg); }
             100% { transform: rotateX(360deg) rotateY(360deg); }
         }
-        #terminal {
+        #terminal-container {
+            width: 80%;
+            height: 80%;
+            max-width: 1000px;
+            max-height: 600px;
             display: none;
-            height: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
             background-color: #000;
             border: 2px solid #0ff;
             border-radius: 10px;
             box-shadow: 0 0 10px #0ff;
+            overflow: hidden;
+        }
+        #terminal {
+            height: calc(100% - 30px);
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
         }
         .command {
             margin-bottom: 10px;
@@ -124,6 +132,8 @@
         #input-line {
             display: flex;
             align-items: center;
+            padding: 5px 20px;
+            background-color: #001;
         }
         #prompt {
             margin-right: 5px;
@@ -144,26 +154,29 @@
         <div id="loading-content">
             <div id="cube-container">
                 <div id="cube">
-                    <div class="face" id="front">Front</div>
-                    <div class="face" id="back">Back</div>
-                    <div class="face" id="right">Right</div>
-                    <div class="face" id="left">Left</div>
-                    <div class="face" id="top">Top</div>
-                    <div class="face" id="bottom">Bottom</div>
+                    <div class="face" id="front"></div>
+                    <div class="face" id="back"></div>
+                    <div class="face" id="right"></div>
+                    <div class="face" id="left"></div>
+                    <div class="face" id="top"></div>
+                    <div class="face" id="bottom"></div>
                 </div>
             </div>
             <div id="loading-text">Initializing System</div>
             <div id="loading-progress"></div>
         </div>
     </div>
-    <div id="terminal"></div>
-    <div id="input-line">
-        <span id="prompt">$</span>
-        <input type="text" id="user-input" autofocus>
+    <div id="terminal-container">
+        <div id="terminal"></div>
+        <div id="input-line">
+            <span id="prompt">$</span>
+            <input type="text" id="user-input" autofocus>
+        </div>
     </div>
 
     <script>
         const terminal = document.getElementById('terminal');
+        const terminalContainer = document.getElementById('terminal-container');
         const userInput = document.getElementById('user-input');
         const loadingScreen = document.getElementById('loading-screen');
         const loadingProgress = document.getElementById('loading-progress');
@@ -177,7 +190,12 @@ Previous: Consultant at Bain & Company (http://www.bain.com)
 
 Previous: Head of Growth at Simon Data (http://simondata.com)
 
-Independent investor, consultant, and advisor to early-stage SaaS companies`,
+Independent investor, consultant, and advisor to early-stage SaaS companies including:
+- Cedar Health (http://www.cedar.com)
+- Klara (http://www.klara.com)
+- Maestro (http://www.go-maestro.com)
+- Eigen (http://www.eigentech.com)
+- Ethena (http://www.goethena.com)`,
             education: `Graduate of Columbia Business School (https://www8.gsb.columbia.edu/programs/mba)
 
 Graduate of Rutgers University
@@ -244,18 +262,32 @@ help`
         function simulateLoading() {
             let progress = 0;
             const interval = setInterval(() => {
-                progress += Math.random() * 10;
+                progress += Math.random() * 5;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
                     setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                        terminal.style.display = 'block';
-                        init();
-                    }, 500);
+                        explodeCube();
+                    }, 1000);
                 }
                 loadingProgress.style.width = `${progress}%`;
-            }, 200);
+            }, 100);
+        }
+
+        function explodeCube() {
+            const faces = document.querySelectorAll('.face');
+            faces.forEach((face, index) => {
+                setTimeout(() => {
+                    face.style.transform = `translate3d(${(Math.random() - 0.5) * 1000}px, ${(Math.random() - 0.5) * 1000}px, ${(Math.random() - 0.5) * 1000}px) rotate3d(${Math.random()}, ${Math.random()}, ${Math.random()}, ${Math.random() * 360}deg)`;
+                    face.style.opacity = 0;
+                }, index * 100);
+            });
+
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                terminalContainer.style.display = 'block';
+                init();
+            }, 1500);
         }
 
         function displayIntro() {
