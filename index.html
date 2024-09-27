@@ -30,6 +30,10 @@
         #loading-content {
             text-align: center;
         }
+        #loading-content h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
         #loading-progress {
             width: 0;
             height: 2px;
@@ -63,6 +67,10 @@
             padding: 20px;
             box-sizing: border-box;
             overflow-y: auto;
+            background-color: #000;
+            border: 2px solid #0ff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #0ff;
         }
         .command {
             margin-bottom: 10px;
@@ -107,13 +115,13 @@
     <div id="loading-screen">
         <div class="tron-grid"></div>
         <div id="loading-content">
-            <h1 style="color: #0ff; font-family: 'IBM Plex Mono', monospace;">Initializing System</h1>
+            <h1>Initializing System</h1>
             <div id="loading-progress"></div>
         </div>
     </div>
     <div id="terminal"></div>
     <div id="input-line">
-        <span id="prompt">&gt;</span>
+        <span id="prompt">$</span>
         <input type="text" id="user-input" autofocus>
     </div>
 
@@ -124,7 +132,7 @@
         const loadingProgress = document.getElementById('loading-progress');
 
         const content = {
-            about: "I'm the Head of Research at Stripes (http://www.stripes.co), building the diligence and investment research team to enable us to make investments in incredible software and consumer companies.",
+            about: "Basil Alomary is the Head of Research at Stripes (http://www.stripes.co), building the diligence and investment research team to enable investments in incredible software and consumer companies.",
             experience: `Current: Head of Research at Stripes (http://www.stripes.co)
 Previous: Consultant at Bain & Company (http://www.bain.com)
 Previous: Head of Growth at Simon Data (http://simondata.com)
@@ -168,11 +176,12 @@ help`
         async function handleCommand(command) {
             const commandElement = document.createElement('div');
             commandElement.className = 'command';
-            commandElement.textContent = `> ${command}`;
+            commandElement.textContent = `$ ${command}`;
             terminal.appendChild(commandElement);
 
             if (command.toLowerCase() === 'clear') {
                 terminal.innerHTML = '';
+                displayIntro();
             } else {
                 await displayResponse(command);
             }
@@ -195,8 +204,16 @@ help`
             }, 200);
         }
 
+        function displayIntro() {
+            const introElement = document.createElement('div');
+            introElement.className = 'response';
+            introElement.innerHTML = `Welcome to Basil Alomary's terminal.
+Type 'help' for a list of available commands.`;
+            terminal.appendChild(introElement);
+        }
+
         async function init() {
-            await handleCommand('help');
+            displayIntro();
             userInput.focus();
         }
 
