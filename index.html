@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basil Alomary - Windows 92 Terminal</title>
+    <title>Basil Alomary - Classic Terminal</title>
     <style>
         /* =======================
-           Windows 92 Themed Styles
+           Classic OS Inspired Styles
         ======================= */
         
         /* Reset and Base Styles */
@@ -17,8 +17,8 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #008080; /* Classic Windows 95 teal */
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #008080; /* Teal Background */
             color: #000;
             overflow: hidden;
         }
@@ -31,14 +31,14 @@
             text-decoration: none;
         }
 
-        /* Windows 92 Loading Screen */
+        /* Loading Screen */
         #loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000080; /* Navy blue */
+            background: #000080; /* Navy Blue */
             color: white;
             display: flex;
             flex-direction: column;
@@ -73,7 +73,7 @@
         #loading-bar {
             width: 0;
             height: 100%;
-            background-color: #00FF00; /* Green progress */
+            background-color: #00FF00; /* Green Progress */
             animation: loadBar 4s linear forwards;
         }
         @keyframes loadBar {
@@ -86,7 +86,7 @@
             width: 100%;
             height: 100%;
             position: relative;
-            background-image: url('https://i.imgur.com/8QFjTjl.png'); /* Windows 95 desktop wallpaper */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAMAAADjJcVuAAAAA1BMVEX///+nxBvIAAAAKUlEQVR4nO3BMQEAAADCoPdPbQ43oAAAAAAAAAAAABgHdABUAAHp6jFIUAAAAAElFTkSuQmCC'); /* Simple Pattern */
             background-size: cover;
         }
 
@@ -247,7 +247,7 @@
             background-color: #000000;
             color: #00FF00;
             padding: 10px;
-            font-family: 'IBM Plex Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
         }
         #terminal-window input {
             background: transparent;
@@ -255,7 +255,7 @@
             color: #00FF00;
             width: 100%;
             outline: none;
-            font-family: 'IBM Plex Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
         }
 
@@ -301,8 +301,8 @@
          Loading Screen
     ======================= -->
     <div id="loading-screen">
-        <div>Microsoft(R) Windows(TM) 92</div>
-        <div id="loading-text">Starting up...</div>
+        <div>System Booting Up...</div>
+        <div id="loading-text">Loading Modules...</div>
         <div id="loading-progress">
             <div id="loading-bar"></div>
         </div>
@@ -313,22 +313,22 @@
     ======================= -->
     <div id="desktop">
         <!-- Desktop Icons -->
-        <div class="desktop-icon" style="top: 50px; left: 50px;" onclick="openWindow('terminal-window')">
-            <img src="https://i.imgur.com/QXJ1B2u.png" alt="Terminal">
+        <div class="desktop-icon" style="top: 50px; left: 50px;" onclick="openWindow('terminal-window')" ondblclick="triggerEasterEgg()">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABG0lEQVR4Xu3ZMQ0AAAjDMO5fNNCB1YKwVEF2YNLyQIABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAoYMg8AAG//XUYAAAAASUVORK5CYII=" alt="Terminal">
             <span>Terminal</span>
         </div>
         <div class="desktop-icon" style="top: 50px; left: 150px;" onclick="openWindow('about-window')">
-            <img src="https://i.imgur.com/RQ0JdYz.png" alt="About">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABH0lEQVR4Xu3ZMQ0AAAjDMO5fNNCB1YKwVEF2YNLyQIABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAoYMg8AAG//XUYAAAAASUVORK5CYII=" alt="About">
             <span>About</span>
         </div>
         <div class="desktop-icon" style="top: 50px; left: 250px;" onclick="openWindow('contact-window')">
-            <img src="https://i.imgur.com/G7Q4GZP.png" alt="Contact">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABHUlEQVR4Xu3ZMQ0AAAjDMO5fNNCB1YKwVEF2YNLyQIABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAoYMg8AAG//XUYAAAAASUVORK5CYII=" alt="Contact">
             <span>Contact</span>
         </div>
         <!-- Add more icons as needed -->
 
         <!-- Easter Egg Overlay -->
-        <div id="easter-egg">You Found Me!</div>
+        <div id="easter-egg">🎉 Surprise! 🎉</div>
     </div>
 
     <!-- =======================
@@ -348,7 +348,7 @@
         <div class="start-menu-item" onclick="openWindow('terminal-window')">Terminal</div>
         <div class="start-menu-item" onclick="openWindow('about-window')">About</div>
         <div class="start-menu-item" onclick="openWindow('contact-window')">Contact</div>
-        <div class="start-menu-item" onclick="showEasterEgg()">Easter Egg</div>
+        <div class="start-menu-item" onclick="triggerEasterEgg()">Hidden Feature</div>
     </div>
 
     <!-- =======================
@@ -364,7 +364,7 @@
         </div>
         <div class="window-content">
             <div id="terminal">
-                <div class="response">Welcome to the Windows 92 Terminal.</div>
+                <div class="response">Welcome to the System Terminal.</div>
                 <div class="response">Type 'help' to see available commands.</div>
             </div>
             <input type="text" id="user-input" autofocus>
@@ -411,15 +411,15 @@
     ======================= -->
     <div class="window" id="easter-egg-window" style="top: 160px; left: 160px;">
         <div class="window-header">
-            <div class="window-title">Easter Egg</div>
+            <div class="window-title">Secret Feature</div>
             <div class="window-controls">
                 <div class="window-button" onclick="minimizeWindow('easter-egg-window')">_</div>
                 <div class="window-button" onclick="closeWindow('easter-egg-window')">X</div>
             </div>
         </div>
         <div class="window-content">
-            <p>🎉 Congratulations! You've found the Easter Egg! 🎉</p>
-            <p>Enjoy your special surprise!</p>
+            <p>🎉 You've discovered the hidden feature! 🎉</p>
+            <p>Enjoy this special message as a token of appreciation.</p>
         </div>
     </div>
 
@@ -434,6 +434,7 @@
             // Simulate loading time
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
+                initializeDesktop();
             }, 4000);
         });
 
@@ -552,7 +553,7 @@
         const userInput = document.getElementById('user-input');
 
         const commands = {
-            help: "Available commands:\nabout\nexperience\neducation\nwriting\ncontact\nsocial\nclear\nhelp",
+            help: "Available commands:\nabout\nexperience\neducation\nwriting\ncontact\nclear\nhelp",
             about: "Basil Alomary is the Head of Research at Stripes, building the diligence and investment research team to enable investments in incredible software and consumer companies.",
             experience: `Current: Head of Research at Stripes (www.stripes.co)
 
@@ -579,17 +580,14 @@ InSITE Fellow (insitefellows.org)`,
             writing: `1. Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution (https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/)
 2. OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology (https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241)
 3. NFTs, like all art, are all about narrative (https://wire.insiderfinance.io/nfts-like-all-art-are-all-about-narrative-bc0bb5edd81)
-4. "Where am I going to display my NFT?"... and other stupid questions (https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-stupid-questions-acd868cd4f04)
+4. "Where am I going to display my NFT?"... and other questions (https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-questions-acd868cd4f04)
 5. The Future of InsurTech: Why serving policyholders has been the path to growth for so many... (https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6)`,
             contact: `LinkedIn: linkedin.com/in/basilalomary
 
 Twitter: twitter.com/basil_alomary`,
-            social: `Social Links:
-- LinkedIn (linkedin.com/in/basilalomary)
-- Twitter (twitter.com/basil_alomary)`,
             clear: function() {
                 terminal.innerHTML = '';
-                appendResponse("Microsoft(R) Windows(TM) 92\n(c) 1992 Microsoft Corporation. All rights reserved.\n\nWelcome to Basil Alomary's terminal.\nType 'help' to see available commands.");
+                appendResponse("Welcome to Basil Alomary's terminal.\nType 'help' to see available commands.");
             }
         };
 
@@ -624,24 +622,22 @@ Twitter: twitter.com/basil_alomary`,
                 handleCommand(command);
 
                 // Easter Egg Trigger
-                if (command.toLowerCase() === 'unlocksecret') {
-                    showEasterEgg();
+                if (command.toLowerCase() === 'opensecret') {
+                    triggerEasterEgg();
                 }
             }
         });
 
         // Initialize Terminal
-        window.onload = () => {
-            setTimeout(() => {
-                appendResponse("Microsoft(R) Windows(TM) 92\n(c) 1992 Microsoft Corporation. All rights reserved.\n\nWelcome to Basil Alomary's terminal.\nType 'help' to see available commands.");
-                document.getElementById('loading-screen').style.display = 'none';
-            }, 4000);
-        };
+        function initializeDesktop() {
+            appendResponse("Welcome to Basil Alomary's terminal.\nType 'help' to see available commands.");
+            userInput.focus();
+        }
 
         // =======================
         // Easter Egg Functions
         // =======================
-        function showEasterEgg() {
+        function triggerEasterEgg() {
             const egg = document.getElementById('easter-egg');
             const eggWindow = document.getElementById('easter-egg-window');
             egg.style.display = 'flex';
@@ -661,7 +657,6 @@ Twitter: twitter.com/basil_alomary`,
                 e.preventDefault();
             }
         });
-
     </script>
 </body>
 </html>
