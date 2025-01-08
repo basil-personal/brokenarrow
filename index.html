@@ -3,26 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basil Alomary - Terminal</title>
+    <title>Basil Alomary - Windows 92 Terminal</title>
     <style>
-        /* Font Embed */
-        @font-face {
-            font-family: 'IBM Plex Mono';
-            src: local('IBM Plex Mono'), url('https://fonts.gstatic.com/s/ibmplexmono/v17/IPxmCmBP8FJyGA4V4lJJ.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        /* CSS Variables */
-        :root {
-            --bg-color: #1e1e1e;
-            --accent-color: #00bcd4;
-            --text-color: #e0e0e0;
-            --terminal-bg: #2d2d2d;
-            --button-hover: #0097a7;
-            --loading-bg: #0d0d0d;
-        }
-
+        /* =======================
+           Windows 92 Themed Styles
+        ======================= */
+        
         /* Reset and Base Styles */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -31,293 +17,550 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'IBM Plex Mono', monospace;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #008080; /* Classic Windows 95 teal */
+            color: #000;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         a {
-            color: var(--accent-color);
-            text-decoration: none;
+            color: #0000EE;
+            text-decoration: underline;
+            cursor: pointer;
         }
         a:hover {
-            text-decoration: underline;
+            text-decoration: none;
         }
 
-        /* Loading Screen */
+        /* Windows 92 Loading Screen */
         #loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--loading-bg);
+            background: #000080; /* Navy blue */
+            color: white;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            transition: opacity 0.5s ease, visibility 0.5s;
-        }
-        #loading-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
+            z-index: 2000;
+            font-size: 16px;
+            font-family: 'Courier New', Courier, monospace;
         }
         #loading-text {
-            font-size: 18px;
             margin-top: 20px;
-            border-right: 2px solid var(--accent-color);
-            white-space: nowrap;
-            overflow: hidden;
             width: 0;
-            animation: typing 3s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
+            white-space: nowrap;
+            border-right: 2px solid #fff;
+            animation: typing 4s steps(40, end) forwards, blink-caret 0.75s step-end infinite;
         }
         @keyframes typing {
             from { width: 0 }
-            to { width: 250px }
+            to { width: 300px }
         }
         @keyframes blink-caret {
             from, to { border-color: transparent }
-            50% { border-color: var(--accent-color); }
+            50% { border-color: white; }
         }
         #loading-progress {
-            width: 0;
-            height: 4px;
-            background-color: var(--accent-color);
+            width: 300px;
+            height: 20px;
+            border: 1px solid #fff;
             margin-top: 10px;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 10px var(--accent-color);
+            position: relative;
+        }
+        #loading-bar {
+            width: 0;
+            height: 100%;
+            background-color: #00FF00; /* Green progress */
+            animation: loadBar 4s linear forwards;
+        }
+        @keyframes loadBar {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
-        /* Cube Animation */
-        #cube-container {
-            width: 150px;
-            height: 150px;
-            perspective: 800px;
-            margin-bottom: 20px;
-        }
-        #cube {
+        /* Desktop Styles */
+        #desktop {
             width: 100%;
             height: 100%;
             position: relative;
-            transform-style: preserve-3d;
-            animation: rotateCube 10s infinite linear;
-        }
-        .face {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            border: 2px solid var(--accent-color);
-            background-color: rgba(0, 188, 212, 0.1);
-            opacity: 0.8;
-        }
-        #front { transform: translateZ(75px); }
-        #back { transform: rotateY(180deg) translateZ(75px); }
-        #right { transform: rotateY(90deg) translateZ(75px); }
-        #left { transform: rotateY(-90deg) translateZ(75px); }
-        #top { transform: rotateX(90deg) translateZ(75px); }
-        #bottom { transform: rotateX(-90deg) translateZ(75px); }
-        @keyframes rotateCube {
-            from { transform: rotateX(0deg) rotateY(0deg); }
-            to { transform: rotateX(360deg) rotateY(360deg); }
+            background-image: url('https://i.imgur.com/8QFjTjl.png'); /* Windows 95 desktop wallpaper */
+            background-size: cover;
         }
 
-        /* Terminal Window */
-        #terminal-window {
-            width: 80%;
-            max-width: 800px;
-            height: 80%;
-            max-height: 600px;
-            background-color: var(--terminal-bg);
-            border: 1px solid var(--accent-color);
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
-            position: absolute;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        #terminal-window.active {
-            display: flex;
-        }
-        #window-header {
-            background-color: var(--accent-color);
-            color: #000;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: move;
-            user-select: none;
-        }
-        #window-title {
-            font-weight: bold;
-        }
-        #window-controls {
-            display: flex;
-            gap: 8px;
-        }
-        .window-button {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .window-button:hover {
-            background-color: var(--button-hover);
-        }
-        #minimize { background-color: #ffbd44; }
-        #maximize { background-color: #00ca4e; }
-        #close { background-color: #ff605c; }
-        #terminal {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .command {
-            color: var(--accent-color);
-        }
-        .response {
-            margin: 5px 0 15px 20px;
-            white-space: pre-wrap;
-        }
-        #input-line {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            background-color: var(--terminal-bg);
-            border-top: 1px solid var(--accent-color);
-        }
-        #prompt {
-            margin-right: 10px;
-            color: var(--accent-color);
-        }
-        #user-input {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 14px;
-            outline: none;
-            flex: 1;
-        }
-
-        /* Floating Terminal Icon */
-        #terminal-icon {
+        /* Taskbar */
+        #taskbar {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #C0C0C0; /* Silver */
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+            box-shadow: inset 0 -1px 0 #fff;
+            z-index: 1000;
+        }
+        #start-button {
+            width: 80px;
+            height: 30px;
+            background-color: #C0C0C0;
+            border: 2px outset #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 0 10px var(--accent-color);
-            transition: transform 0.3s;
+            margin-right: 10px;
+            user-select: none;
+            font-weight: bold;
+        }
+        #start-button:active {
+            border: 2px inset #fff;
+        }
+        #open-windows {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            flex-grow: 1;
+        }
+        .taskbar-item {
+            width: 100px;
+            height: 30px;
+            background-color: #E0E0E0;
+            border: 2px outset #fff;
+            margin-right: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            font-size: 14px;
+        }
+        .taskbar-item.active {
+            background-color: #C0C0C0;
+            border: 2px inset #fff;
+        }
+
+        /* Start Menu */
+        #start-menu {
+            position: fixed;
+            bottom: 45px;
+            left: 5px;
+            width: 200px;
+            background-color: #C0C0C0;
+            border: 2px solid #000;
+            display: none;
+            flex-direction: column;
+            z-index: 1500;
+        }
+        .start-menu-item {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .start-menu-item:hover {
+            background-color: #000080;
+            color: white;
+        }
+
+        /* Desktop Icons */
+        .desktop-icon {
+            width: 60px;
+            text-align: center;
+            margin: 10px;
+            cursor: pointer;
+            position: absolute;
+        }
+        .desktop-icon img {
+            width: 48px;
+            height: 48px;
+        }
+        .desktop-icon span {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #000;
+            user-select: none;
+        }
+
+        /* Window Styles */
+        .window {
+            position: absolute;
+            width: 500px;
+            height: 400px;
+            background-color: #C0C0C0;
+            border: 2px solid #000;
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
             z-index: 1001;
         }
-        #terminal-icon:hover {
-            transform: scale(1.1);
+        .window.active {
+            display: flex;
         }
-        #terminal-icon::before {
-            content: '>';
-            font-size: 24px;
+        .window-header {
+            height: 30px;
+            background-color: #000080;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5px;
+            cursor: move;
+            user-select: none;
+        }
+        .window-title {
+            font-weight: bold;
+        }
+        .window-controls {
+            display: flex;
+        }
+        .window-button {
+            width: 20px;
+            height: 20px;
+            margin-left: 2px;
+            background-color: #C0C0C0;
+            border: 2px outset #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .window-button:hover {
+            background-color: #A0A0A0;
+        }
+        .window-content {
+            flex-grow: 1;
+            padding: 10px;
+            background-color: #FFFFFF;
+            overflow: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+
+        /* Terminal Window Specific Styles */
+        #terminal-window .window-content {
+            background-color: #000000;
+            color: #00FF00;
+            padding: 10px;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        #terminal-window input {
+            background: transparent;
+            border: none;
+            color: #00FF00;
+            width: 100%;
+            outline: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+        }
+
+        /* Easter Egg Overlay */
+        #easter-egg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255,255,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
             color: #000;
+            z-index: 3000;
+            animation: flash 3s infinite;
+        }
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         /* Responsive Adjustments */
         @media (max-width: 600px) {
-            #cube-container {
-                width: 100px;
-                height: 100px;
+            .window {
+                width: 90%;
+                height: 80%;
             }
-            .face {
-                width: 100px;
-                height: 100px;
+            .desktop-icon {
+                width: 50px;
             }
-            #terminal-window {
-                width: 95%;
-                height: 90%;
+            .desktop-icon img {
+                width: 40px;
+                height: 40px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
+    <!-- =======================
+         Loading Screen
+    ======================= -->
     <div id="loading-screen">
-        <div id="cube-container">
-            <div id="cube">
-                <div class="face" id="front"></div>
-                <div class="face" id="back"></div>
-                <div class="face" id="right"></div>
-                <div class="face" id="left"></div>
-                <div class="face" id="top"></div>
-                <div class="face" id="bottom"></div>
-            </div>
-        </div>
-        <div id="loading-text">Initializing System...</div>
-        <div id="loading-progress"></div>
-    </div>
-
-    <!-- Terminal Window -->
-    <div id="terminal-window">
-        <div id="window-header">
-            <div id="window-title">Basil Alomary - Terminal</div>
-            <div id="window-controls">
-                <div class="window-button" id="minimize" title="Minimize"></div>
-                <div class="window-button" id="maximize" title="Maximize"></div>
-                <div class="window-button" id="close" title="Close"></div>
-            </div>
-        </div>
-        <div id="terminal" aria-live="polite" aria-atomic="true"></div>
-        <div id="input-line">
-            <span id="prompt">C:\Users\Basil&gt;</span>
-            <input type="text" id="user-input" autofocus aria-label="Command Line">
+        <div>Microsoft(R) Windows(TM) 92</div>
+        <div id="loading-text">Starting up...</div>
+        <div id="loading-progress">
+            <div id="loading-bar"></div>
         </div>
     </div>
 
-    <!-- Floating Terminal Icon -->
-    <div id="terminal-icon" title="Open Terminal"></div>
+    <!-- =======================
+         Desktop Environment
+    ======================= -->
+    <div id="desktop">
+        <!-- Desktop Icons -->
+        <div class="desktop-icon" style="top: 50px; left: 50px;" onclick="openWindow('terminal-window')">
+            <img src="https://i.imgur.com/QXJ1B2u.png" alt="Terminal">
+            <span>Terminal</span>
+        </div>
+        <div class="desktop-icon" style="top: 50px; left: 150px;" onclick="openWindow('about-window')">
+            <img src="https://i.imgur.com/RQ0JdYz.png" alt="About">
+            <span>About</span>
+        </div>
+        <div class="desktop-icon" style="top: 50px; left: 250px;" onclick="openWindow('contact-window')">
+            <img src="https://i.imgur.com/G7Q4GZP.png" alt="Contact">
+            <span>Contact</span>
+        </div>
+        <!-- Add more icons as needed -->
 
+        <!-- Easter Egg Overlay -->
+        <div id="easter-egg">You Found Me!</div>
+    </div>
+
+    <!-- =======================
+         Taskbar
+    ======================= -->
+    <div id="taskbar">
+        <div id="start-button" onclick="toggleStartMenu()">Start</div>
+        <div id="open-windows">
+            <!-- Taskbar Items will be added here dynamically -->
+        </div>
+    </div>
+
+    <!-- =======================
+         Start Menu
+    ======================= -->
+    <div id="start-menu">
+        <div class="start-menu-item" onclick="openWindow('terminal-window')">Terminal</div>
+        <div class="start-menu-item" onclick="openWindow('about-window')">About</div>
+        <div class="start-menu-item" onclick="openWindow('contact-window')">Contact</div>
+        <div class="start-menu-item" onclick="showEasterEgg()">Easter Egg</div>
+    </div>
+
+    <!-- =======================
+         Terminal Window
+    ======================= -->
+    <div class="window" id="terminal-window" style="top: 100px; left: 100px;">
+        <div class="window-header">
+            <div class="window-title">Terminal - Basil Alomary</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('terminal-window')">_</div>
+                <div class="window-button" onclick="closeWindow('terminal-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div id="terminal">
+                <div class="response">Welcome to the Windows 92 Terminal.</div>
+                <div class="response">Type 'help' to see available commands.</div>
+            </div>
+            <input type="text" id="user-input" autofocus>
+        </div>
+    </div>
+
+    <!-- =======================
+         About Window
+    ======================= -->
+    <div class="window" id="about-window" style="top: 120px; left: 120px;">
+        <div class="window-header">
+            <div class="window-title">About Basil</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('about-window')">_</div>
+                <div class="window-button" onclick="closeWindow('about-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <p><strong>Basil Alomary</strong> is the Head of Research at Stripes, building the diligence and investment research team to enable investments in incredible software and consumer companies.</p>
+            <p>Previous roles include Consultant at Bain & Company and Head of Growth at Simon Data.</p>
+            <p>Independent investor, consultant, and advisor to early-stage SaaS companies.</p>
+        </div>
+    </div>
+
+    <!-- =======================
+         Contact Window
+    ======================= -->
+    <div class="window" id="contact-window" style="top: 140px; left: 140px;">
+        <div class="window-header">
+            <div class="window-title">Contact Basil</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('contact-window')">_</div>
+                <div class="window-button" onclick="closeWindow('contact-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/basilalomary" target="_blank">linkedin.com/in/basilalomary</a></p>
+            <p><strong>Twitter:</strong> <a href="https://twitter.com/basil_alomary" target="_blank">twitter.com/basil_alomary</a></p>
+        </div>
+    </div>
+
+    <!-- =======================
+         Easter Egg Window (Hidden)
+    ======================= -->
+    <div class="window" id="easter-egg-window" style="top: 160px; left: 160px;">
+        <div class="window-header">
+            <div class="window-title">Easter Egg</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('easter-egg-window')">_</div>
+                <div class="window-button" onclick="closeWindow('easter-egg-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <p>🎉 Congratulations! You've found the Easter Egg! 🎉</p>
+            <p>Enjoy your special surprise!</p>
+        </div>
+    </div>
+
+    <!-- =======================
+         JavaScript Functionality
+    ======================= -->
     <script>
-        // Elements
-        const terminal = document.getElementById('terminal');
-        const terminalWindow = document.getElementById('terminal-window');
-        const userInput = document.getElementById('user-input');
-        const loadingScreen = document.getElementById('loading-screen');
-        const loadingProgress = document.getElementById('loading-progress');
-        const cube = document.getElementById('cube');
-        const windowHeader = document.getElementById('window-header');
-        const minimizeBtn = document.getElementById('minimize');
-        const maximizeBtn = document.getElementById('maximize');
-        const closeBtn = document.getElementById('close');
-        const terminalIcon = document.getElementById('terminal-icon');
+        // =======================
+        // Loading Screen Logic
+        // =======================
+        window.addEventListener('load', () => {
+            // Simulate loading time
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 4000);
+        });
 
-        // Content
-        const content = {
-            about: "Basil Alomary is the Head of Research at Stripes (www.stripes.co), building the diligence and investment research team to enable investments in incredible software and consumer companies.",
+        // =======================
+        // Start Menu Logic
+        // =======================
+        function toggleStartMenu() {
+            const startMenu = document.getElementById('start-menu');
+            startMenu.style.display = startMenu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Close Start Menu when clicking outside
+        window.addEventListener('click', function(e) {
+            const startMenu = document.getElementById('start-menu');
+            const startButton = document.getElementById('start-button');
+            if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
+                startMenu.style.display = 'none';
+            }
+        });
+
+        // =======================
+        // Window Management
+        // =======================
+        let zIndex = 1001; // Starting z-index for windows
+
+        function openWindow(windowId) {
+            const win = document.getElementById(windowId);
+            if (win.style.display === 'flex') {
+                win.style.zIndex = ++zIndex;
+                return;
+            }
+            win.style.display = 'flex';
+            win.style.zIndex = ++zIndex;
+            addTaskbarItem(windowId, win.querySelector('.window-title').innerText);
+        }
+
+        function closeWindow(windowId) {
+            const win = document.getElementById(windowId);
+            win.style.display = 'none';
+            removeTaskbarItem(windowId);
+        }
+
+        function minimizeWindow(windowId) {
+            const win = document.getElementById(windowId);
+            win.style.display = 'none';
+            removeTaskbarItem(windowId);
+        }
+
+        function addTaskbarItem(windowId, title) {
+            const openWindows = document.getElementById('open-windows');
+            // Prevent duplicate taskbar items
+            if (document.querySelector(`.taskbar-item[data-window="${windowId}"]`)) return;
+
+            const taskbarItem = document.createElement('div');
+            taskbarItem.className = 'taskbar-item';
+            taskbarItem.innerText = title;
+            taskbarItem.setAttribute('data-window', windowId);
+            taskbarItem.onclick = () => restoreWindow(windowId);
+            openWindows.appendChild(taskbarItem);
+        }
+
+        function removeTaskbarItem(windowId) {
+            const taskbarItem = document.querySelector(`.taskbar-item[data-window="${windowId}"]`);
+            if (taskbarItem) {
+                taskbarItem.remove();
+            }
+        }
+
+        function restoreWindow(windowId) {
+            const win = document.getElementById(windowId);
+            win.style.display = 'flex';
+            win.style.zIndex = ++zIndex;
+            removeTaskbarItem(windowId);
+        }
+
+        // =======================
+        // Draggable Windows
+        // =======================
+        const windows = document.querySelectorAll('.window');
+        windows.forEach(win => {
+            const header = win.querySelector('.window-header');
+            header.addEventListener('mousedown', dragMouseDown);
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                // Get the mouse cursor position at startup
+                let pos3 = e.clientX;
+                let pos4 = e.clientY;
+
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+
+                function elementDrag(e) {
+                    e.preventDefault();
+                    // Calculate the new cursor position
+                    let pos1 = pos3 - e.clientX;
+                    let pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    // Set the element's new position
+                    win.style.top = (win.offsetTop - pos2) + "px";
+                    win.style.left = (win.offsetLeft - pos1) + "px";
+                }
+
+                function closeDragElement() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                }
+            }
+        });
+
+        // =======================
+        // Terminal Functionality
+        // =======================
+        const terminal = document.getElementById('terminal');
+        const userInput = document.getElementById('user-input');
+
+        const commands = {
+            help: "Available commands:\nabout\nexperience\neducation\nwriting\ncontact\nsocial\nclear\nhelp",
+            about: "Basil Alomary is the Head of Research at Stripes, building the diligence and investment research team to enable investments in incredible software and consumer companies.",
             experience: `Current: Head of Research at Stripes (www.stripes.co)
 
 Previous: Consultant at Bain & Company (www.bain.com)
 
 Previous: Head of Growth at Simon Data (www.simondata.com)
 
-Independent investor, consultant, and advisor to early-stage SaaS companies including:
-- Cedar Health (www.cedar.com)
-- Klara (www.klara.com)
-- Maestro (www.go-maestro.com)
-- Eigen (www.eigentech.com)
-- Ethena (www.goethena.com)`,
+Independent investor, consultant, and advisor to early-stage SaaS companies.`,
             education: `Graduate of Columbia Business School (www.gsb.columbia.edu/programs/mba)
 
 Graduate of Rutgers University
@@ -333,191 +576,92 @@ Student Fellow at .406 Ventures (406ventures.com)
 Venture Partner at Contrary Capital (www.contrarycap.com)
 
 InSITE Fellow (insitefellows.org)`,
-            writing: `1. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/" target="_blank">Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution</a>
-2. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241" target="_blank">OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology</a>
-3. <a href="https://wire.insiderfinance.io/nfts-like-all-art-are-all-about-narrative-bc0bb5edd81" target="_blank">NFTs, like all art, are all about narrative</a>
-4. <a href="https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-stupid-questions-acd868cd4f04" target="_blank">"Where am I going to display my NFT?"... and other stupid questions</a>
-5. <a href="https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6" target="_blank">The Future of InsurTech: Why serving policyholders has been the path to growth for so many...</a>`,
-            contact: `LinkedIn: <a href="https://www.linkedin.com/in/basilalomary" target="_blank">linkedin.com/in/basilalomary</a>
+            writing: `1. Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution (https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/)
+2. OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology (https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241)
+3. NFTs, like all art, are all about narrative (https://wire.insiderfinance.io/nfts-like-all-art-are-all-about-narrative-bc0bb5edd81)
+4. "Where am I going to display my NFT?"... and other stupid questions (https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-stupid-questions-acd868cd4f04)
+5. The Future of InsurTech: Why serving policyholders has been the path to growth for so many... (https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6)`,
+            contact: `LinkedIn: linkedin.com/in/basilalomary
 
-Twitter: <a href="https://twitter.com/basil_alomary" target="_blank">twitter.com/basil_alomary</a>`,
+Twitter: twitter.com/basil_alomary`,
             social: `Social Links:
-- <a href="https://www.linkedin.com/in/basilalomary" target="_blank">LinkedIn</a>
-- <a href="https://twitter.com/basil_alomary" target="_blank">Twitter</a>
-- <a href="https://github.com/basilalomary" target="_blank">GitHub</a>`,
-            projects: `Projects:
-- **Project Alpha**: Description of Project Alpha.
-- **Project Beta**: Description of Project Beta.
-- **Project Gamma**: Description of Project Gamma.`,
-            help: `Available commands:
-- about
-- experience
-- education
-- writing
-- contact
-- social
-- projects
-- clear
-- help`
+- LinkedIn (linkedin.com/in/basilalomary)
+- Twitter (twitter.com/basil_alomary)`,
+            clear: function() {
+                terminal.innerHTML = '';
+                appendResponse("Microsoft(R) Windows(TM) 92\n(c) 1992 Microsoft Corporation. All rights reserved.\n\nWelcome to Basil Alomary's terminal.\nType 'help' to see available commands.");
+            }
         };
-
-        // Initialize Loading
-        function simulateLoading() {
-            let progress = 0;
-            const typingText = "Initializing System...";
-            const typingDuration = 3000;
-            const interval = 100;
-            const increment = 100 / (typingDuration / interval);
-
-            const loadingInterval = setInterval(() => {
-                progress += increment;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(loadingInterval);
-                    setTimeout(() => {
-                        loadingScreen.classList.add('hidden');
-                        terminalWindow.classList.add('active');
-                        initTerminal();
-                    }, 500);
-                }
-                loadingProgress.style.width = `${progress}%`;
-            }, interval);
-        }
-
-        // Explode Cube Animation (Optional Enhancement)
-        /*
-        function explodeCube() {
-            const faces = document.querySelectorAll('.face');
-            faces.forEach((face, index) => {
-                setTimeout(() => {
-                    face.style.transform = `translate3d(${(Math.random() - 0.5) * 1000}px, ${(Math.random() - 0.5) * 1000}px, ${(Math.random() - 0.5) * 1000}px) rotate3d(${Math.random()}, ${Math.random()}, ${Math.random()}, ${Math.random() * 360}deg)`;
-                    face.style.opacity = 0;
-                }, index * 100);
-            });
-
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-                terminalWindow.style.display = 'flex';
-                initTerminal();
-            }, 1500);
-        }
-        */
-
-        // Terminal Initialization
-        function initTerminal() {
-            displayIntro();
-            userInput.focus();
-        }
-
-        function displayIntro() {
-            const intro = `Microsoft Windows [Version 10.0.19042.928]
-(c) 2020 Microsoft Corporation. All rights reserved.
-
-Welcome to Basil Alomary's terminal.
-Type 'help' for a list of available commands.`;
-            appendResponse(intro);
-        }
-
-        function appendCommand(command) {
-            const cmd = document.createElement('div');
-            cmd.className = 'command';
-            cmd.textContent = `C:\\Users\\Basil> ${command}`;
-            terminal.appendChild(cmd);
-        }
 
         function appendResponse(text) {
             const resp = document.createElement('div');
             resp.className = 'response';
-            resp.innerHTML = text;
+            resp.innerHTML = text.replace(/\n/g, '<br>');
             terminal.appendChild(resp);
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        async function handleCommand(command) {
-            if (!command) return;
-            appendCommand(command);
-            const cmd = command.toLowerCase();
+        function handleCommand(command) {
+            const args = command.split(' ');
+            const baseCommand = args[0].toLowerCase();
 
-            if (content[cmd]) {
-                appendResponse(content[cmd]);
+            if (commands[baseCommand]) {
+                if (typeof commands[baseCommand] === 'function') {
+                    commands[baseCommand]();
+                } else {
+                    appendResponse(commands[baseCommand]);
+                }
             } else {
-                appendResponse("Command not recognized. Type 'help' for a list of available commands.");
-            }
-
-            if (cmd !== 'clear') {
-                terminal.scrollTop = terminal.scrollHeight;
+                appendResponse("Command not recognized. Type 'help' to see available commands.");
             }
         }
 
-        // Event Listeners
         userInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const command = this.value.trim();
+                appendResponse(`C:\\Users\\Basil> ${command}`);
                 this.value = '';
                 handleCommand(command);
+
+                // Easter Egg Trigger
+                if (command.toLowerCase() === 'unlocksecret') {
+                    showEasterEgg();
+                }
             }
         });
 
-        // Make the window draggable
-        let isDragging = false;
-        let offsetX, offsetY;
+        // Initialize Terminal
+        window.onload = () => {
+            setTimeout(() => {
+                appendResponse("Microsoft(R) Windows(TM) 92\n(c) 1992 Microsoft Corporation. All rights reserved.\n\nWelcome to Basil Alomary's terminal.\nType 'help' to see available commands.");
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 4000);
+        };
 
-        windowHeader.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            offsetX = e.clientX - terminalWindow.offsetLeft;
-            offsetY = e.clientY - terminalWindow.offsetTop;
-            document.body.style.userSelect = 'none';
-        });
+        // =======================
+        // Easter Egg Functions
+        // =======================
+        function showEasterEgg() {
+            const egg = document.getElementById('easter-egg');
+            const eggWindow = document.getElementById('easter-egg-window');
+            egg.style.display = 'flex';
+            eggWindow.style.display = 'flex';
+            // Hide after 5 seconds
+            setTimeout(() => {
+                egg.style.display = 'none';
+                eggWindow.style.display = 'none';
+            }, 5000);
+        }
 
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                terminalWindow.style.left = `${e.clientX - offsetX}px`;
-                terminalWindow.style.top = `${e.clientY - offsetY}px`;
-                terminalWindow.style.transform = `translate(0, 0)`;
+        // =======================
+        // Prevent Text Selection on Drag
+        // =======================
+        document.addEventListener('selectstart', function(e) {
+            if (e.target.classList.contains('window-header')) {
+                e.preventDefault();
             }
         });
 
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            document.body.style.userSelect = 'auto';
-        });
-
-        // Window Control Buttons
-        minimizeBtn.addEventListener('click', () => {
-            terminalWindow.style.display = 'none';
-            terminalIcon.style.display = 'flex';
-        });
-
-        maximizeBtn.addEventListener('click', () => {
-            if (terminalWindow.classList.contains('maximized')) {
-                terminalWindow.classList.remove('maximized');
-                terminalWindow.style.width = '80%';
-                terminalWindow.style.height = '80%';
-                terminalWindow.style.top = '10%';
-                terminalWindow.style.left = '10%';
-            } else {
-                terminalWindow.classList.add('maximized');
-                terminalWindow.style.width = '100%';
-                terminalWindow.style.height = '100%';
-                terminalWindow.style.top = '0';
-                terminalWindow.style.left = '0';
-            }
-        });
-
-        closeBtn.addEventListener('click', () => {
-            terminalWindow.style.display = 'none';
-            terminalIcon.style.display = 'flex';
-        });
-
-        // Floating Terminal Icon Click
-        terminalIcon.addEventListener('click', () => {
-            terminalWindow.style.display = 'flex';
-            terminalIcon.style.display = 'none';
-            userInput.focus();
-        });
-
-        // Initialize
-        simulateLoading();
     </script>
 </body>
 </html>
