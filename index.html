@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basil Alomary - Classic Terminal</title>
+    <title>Basil Alomary - Classic Desktop</title>
     <style>
         /* =======================
-           Classic OS Inspired Styles
+           Classic Desktop Styles
         ======================= */
         
         /* Reset and Base Styles */
@@ -31,7 +31,9 @@
             text-decoration: none;
         }
 
-        /* Loading Screen */
+        /* =======================
+           Loading Screen
+        ======================= */
         #loading-screen {
             position: fixed;
             top: 0;
@@ -81,7 +83,9 @@
             to { width: 100%; }
         }
 
-        /* Desktop Styles */
+        /* =======================
+           Desktop Environment
+        ======================= */
         #desktop {
             width: 100%;
             height: 100%;
@@ -90,7 +94,9 @@
             background-size: cover;
         }
 
-        /* Taskbar */
+        /* =======================
+           Taskbar
+        ======================= */
         #taskbar {
             position: fixed;
             bottom: 0;
@@ -144,7 +150,9 @@
             border: 2px inset #fff;
         }
 
-        /* Start Menu */
+        /* =======================
+           Start Menu
+        ======================= */
         #start-menu {
             position: fixed;
             bottom: 45px;
@@ -165,7 +173,9 @@
             color: white;
         }
 
-        /* Desktop Icons */
+        /* =======================
+           Desktop Icons
+        ======================= */
         .desktop-icon {
             width: 60px;
             text-align: center;
@@ -185,7 +195,9 @@
             user-select: none;
         }
 
-        /* Window Styles */
+        /* =======================
+           Window Styles
+        ======================= */
         .window {
             position: absolute;
             width: 500px;
@@ -196,6 +208,8 @@
             display: none;
             flex-direction: column;
             z-index: 1001;
+            resize: both;
+            overflow: auto;
         }
         .window.active {
             display: flex;
@@ -242,7 +256,9 @@
             font-size: 14px;
         }
 
-        /* Terminal Window Specific Styles */
+        /* =======================
+           Terminal Window Specific Styles
+        ======================= */
         #terminal-window .window-content {
             background-color: #000000;
             color: #00FF00;
@@ -259,7 +275,9 @@
             font-size: 14px;
         }
 
-        /* Easter Egg Overlay */
+        /* =======================
+           Easter Egg Overlay
+        ======================= */
         #easter-egg {
             position: fixed;
             top: 0;
@@ -280,7 +298,9 @@
             50% { opacity: 0.5; }
         }
 
-        /* Responsive Adjustments */
+        /* =======================
+           Responsive Adjustments
+        ======================= */
         @media (max-width: 600px) {
             .window {
                 width: 90%;
@@ -293,6 +313,34 @@
                 width: 40px;
                 height: 40px;
             }
+        }
+
+        /* =======================
+           Dark Theme Styles
+        ======================= */
+        .dark-theme {
+            --background-color: #2E2E2E;
+            --window-bg: #3C3C3C;
+            --header-bg: #1A1A1A;
+            --text-color: #FFFFFF;
+            --accent-color: #00FF00;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .dark-theme .window {
+            background-color: var(--window-bg);
+            color: var(--text-color);
+        }
+        .dark-theme .window-header {
+            background-color: var(--header-bg);
+        }
+        .dark-theme #start-menu {
+            background-color: var(--window-bg);
+            color: var(--text-color);
+        }
+        .dark-theme .start-menu-item:hover {
+            background-color: var(--accent-color);
+            color: #000;
         }
     </style>
 </head>
@@ -314,18 +362,33 @@
     <div id="desktop">
         <!-- Desktop Icons -->
         <div class="desktop-icon" style="top: 50px; left: 50px;" onclick="openWindow('terminal-window')" ondblclick="triggerEasterEgg()">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABG0lEQVR4Xu3ZMQ0AAAjDMO5fNNCB1YKwVEF2YNLyQIABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAoYMg8AAG//XUYAAAAASUVORK5CYII=" alt="Terminal">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9IiMwMDAwMDAiLz4KICA8dGV4dCB4PSIyNCIgeT0iMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+Cjwvc3ZnPgo=" alt="Terminal">
             <span>Terminal</span>
         </div>
         <div class="desktop-icon" style="top: 50px; left: 150px;" onclick="openWindow('about-window')">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABH0lEQVR4Xu3ZMQ0AAAjDMO5fNNCB1YKwVEF2YNLyQIABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAoYMg8AAG//XUYAAAAASUVORK5CYII=" alt="About">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9IiMwMDAwMDAiLz4KICA8dGV4dCB4PSIyNCIgeT0iMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+Cjwvc3ZnPgo=" alt="About">
             <span>About</span>
         </div>
         <div class="desktop-icon" style="top: 50px; left: 250px;" onclick="openWindow('contact-window')">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABHUlEQVR4Xu3ZMQ0AAAjDMO5fNNCB1YKwVEF2YNLyQIABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAoYMg8AAG//XUYAAAAASUVORK5CYII=" alt="Contact">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9IiMwMDAwMDAiLz4KICA8dGV4dCB4PSIyNCIgeT0iMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+Cjwvc3ZnPgo=" alt="Contact">
             <span>Contact</span>
         </div>
-        <!-- Add more icons as needed -->
+        <div class="desktop-icon" style="top: 150px; left: 50px;" onclick="openWindow('notepad-window')">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9IiMwMDAwMDAiLz4KICA8dGV4dCB4PSIyNCIgeT0iMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+Cjwvc3ZnPgo=" alt="Notepad">
+            <span>Notepad</span>
+        </div>
+        <div class="desktop-icon" style="top: 150px; left: 150px;" onclick="openWindow('calculator-window')">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9IiMwMDAwMDAiLz4KICA8dGV4dCB4PSIyNCIgeT0iMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+Cjwvc3ZnPgo=" alt="Calculator">
+            <span>Calculator</span>
+        </div>
+        <div class="desktop-icon" style="top: 150px; left: 250px;" onclick="openWindow('file-explorer-window')">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9IiMwMDAwMDAiLz4KICA8dGV4dCB4PSIyNCIgeT0iMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+Cjwvc3ZnPgo=" alt="File Explorer">
+            <span>File Explorer</span>
+        </div>
+        <div class="desktop-icon" style="top: 150px; left: 350px;" onclick="openWindow('settings-window')">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9IiMwMDAwMDAiLz4KICA8dGV4dCB4PSIyNCIgeT0iMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+Cjwvc3ZnPgo=" alt="Settings">
+            <span>Settings</span>
+        </div>
 
         <!-- Easter Egg Overlay -->
         <div id="easter-egg">🎉 Surprise! 🎉</div>
@@ -339,6 +402,11 @@
         <div id="open-windows">
             <!-- Taskbar Items will be added here dynamically -->
         </div>
+        <!-- System Tray -->
+        <div id="system-tray" style="display: flex; align-items: center; margin-left: auto;">
+            <div id="clock" style="margin-right: 10px; font-family: 'Courier New', Courier, monospace;"></div>
+            <!-- Additional tray icons can be added here -->
+        </div>
     </div>
 
     <!-- =======================
@@ -348,6 +416,12 @@
         <div class="start-menu-item" onclick="openWindow('terminal-window')">Terminal</div>
         <div class="start-menu-item" onclick="openWindow('about-window')">About</div>
         <div class="start-menu-item" onclick="openWindow('contact-window')">Contact</div>
+        <div class="start-menu-item" onclick="openWindow('notepad-window')">Notepad</div>
+        <div class="start-menu-item" onclick="openWindow('calculator-window')">Calculator</div>
+        <div class="start-menu-item" onclick="openWindow('file-explorer-window')">File Explorer</div>
+        <div class="start-menu-item" onclick="openWindow('music-player-window')">Music Player</div>
+        <div class="start-menu-item" onclick="openWindow('settings-window')">Settings</div>
+        <div class="start-menu-item" onclick="toggleTheme()">Toggle Theme</div>
         <div class="start-menu-item" onclick="triggerEasterEgg()">Hidden Feature</div>
     </div>
 
@@ -407,9 +481,130 @@
     </div>
 
     <!-- =======================
+         Notepad Window
+    ======================= -->
+    <div class="window" id="notepad-window" style="top: 160px; left: 160px;">
+        <div class="window-header">
+            <div class="window-title">Notepad</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('notepad-window')">_</div>
+                <div class="window-button" onclick="closeWindow('notepad-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <textarea id="notepad-text" style="width: 100%; height: 100%; border: none; resize: none; background-color: #FFFFFF; color: #000000; font-family: 'Courier New', Courier, monospace;"></textarea>
+        </div>
+    </div>
+
+    <!-- =======================
+         Calculator Window
+    ======================= -->
+    <div class="window" id="calculator-window" style="top: 180px; left: 180px;">
+        <div class="window-header">
+            <div class="window-title">Calculator</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('calculator-window')">_</div>
+                <div class="window-button" onclick="closeWindow('calculator-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <input type="text" id="calc-display" readonly style="width: 100%; height: 40px; text-align: right; font-size: 24px;">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 10px;">
+                <button onclick="calcInput('7')">7</button>
+                <button onclick="calcInput('8')">8</button>
+                <button onclick="calcInput('9')">9</button>
+                <button onclick="calcInput('/')">/</button>
+                <button onclick="calcInput('4')">4</button>
+                <button onclick="calcInput('5')">5</button>
+                <button onclick="calcInput('6')">6</button>
+                <button onclick="calcInput('*')">*</button>
+                <button onclick="calcInput('1')">1</button>
+                <button onclick="calcInput('2')">2</button>
+                <button onclick="calcInput('3')">3</button>
+                <button onclick="calcInput('-')">-</button>
+                <button onclick="calcInput('0')">0</button>
+                <button onclick="calcInput('.')">.</button>
+                <button onclick="calculateResult()">=</button>
+                <button onclick="calcInput('+')">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =======================
+         File Explorer Window
+    ======================= -->
+    <div class="window" id="file-explorer-window" style="top: 200px; left: 200px;">
+        <div class="window-header">
+            <div class="window-title">File Explorer</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('file-explorer-window')">_</div>
+                <div class="window-button" onclick="closeWindow('file-explorer-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content" id="file-explorer-content">
+            <ul id="file-list">
+                <li>Documents</li>
+                <li>Pictures</li>
+                <li>Projects</li>
+                <!-- Add more files/folders as needed -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- =======================
+         Music Player Window
+    ======================= -->
+    <div class="window" id="music-player-window" style="top: 220px; left: 220px;">
+        <div class="window-header">
+            <div class="window-title">Music Player</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('music-player-window')">_</div>
+                <div class="window-button" onclick="closeWindow('music-player-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <audio id="music-player" controls>
+                <source src="data:audio/mp3;base64,//uQxA..." type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div>
+                <button onclick="previousTrack()">Prev</button>
+                <button onclick="playPause()">Play/Pause</button>
+                <button onclick="nextTrack()">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =======================
+         Settings Window
+    ======================= -->
+    <div class="window" id="settings-window" style="top: 240px; left: 240px;">
+        <div class="window-header">
+            <div class="window-title">Settings</div>
+            <div class="window-controls">
+                <div class="window-button" onclick="minimizeWindow('settings-window')">_</div>
+                <div class="window-button" onclick="closeWindow('settings-window')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <h3>Change Wallpaper</h3>
+            <button onclick="changeWallpaper('pattern')">Pattern</button>
+            <button onclick="changeWallpaper('nature')">Nature</button>
+            <button onclick="changeWallpaper('abstract')">Abstract</button>
+        </div>
+    </div>
+
+    <!-- =======================
+         Screen Saver Overlay
+    ======================= -->
+    <div id="screen-saver" style="display: none;">
+        <canvas id="screen-saver-canvas" width="1920" height="1080"></canvas>
+    </div>
+
+    <!-- =======================
          Easter Egg Window (Hidden)
     ======================= -->
-    <div class="window" id="easter-egg-window" style="top: 160px; left: 160px;">
+    <div class="window" id="easter-egg-window" style="top: 260px; left: 260px;">
         <div class="window-header">
             <div class="window-title">Secret Feature</div>
             <div class="window-controls">
@@ -424,7 +619,7 @@
     </div>
 
     <!-- =======================
-         JavaScript Functionality
+         Notepad Content Persistence
     ======================= -->
     <script>
         // =======================
@@ -435,8 +630,24 @@
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
                 initializeDesktop();
+                restoreOpenWindows();
             }, 4000);
         });
+
+        // =======================
+        // Clock Functionality
+        // =======================
+        function updateClock() {
+            const clock = document.getElementById('clock');
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // initial call
 
         // =======================
         // Start Menu Logic
@@ -552,30 +763,23 @@
         const terminal = document.getElementById('terminal');
         const userInput = document.getElementById('user-input');
 
+        let commandHistory = [];
+        let historyIndex = -1;
+
         const commands = {
-            help: "Available commands:\nabout\nexperience\neducation\nwriting\ncontact\nclear\nhelp",
+            help: "Available commands:\nabout\nexperience\neducation\nwriting\ncontact\nnotepad\ncalculator\nfileexplorer\nmusicplayer\nclear\nhelp",
             about: "Basil Alomary is the Head of Research at Stripes, building the diligence and investment research team to enable investments in incredible software and consumer companies.",
             experience: `Current: Head of Research at Stripes (www.stripes.co)
-
 Previous: Consultant at Bain & Company (www.bain.com)
-
 Previous: Head of Growth at Simon Data (www.simondata.com)
-
 Independent investor, consultant, and advisor to early-stage SaaS companies.`,
             education: `Graduate of Columbia Business School (www.gsb.columbia.edu/programs/mba)
-
 Graduate of Rutgers University
-
 Glenn Hubbard Scholarship Recipient
-
 VC Fellow with General Catalyst (www.generalcatalyst.com)
-
 MBA Associate at Primary Venture Partners (primary.vc)
-
 Student Fellow at .406 Ventures (406ventures.com)
-
 Venture Partner at Contrary Capital (www.contrarycap.com)
-
 InSITE Fellow (insitefellows.org)`,
             writing: `1. Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution (https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/)
 2. OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology (https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241)
@@ -583,8 +787,11 @@ InSITE Fellow (insitefellows.org)`,
 4. "Where am I going to display my NFT?"... and other questions (https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-questions-acd868cd4f04)
 5. The Future of InsurTech: Why serving policyholders has been the path to growth for so many... (https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6)`,
             contact: `LinkedIn: linkedin.com/in/basilalomary
-
 Twitter: twitter.com/basil_alomary`,
+            notepad: "Open the Notepad application to create and save your notes.",
+            calculator: "Open the Calculator application to perform arithmetic operations.",
+            fileexplorer: "Open the File Explorer to navigate through virtual folders and files.",
+            musicplayer: "Open the Music Player to listen to your favorite tracks.",
             clear: function() {
                 terminal.innerHTML = '';
                 appendResponse("Welcome to Basil Alomary's terminal.\nType 'help' to see available commands.");
@@ -617,6 +824,10 @@ Twitter: twitter.com/basil_alomary`,
         userInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const command = this.value.trim();
+                if (command) {
+                    commandHistory.unshift(command);
+                    historyIndex = -1;
+                }
                 appendResponse(`C:\\Users\\Basil> ${command}`);
                 this.value = '';
                 handleCommand(command);
@@ -626,6 +837,24 @@ Twitter: twitter.com/basil_alomary`,
                     triggerEasterEgg();
                 }
             }
+            // Navigate through command history
+            if (e.key === 'ArrowUp') {
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    this.value = commandHistory[historyIndex];
+                }
+                e.preventDefault();
+            }
+            if (e.key === 'ArrowDown') {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    this.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = -1;
+                    this.value = '';
+                }
+                e.preventDefault();
+            }
         });
 
         // Initialize Terminal
@@ -633,6 +862,232 @@ Twitter: twitter.com/basil_alomary`,
             appendResponse("Welcome to Basil Alomary's terminal.\nType 'help' to see available commands.");
             userInput.focus();
         }
+
+        // =======================
+        // File Explorer Functionality
+        // =======================
+        const fileStructure = {
+            "Documents": ["Resume.docx", "CoverLetter.docx"],
+            "Pictures": ["Vacation.png", "Family.jpg"],
+            "Projects": ["Project1", "Project2"],
+            "Music": ["Song1.mp3", "Song2.mp3"]
+        };
+
+        function populateFileExplorer(folder = null) {
+            const fileList = document.getElementById('file-explorer-content').querySelector('#file-list');
+            fileList.innerHTML = ''; // Clear existing list
+
+            const items = folder ? fileStructure[folder] || [] : Object.keys(fileStructure);
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                li.style.cursor = 'pointer';
+                li.onclick = () => {
+                    if (fileStructure[item]) {
+                        populateFileExplorer(item); // Navigate into folder
+                    } else {
+                        alert(`Opening file: ${item}`);
+                    }
+                };
+                fileList.appendChild(li);
+            });
+        }
+
+        // =======================
+        // Notepad Functionality
+        // =======================
+        const notepadText = document.getElementById('notepad-text');
+
+        notepadText.addEventListener('input', () => {
+            localStorage.setItem('notepadContent', notepadText.value);
+        });
+
+        window.addEventListener('load', () => {
+            const savedContent = localStorage.getItem('notepadContent');
+            if (savedContent) {
+                notepadText.value = savedContent;
+            }
+        });
+
+        // =======================
+        // Calculator Functionality
+        // =======================
+        const calcDisplay = document.getElementById('calc-display');
+
+        function calcInput(value) {
+            calcDisplay.value += value;
+        }
+
+        function calculateResult() {
+            try {
+                calcDisplay.value = eval(calcDisplay.value) || '';
+            } catch {
+                calcDisplay.value = 'Error';
+            }
+        }
+
+        // =======================
+        // Theme Toggle Functionality
+        // =======================
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark-theme');
+            const isDark = document.documentElement.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Load theme preference on page load
+        window.addEventListener('load', () => {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark-theme');
+            }
+        });
+
+        // =======================
+        // Keyboard Shortcuts
+        // =======================
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 't') {
+                openWindow('terminal-window');
+            }
+            if (e.ctrlKey && e.key === 'a') {
+                openWindow('about-window');
+            }
+            if (e.ctrlKey && e.key === 'c') {
+                openWindow('contact-window');
+            }
+            if (e.ctrlKey && e.key === 'n') {
+                openWindow('notepad-window');
+            }
+            if (e.ctrlKey && e.key === 'e') {
+                openWindow('file-explorer-window');
+            }
+            if (e.ctrlKey && e.key === 'm') {
+                openWindow('music-player-window');
+            }
+            if (e.ctrlKey && e.key === 'k') {
+                openWindow('calculator-window');
+            }
+            if (e.ctrlKey && e.key === 's') {
+                openWindow('settings-window');
+            }
+        });
+
+        // =======================
+        // Music Player Functionality
+        // =======================
+        const musicPlayer = document.getElementById('music-player');
+        const musicPlaylist = [
+            'data:audio/mp3;base64,//uQxA...', // Replace with actual base64 audio data
+            'data:audio/mp3;base64,//uQxB...',
+            // Add more tracks as needed
+        ];
+        let currentTrack = 0;
+
+        function playPause() {
+            if (musicPlayer.paused) {
+                musicPlayer.play();
+            } else {
+                musicPlayer.pause();
+            }
+        }
+
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % musicPlaylist.length;
+            musicPlayer.src = musicPlaylist[currentTrack];
+            musicPlayer.play();
+        }
+
+        function previousTrack() {
+            currentTrack = (currentTrack - 1 + musicPlaylist.length) % musicPlaylist.length;
+            musicPlayer.src = musicPlaylist[currentTrack];
+            musicPlayer.play();
+        }
+
+        // Initialize music player
+        musicPlayer.src = musicPlaylist[currentTrack];
+
+        // =======================
+        // File Explorer Initialization
+        // =======================
+        document.getElementById('file-explorer-window').addEventListener('show', () => {
+            populateFileExplorer();
+        });
+
+        // =======================
+        // Screen Saver Functionality
+        // =======================
+        let idleTime = 0;
+        const screenSaver = document.getElementById('screen-saver');
+        const canvas = document.getElementById('screen-saver-canvas');
+        const ctx = canvas.getContext('2d');
+        let animationFrame;
+
+        function resetIdleTime() {
+            idleTime = 0;
+            screenSaver.style.display = 'none';
+            cancelAnimationFrame(animationFrame);
+        }
+
+        function incrementIdleTime() {
+            idleTime++;
+            if (idleTime > 120) { // 2 minutes
+                activateScreenSaver();
+            }
+        }
+
+        function activateScreenSaver() {
+            screenSaver.style.display = 'flex';
+            startScreenSaverAnimation();
+        }
+
+        function startScreenSaverAnimation() {
+            const balls = [];
+            const numBalls = 20;
+            for (let i = 0; i < numBalls; i++) {
+                balls.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    dx: (Math.random() - 0.5) * 4,
+                    dy: (Math.random() - 0.5) * 4,
+                    radius: 10
+                });
+            }
+
+            function draw() {
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                balls.forEach(ball => {
+                    ctx.beginPath();
+                    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = '#00FF00';
+                    ctx.fill();
+                    ctx.closePath();
+
+                    ball.x += ball.dx;
+                    ball.y += ball.dy;
+
+                    // Bounce off edges
+                    if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+                        ball.dx *= -1;
+                    }
+                    if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+                        ball.dy *= -1;
+                    }
+                });
+
+                animationFrame = requestAnimationFrame(draw);
+            }
+
+            draw();
+        }
+
+        document.onmousemove = resetIdleTime;
+        document.onkeypress = resetIdleTime;
+        document.onclick = resetIdleTime;
+
+        setInterval(incrementIdleTime, 1000);
 
         // =======================
         // Easter Egg Functions
@@ -656,6 +1111,18 @@ Twitter: twitter.com/basil_alomary`,
             if (e.target.classList.contains('window-header')) {
                 e.preventDefault();
             }
+        });
+
+        // =======================
+        // Screen Saver Logic
+        // =======================
+        // Already implemented above
+
+        // =======================
+        // File Explorer Initialization
+        // =======================
+        document.getElementById('file-explorer-window').addEventListener('show', () => {
+            populateFileExplorer();
         });
     </script>
 </body>
