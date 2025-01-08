@@ -4,212 +4,293 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basil Alomary - Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Font Embed */
+        @font-face {
+            font-family: 'IBM Plex Mono';
+            src: local('IBM Plex Mono'), url('https://fonts.gstatic.com/s/ibmplexmono/v17/IPxmCmBP8FJyGA4V4lJJ.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* CSS Variables */
+        :root {
+            --bg-color: #1e1e1e;
+            --accent-color: #00bcd4;
+            --text-color: #e0e0e0;
+            --terminal-bg: #2d2d2d;
+            --button-hover: #0097a7;
+            --loading-bg: #0d0d0d;
+        }
+
+        /* Reset and Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: 'IBM Plex Mono', monospace;
-            background-color: #008080;
-            color: #fff;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading Screen */
         #loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000;
+            background-color: var(--loading-bg);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s;
         }
-        #loading-content {
-            text-align: center;
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
         #loading-text {
-            font-size: 14px;
-            margin-bottom: 20px;
-            overflow: hidden;
+            font-size: 18px;
+            margin-top: 20px;
+            border-right: 2px solid var(--accent-color);
             white-space: nowrap;
-            border-right: 2px solid #0ff;
-            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            overflow: hidden;
+            width: 0;
+            animation: typing 3s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
         }
         @keyframes typing {
             from { width: 0 }
-            to { width: 100% }
+            to { width: 250px }
         }
         @keyframes blink-caret {
             from, to { border-color: transparent }
-            50% { border-color: #0ff; }
+            50% { border-color: var(--accent-color); }
         }
         #loading-progress {
             width: 0;
-            height: 2px;
-            background-color: #0ff;
-            transition: width 0.5s ease-out;
-            box-shadow: 0 0 10px #0ff, 0 0 5px #0ff;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin-top: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--accent-color);
         }
+
+        /* Cube Animation */
         #cube-container {
-            width: 200px;
-            height: 200px;
-            perspective: 1000px;
-            margin: 50px auto;
+            width: 150px;
+            height: 150px;
+            perspective: 800px;
+            margin-bottom: 20px;
         }
         #cube {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1s;
-            animation: rotate 10s infinite linear;
+            animation: rotateCube 10s infinite linear;
         }
         .face {
             position: absolute;
-            width: 200px;
-            height: 200px;
-            border: 2px solid #0ff;
-            background-color: rgba(0, 255, 255, 0.1);
-            opacity: 0.7;
-            transition: all 1s;
+            width: 150px;
+            height: 150px;
+            border: 2px solid var(--accent-color);
+            background-color: rgba(0, 188, 212, 0.1);
+            opacity: 0.8;
         }
-        #front { transform: translateZ(100px); }
-        #back { transform: rotateY(180deg) translateZ(100px); }
-        #right { transform: rotateY(90deg) translateZ(100px); }
-        #left { transform: rotateY(-90deg) translateZ(100px); }
-        #top { transform: rotateX(90deg) translateZ(100px); }
-        #bottom { transform: rotateX(-90deg) translateZ(100px); }
-        @keyframes rotate {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
+        #front { transform: translateZ(75px); }
+        #back { transform: rotateY(180deg) translateZ(75px); }
+        #right { transform: rotateY(90deg) translateZ(75px); }
+        #left { transform: rotateY(-90deg) translateZ(75px); }
+        #top { transform: rotateX(90deg) translateZ(75px); }
+        #bottom { transform: rotateX(-90deg) translateZ(75px); }
+        @keyframes rotateCube {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
         }
+
+        /* Terminal Window */
         #terminal-window {
             width: 80%;
-            height: 80%;
             max-width: 800px;
+            height: 80%;
             max-height: 600px;
-            display: none;
-            background-color: #000;
-            border: 1px solid #0ff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            overflow: hidden;
+            background-color: var(--terminal-bg);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
             position: absolute;
-            resize: both;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        #terminal-window.active {
+            display: flex;
         }
         #window-header {
-            background-color: #0ff;
+            background-color: var(--accent-color);
             color: #000;
-            padding: 5px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: move;
+            user-select: none;
         }
         #window-title {
             font-weight: bold;
         }
         #window-controls {
             display: flex;
+            gap: 8px;
         }
         .window-button {
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            margin-left: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .window-button:hover {
+            background-color: var(--button-hover);
         }
         #minimize { background-color: #ffbd44; }
         #maximize { background-color: #00ca4e; }
         #close { background-color: #ff605c; }
         #terminal {
-            height: calc(100% - 55px);
-            padding: 10px;
-            box-sizing: border-box;
+            flex: 1;
+            padding: 15px;
             overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.5;
         }
         .command {
-            margin-bottom: 5px;
+            color: var(--accent-color);
         }
         .response {
-            margin-bottom: 10px;
+            margin: 5px 0 15px 20px;
             white-space: pre-wrap;
-        }
-        .blink {
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        a {
-            color: #0ff;
-            text-decoration: underline;
-        }
-        a:hover {
-            text-decoration: none;
         }
         #input-line {
             display: flex;
             align-items: center;
-            padding: 5px 10px;
-            background-color: #000;
+            padding: 10px 15px;
+            background-color: var(--terminal-bg);
+            border-top: 1px solid var(--accent-color);
         }
         #prompt {
-            margin-right: 5px;
+            margin-right: 10px;
+            color: var(--accent-color);
         }
         #user-input {
             background: transparent;
             border: none;
-            color: #0ff;
+            color: var(--text-color);
             font-family: 'IBM Plex Mono', monospace;
             font-size: 14px;
             outline: none;
-            width: 100%;
+            flex: 1;
+        }
+
+        /* Floating Terminal Icon */
+        #terminal-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-color);
+            transition: transform 0.3s;
+            z-index: 1001;
+        }
+        #terminal-icon:hover {
+            transform: scale(1.1);
+        }
+        #terminal-icon::before {
+            content: '>';
+            font-size: 24px;
+            color: #000;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            #cube-container {
+                width: 100px;
+                height: 100px;
+            }
+            .face {
+                width: 100px;
+                height: 100px;
+            }
+            #terminal-window {
+                width: 95%;
+                height: 90%;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
     <div id="loading-screen">
-        <div id="loading-content">
-            <div id="cube-container">
-                <div id="cube">
-                    <div class="face" id="front"></div>
-                    <div class="face" id="back"></div>
-                    <div class="face" id="right"></div>
-                    <div class="face" id="left"></div>
-                    <div class="face" id="top"></div>
-                    <div class="face" id="bottom"></div>
-                </div>
+        <div id="cube-container">
+            <div id="cube">
+                <div class="face" id="front"></div>
+                <div class="face" id="back"></div>
+                <div class="face" id="right"></div>
+                <div class="face" id="left"></div>
+                <div class="face" id="top"></div>
+                <div class="face" id="bottom"></div>
             </div>
-            <div id="loading-text">Initializing System</div>
-            <div id="loading-progress"></div>
         </div>
+        <div id="loading-text">Initializing System...</div>
+        <div id="loading-progress"></div>
     </div>
+
+    <!-- Terminal Window -->
     <div id="terminal-window">
         <div id="window-header">
             <div id="window-title">Basil Alomary - Terminal</div>
             <div id="window-controls">
-                <div class="window-button" id="minimize"></div>
-                <div class="window-button" id="maximize"></div>
-                <div class="window-button" id="close"></div>
+                <div class="window-button" id="minimize" title="Minimize"></div>
+                <div class="window-button" id="maximize" title="Maximize"></div>
+                <div class="window-button" id="close" title="Close"></div>
             </div>
         </div>
-        <div id="terminal"></div>
+        <div id="terminal" aria-live="polite" aria-atomic="true"></div>
         <div id="input-line">
             <span id="prompt">C:\Users\Basil&gt;</span>
-            <input type="text" id="user-input" autofocus>
+            <input type="text" id="user-input" autofocus aria-label="Command Line">
         </div>
     </div>
 
+    <!-- Floating Terminal Icon -->
+    <div id="terminal-icon" title="Open Terminal"></div>
+
     <script>
+        // Elements
         const terminal = document.getElementById('terminal');
         const terminalWindow = document.getElementById('terminal-window');
         const userInput = document.getElementById('user-input');
@@ -220,99 +301,91 @@
         const minimizeBtn = document.getElementById('minimize');
         const maximizeBtn = document.getElementById('maximize');
         const closeBtn = document.getElementById('close');
+        const terminalIcon = document.getElementById('terminal-icon');
 
+        // Content
         const content = {
-            about: "Basil Alomary is the Head of Research at Stripes (http://www.stripes.co), building the diligence and investment research team to enable investments in incredible software and consumer companies.",
-            experience: `Current: Head of Research at Stripes (http://www.stripes.co)
+            about: "Basil Alomary is the Head of Research at Stripes (www.stripes.co), building the diligence and investment research team to enable investments in incredible software and consumer companies.",
+            experience: `Current: Head of Research at Stripes (www.stripes.co)
 
-Previous: Consultant at Bain & Company (http://www.bain.com)
+Previous: Consultant at Bain & Company (www.bain.com)
 
-Previous: Head of Growth at Simon Data (http://simondata.com)
+Previous: Head of Growth at Simon Data (www.simondata.com)
 
 Independent investor, consultant, and advisor to early-stage SaaS companies including:
-- Cedar Health (http://www.cedar.com)
-- Klara (http://www.klara.com)
-- Maestro (http://www.go-maestro.com)
-- Eigen (http://www.eigentech.com)
-- Ethena (http://www.goethena.com)`,
-            education: `Graduate of Columbia Business School (https://www8.gsb.columbia.edu/programs/mba)
+- Cedar Health (www.cedar.com)
+- Klara (www.klara.com)
+- Maestro (www.go-maestro.com)
+- Eigen (www.eigentech.com)
+- Ethena (www.goethena.com)`,
+            education: `Graduate of Columbia Business School (www.gsb.columbia.edu/programs/mba)
 
 Graduate of Rutgers University
 
 Glenn Hubbard Scholarship Recipient
 
-VC Fellow with General Catalyst (http://www.generalcatalyst.com)
+VC Fellow with General Catalyst (www.generalcatalyst.com)
 
-MBA Associate at Primary Venture Partners (http://primary.vc)
+MBA Associate at Primary Venture Partners (primary.vc)
 
-Student Fellow at .406 Ventures (http://406ventures.com)
+Student Fellow at .406 Ventures (406ventures.com)
 
-Venture Partner at Contrary Capital (http://www.contrarycap.com)
+Venture Partner at Contrary Capital (www.contrarycap.com)
 
-InSITE Fellow (http://insitefellows.org)`,
+InSITE Fellow (insitefellows.org)`,
             writing: `1. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/10/04/why-investors-should-focus-more-on-the-infrastructure-supporting-the-ai-revolution/" target="_blank">Why Investors Should Focus More On The Infrastructure Supporting The AI Revolution</a>
-
 2. <a href="https://www.forbes.com/sites/columbiabusinessschool/2020/04/30/ok-boomer-how-aging-population-impact-real-estate-tech/#21fc8cdc3241" target="_blank">OK, Boomer: How An Aging Population Is Going To Impact Real Estate Technology</a>
-
 3. <a href="https://wire.insiderfinance.io/nfts-like-all-art-are-all-about-narrative-bc0bb5edd81" target="_blank">NFTs, like all art, are all about narrative</a>
-
 4. <a href="https://wire.insiderfinance.io/where-am-i-going-to-display-my-nft-and-other-stupid-questions-acd868cd4f04" target="_blank">"Where am I going to display my NFT?"... and other stupid questions</a>
-
 5. <a href="https://medium.com/thoughts-from-primary-venture-partners/the-future-of-insurtech-why-serving-policyholders-has-been-the-path-to-growth-for-so-many-320b2c2b76b6" target="_blank">The Future of InsurTech: Why serving policyholders has been the path to growth for so many...</a>`,
-            contact: `LinkedIn: <a href="https://www.linkedin.com/in/basilalomary" target="_blank">https://www.linkedin.com/in/basilalomary</a>
+            contact: `LinkedIn: <a href="https://www.linkedin.com/in/basilalomary" target="_blank">linkedin.com/in/basilalomary</a>
 
-Twitter: <a href="https://twitter.com/basil_alomary" target="_blank">https://twitter.com/basil_alomary</a>`,
+Twitter: <a href="https://twitter.com/basil_alomary" target="_blank">twitter.com/basil_alomary</a>`,
+            social: `Social Links:
+- <a href="https://www.linkedin.com/in/basilalomary" target="_blank">LinkedIn</a>
+- <a href="https://twitter.com/basil_alomary" target="_blank">Twitter</a>
+- <a href="https://github.com/basilalomary" target="_blank">GitHub</a>`,
+            projects: `Projects:
+- **Project Alpha**: Description of Project Alpha.
+- **Project Beta**: Description of Project Beta.
+- **Project Gamma**: Description of Project Gamma.`,
             help: `Available commands:
-
-about
-experience
-education
-writing
-contact
-clear
-help`
+- about
+- experience
+- education
+- writing
+- contact
+- social
+- projects
+- clear
+- help`
         };
 
-        async function displayResponse(command) {
-            const responseElement = document.createElement('div');
-            responseElement.className = 'response';
-            terminal.appendChild(responseElement);
-            
-            const response = content[command.toLowerCase()] || "Command not recognized. Type 'help' for a list of available commands.";
-            responseElement.innerHTML = response;
-
-            terminal.scrollTop = terminal.scrollHeight;
-        }
-
-        async function handleCommand(command) {
-            const commandElement = document.createElement('div');
-            commandElement.className = 'command';
-            commandElement.textContent = `C:\\Users\\Basil> ${command}`;
-            terminal.appendChild(commandElement);
-
-            if (command.toLowerCase() === 'clear') {
-                terminal.innerHTML = '';
-                displayIntro();
-            } else {
-                await displayResponse(command);
-            }
-        }
-
+        // Initialize Loading
         function simulateLoading() {
             let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 5;
+            const typingText = "Initializing System...";
+            const typingDuration = 3000;
+            const interval = 100;
+            const increment = 100 / (typingDuration / interval);
+
+            const loadingInterval = setInterval(() => {
+                progress += increment;
                 if (progress >= 100) {
                     progress = 100;
-                    clearInterval(interval);
+                    clearInterval(loadingInterval);
                     setTimeout(() => {
-                        explodeCube();
-                    }, 1000);
+                        loadingScreen.classList.add('hidden');
+                        terminalWindow.classList.add('active');
+                        initTerminal();
+                    }, 500);
                 }
                 loadingProgress.style.width = `${progress}%`;
-            }, 100);
+            }, interval);
         }
 
+        // Explode Cube Animation (Optional Enhancement)
+        /*
         function explodeCube() {
             const faces = document.querySelectorAll('.face');
             faces.forEach((face, index) => {
@@ -324,108 +397,127 @@ help`
 
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                terminalWindow.style.display = 'block';
-                init();
+                terminalWindow.style.display = 'flex';
+                initTerminal();
             }, 1500);
         }
+        */
 
-        function displayIntro() {
-            const introElement = document.createElement('div');
-            introElement.className = 'response';
-            introElement.innerHTML = `Microsoft Windows [Version 10.0.19042.928]
-(c) 2020 Microsoft Corporation. All rights reserved.
-
-Welcome to Basil Alomary's terminal.
-Type 'help' for a list of available commands.`;
-            terminal.appendChild(introElement);
-        }
-
-        async function init() {
+        // Terminal Initialization
+        function initTerminal() {
             displayIntro();
             userInput.focus();
         }
 
-        userInput.addEventListener('keypress', async function(e) {
+        function displayIntro() {
+            const intro = `Microsoft Windows [Version 10.0.19042.928]
+(c) 2020 Microsoft Corporation. All rights reserved.
+
+Welcome to Basil Alomary's terminal.
+Type 'help' for a list of available commands.`;
+            appendResponse(intro);
+        }
+
+        function appendCommand(command) {
+            const cmd = document.createElement('div');
+            cmd.className = 'command';
+            cmd.textContent = `C:\\Users\\Basil> ${command}`;
+            terminal.appendChild(cmd);
+        }
+
+        function appendResponse(text) {
+            const resp = document.createElement('div');
+            resp.className = 'response';
+            resp.innerHTML = text;
+            terminal.appendChild(resp);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        async function handleCommand(command) {
+            if (!command) return;
+            appendCommand(command);
+            const cmd = command.toLowerCase();
+
+            if (content[cmd]) {
+                appendResponse(content[cmd]);
+            } else {
+                appendResponse("Command not recognized. Type 'help' for a list of available commands.");
+            }
+
+            if (cmd !== 'clear') {
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        }
+
+        // Event Listeners
+        userInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const command = this.value.trim();
                 this.value = '';
-                await handleCommand(command);
+                handleCommand(command);
             }
         });
 
         // Make the window draggable
         let isDragging = false;
-        let currentX;
-        let currentY;
-        let initialX;
-        let initialY;
-        let xOffset = 0;
-        let yOffset = 0;
+        let offsetX, offsetY;
 
-        windowHeader.addEventListener("mousedown", dragStart);
-        document.addEventListener("mousemove", drag);
-        document.addEventListener("mouseup", dragEnd);
+        windowHeader.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - terminalWindow.offsetLeft;
+            offsetY = e.clientY - terminalWindow.offsetTop;
+            document.body.style.userSelect = 'none';
+        });
 
-        function dragStart(e) {
-            initialX = e.clientX - xOffset;
-            initialY = e.clientY - yOffset;
-
-            if (e.target === windowHeader) {
-                isDragging = true;
-            }
-        }
-
-        function drag(e) {
+        document.addEventListener('mousemove', (e) => {
             if (isDragging) {
-                e.preventDefault();
-                currentX = e.clientX - initialX;
-                currentY = e.clientY - initialY;
-
-                xOffset = currentX;
-                yOffset = currentY;
-
-                setTranslate(currentX, currentY, terminalWindow);
+                terminalWindow.style.left = `${e.clientX - offsetX}px`;
+                terminalWindow.style.top = `${e.clientY - offsetY}px`;
+                terminalWindow.style.transform = `translate(0, 0)`;
             }
-        }
+        });
 
-        function setTranslate(xPos, yPos, el) {
-            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
-    }
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.userSelect = 'auto';
+        });
 
-    function dragEnd(e) {
-        initialX = currentX;
-        initialY = currentY;
+        // Window Control Buttons
+        minimizeBtn.addEventListener('click', () => {
+            terminalWindow.style.display = 'none';
+            terminalIcon.style.display = 'flex';
+        });
 
-        isDragging = false;
-    }
+        maximizeBtn.addEventListener('click', () => {
+            if (terminalWindow.classList.contains('maximized')) {
+                terminalWindow.classList.remove('maximized');
+                terminalWindow.style.width = '80%';
+                terminalWindow.style.height = '80%';
+                terminalWindow.style.top = '10%';
+                terminalWindow.style.left = '10%';
+            } else {
+                terminalWindow.classList.add('maximized');
+                terminalWindow.style.width = '100%';
+                terminalWindow.style.height = '100%';
+                terminalWindow.style.top = '0';
+                terminalWindow.style.left = '0';
+            }
+        });
 
-    // Window control buttons functionality
-    minimizeBtn.addEventListener('click', () => {
-        terminalWindow.style.display = 'none';
-    });
+        closeBtn.addEventListener('click', () => {
+            terminalWindow.style.display = 'none';
+            terminalIcon.style.display = 'flex';
+        });
 
-    maximizeBtn.addEventListener('click', () => {
-        if (terminalWindow.style.width === '100%') {
-            terminalWindow.style.width = '80%';
-            terminalWindow.style.height = '80%';
-            terminalWindow.style.top = '10%';
-            terminalWindow.style.left = '10%';
-        } else {
-            terminalWindow.style.width = '100%';
-            terminalWindow.style.height = '100%';
-            terminalWindow.style.top = '0';
-            terminalWindow.style.left = '0';
-        }
-    });
+        // Floating Terminal Icon Click
+        terminalIcon.addEventListener('click', () => {
+            terminalWindow.style.display = 'flex';
+            terminalIcon.style.display = 'none';
+            userInput.focus();
+        });
 
-    closeBtn.addEventListener('click', () => {
-        terminalWindow.style.display = 'none';
-        // You might want to add some functionality here to allow reopening the terminal
-    });
-
-    simulateLoading();
-</script>
+        // Initialize
+        simulateLoading();
+    </script>
 </body>
 </html>
-
-            
